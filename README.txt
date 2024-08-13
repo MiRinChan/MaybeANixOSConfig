@@ -1,4 +1,4 @@
-############### Maybe a NixOS config ###############
+### Maybe a NixOS config ###
 I have to say I take a loooot of config from community. And I didn't tell anyone I take it and I forget to label the code from who.
 Sorry.
 

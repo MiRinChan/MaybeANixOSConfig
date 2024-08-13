@@ -36,7 +36,6 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
-      twemoji-color-font
       maple-mono-SC-NF
       monaspace
       fira-code-nerdfont

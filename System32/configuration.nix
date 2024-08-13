@@ -1,0 +1,168 @@
+# 系统环境配置文件
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
+  # You can import other NixOS modules here
+  imports = [
+    # If you want to use modules your own flake exports (from modules/nixos):
+    outputs.nixosModules.theProgramInstallForAllUsers
+    outputs.nixosModules.localizationSettings
+    outputs.nixosModules.nvidiaDriver
+    outputs.nixosModules.soundSettings
+
+    # 用户配置
+    ./UsersConf.nix
+    # 硬件配置
+    ./hardware-configuration.nix
+  ];
+  nixpkgs = {
+    # You can add overlays here
+    overlays = [
+      # Add overlays your own flake exports (from overlays and pkgs dir):
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+      outputs.overlays.stable-packages
+
+      # You can also add overlays exported from other flakes:
+      # neovim-nightly-overlay.overlays.default
+
+      # Or define it inline, for example:
+      # (final: prev: {
+      #   hi = final.hello.overrideAttrs (oldAttrs: {
+      #     patches = [ ./change-hello-to-hi.patch ];
+      #   });
+      # })
+    ];
+    # Configure your nixpkgs instance
+    config = {
+      # Disable if you don't want unfree packages
+      allowUnfree = true;
+    };
+  };
+
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
+
+  # NixOS，启动！
+  boot = {
+    loader = {
+      grub = let
+      in {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        gfxmodeEfi = "auto";
+        gfxmodeBios = "auto";
+        gfxpayloadEfi = "auto";
+        gfxpayloadBios = "auto";
+      };
+
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+    };
+
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+      "nvidia-drm.modeset=1" # Enable kernel modesetting for NVIDIA graphics
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Preserve video memory allocations across suspend/resume
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp" # Set temporary file path for NVIDIA driver
+      "nvidia.NVreg_UsePageAttributeTable=1" # Enable NVIDIA Page Attribute Table
+      "nvidia.NVreg_EnablePCIeGen3=1" # Enable PCIe Gen3 for NVIDIA
+    ];
+
+    kernelModules = ["nvidia"];
+
+    # kernelPackages = pkgs.linuxPackages_xanmod_latest;
+
+    plymouth = {
+      enable = true;
+    };
+    initrd.systemd.enable = true;
+  };
+
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
+    settings = {
+      # 启用新 nix 命令行和 flakes
+      experimental-features = "nix-command flakes";
+      # Opinionated: disable global registry
+      flake-registry = "";
+      # Workaround for https://github.com/NixOS/nix/issues/9574
+      nix-path = config.nix.nixPath;
+    };
+    # Opinionated: disable channels
+    channel.enable = true;
+
+    # Opinionated: make flake registry and nix path match flake inputs
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  };
+
+  networking = {
+    # 主机名称
+    hostName = "rins";
+    # NetworkManager
+    networkmanager.enable = true;
+  };
+
+  systemd.network.wait-online.enable = false;
+  boot.initrd.systemd.network.wait-online.enable = false;
+
+  # 图形化
+  services = {
+    xserver.enable = true;
+    displayManager.sddm.enable = true;
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm.wayland.enable = true;
+  };
+
+  # Make electron and Chrome happy.
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  programs.dconf.enable = true;
+
+  # Flatpak
+  services.flatpak.enable = true;
+  services.flatpak.remotes = [
+    {
+      name = "flathub-beta";
+      location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+    }
+    {
+      name = "flathub";
+      location = "https://dl.flathub.org/repo/";
+    }
+  ];
+  services.flatpak.update.onActivation = true;
+  services.flatpak.overrides = {
+    global = {
+      # Force Wayland by default
+      Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+
+      Environment = {
+        # Fix un-themed cursor in some Wayland apps
+        XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+
+        # Force correct theme for some GTK apps
+        GTK_THEME = "Adwaita:dark";
+      };
+    };
+  };
+
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+  system.stateVersion = "24.05";
+}

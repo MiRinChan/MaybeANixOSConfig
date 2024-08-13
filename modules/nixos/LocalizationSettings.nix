@@ -79,7 +79,7 @@
           "Noto Serif CJK"
           "Noto Serif"
         ];
-        emoji = ["Noto Sans Emoji"];
+        emoji = ["Noto Color Emoji"];
       };
     };
   };

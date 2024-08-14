@@ -38,8 +38,8 @@
     packages = with pkgs; [
       maple-mono-SC-NF
       monaspace
-      fira-code-nerdfont
       sarasa-gothic
+      fira-code-nerdfont
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
@@ -47,8 +47,6 @@
       source-han-mono
       source-han-sans
       source-han-serif
-      wqy_zenhei
-      migu
     ];
     fontconfig = {
       enable = true;
@@ -81,6 +79,17 @@
         ];
         emoji = ["Noto Color Emoji"];
       };
+      localConf = ''
+        <!-- Make Emoji happy. -->
+        <match target="font">
+          <test name="family" qual="first">
+            <string>Noto Color Emoji</string>
+          </test>
+          <edit mode="assign" name="antialias">
+            <bool>false</bool>
+          </edit>
+        </match>
+      '';
     };
   };
 }

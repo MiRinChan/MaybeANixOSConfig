@@ -87,7 +87,7 @@
     kernelModules = ["nvidia"];
 
     # kernelPackages = pkgs.linuxPackages_xanmod_latest;
-    boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
 
     plymouth = {
       enable = true;

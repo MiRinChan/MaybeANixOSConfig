@@ -86,8 +86,15 @@
 
     kernelModules = ["nvidia"];
 
-    # kernelPackages = pkgs.linuxPackages_xanmod_latest;
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    # pkgs.linuxPackages == lts
+    # pkgs.linuxPackages_latest == stable
+    kernelPackages = pkgs.linuxPackages;
+
+    #kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_xanmod_stable;
+    #kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+
+    # extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
 
     plymouth = {
       enable = true;

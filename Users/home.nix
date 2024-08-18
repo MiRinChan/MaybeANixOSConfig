@@ -14,6 +14,7 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
+    outputs.homeManagerModules.localizationSettings
 
     # You can also split up your configuration and import pieces of it here:
     ./AppData

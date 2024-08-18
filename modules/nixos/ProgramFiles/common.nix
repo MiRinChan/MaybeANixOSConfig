@@ -5,20 +5,21 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    screen
-    kdePackages.ksvg
-    alejandra
-    catppuccin
-    plymouth
-    eza
-    kdePackages.kgpg
-    kdePackages.kleopatra
-    mono5
-    flatpak-builder
-    appstream
-    easyeffects
-    qpwgraph
-    alsa-utils
+    screen # Screen
+    kdePackages.ksvg # Require by SDDM
+    alejandra # Code formater
+    catppuccin # Prettier system color
+    plymouth # Prettier startup
+    eza # Prettier ls
+    kdePackages.kgpg # kGpg
+    kdePackages.kleopatra # kleopatra
+    mono5 # .NET development framework
+    flatpak-builder # Flatpak builder
+    appstream # Software metadata handling library, proride CLI
+    easyeffects # Sound effect
+    qpwgraph # Graphic PipeWire Configer
+    alsa-utils # provide CLI
+    devenv # provide code envireoment
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

@@ -39,17 +39,6 @@
         ];
         emoji = ["Noto Color Emoji"];
       };
-      localConf = ''
-        <!-- Make Emoji happy. -->
-        <match target="font">
-          <test name="family" qual="first">
-            <string>Noto Color Emoji</string>
-          </test>
-          <edit mode="assign" name="antialias">
-            <bool>false</bool>
-          </edit>
-        </match>
-      '';
     };
   };
 }

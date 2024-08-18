@@ -1,1 +1,1 @@
-./modules/nixos/LocalizationSettings.nix
+../nixos/LocalizationSettings.nix

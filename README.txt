@@ -11,4 +11,4 @@ And I didn't make all into declarative. YOU MAY GET
 DIFFERENT RESULT.
 
 Todo list:
-    [] C 语言环境搭建
+    [x] C 语言环境搭建 注：虚拟机然后 SSH 进去搞的

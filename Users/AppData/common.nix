@@ -18,6 +18,8 @@
     krita
     inkscape
 
+    ffmpeg_7-full
+
     # Firefox
     firefox # for internet
     librewolf # for internet tool

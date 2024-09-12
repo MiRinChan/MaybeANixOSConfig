@@ -126,6 +126,23 @@
     hostName = "rins";
     # NetworkManager
     networkmanager.enable = true;
+
+    firewall = {
+      enable = true;
+      # Sunshine 47984 47989 47990 48010
+      allowedTCPPorts = [47984 47989 47990 48010];
+      # Sunshine 8000-8010 47998-48000
+      allowedUDPPortRanges = [
+        {
+          from = 47998;
+          to = 48000;
+        }
+        {
+          from = 8000;
+          to = 8010;
+        }
+      ];
+    };
   };
 
   systemd.network.wait-online.enable = false;

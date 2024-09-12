@@ -27,7 +27,16 @@
     enable = true;
     enableSSHSupport = true;
   };
+
   programs.adb.enable = true;
+
+  # Add sunshine to make my pad could connect to my computer. For entertament.
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = ["user-with-access-to-virtualbox"];

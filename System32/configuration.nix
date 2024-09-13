@@ -84,7 +84,8 @@
       "nvidia.NVreg_EnablePCIeGen3=1" # Enable PCIe Gen3 for NVIDIA
     ];
 
-    kernelModules = ["nvidia"];
+    kernelModules = ["nvidia" "v4l2loopback"]; # v4l2loopback: webcam.
+    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
@@ -93,8 +94,6 @@
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;
     #kernelPackages = pkgs.linuxKernel.packages.linux_zen;
-
-    # extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
 
     plymouth = {
       enable = true;

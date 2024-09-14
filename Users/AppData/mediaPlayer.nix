@@ -31,4 +31,5 @@
     playerctld.enable = true;
     easyeffects.enable = true;
   };
+  systemd.user.services.easyeffects.serviceConfig.TimeoutSec = "5"; # Prevent wating for long time.
 }

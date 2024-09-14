@@ -82,8 +82,5 @@
     '';
   };
 
-  services = {
-    easyeffects.enable = true;
-  };
   systemd.services.easyeffects.serviceConfig.TimeoutSec = "5"; # Prevent wating for long time.
 }

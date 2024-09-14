@@ -50,6 +50,7 @@
     gawk
     zstd
     gnupg
+    gparted
 
     # 网路工具
     mtr # A network diagnostic tool

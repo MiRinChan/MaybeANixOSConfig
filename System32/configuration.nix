@@ -190,8 +190,8 @@
   };
 
   # Stop wating after I want shut down my computer. However we should check by "$ journalctl --boot -1 -xe" to find why.
-  # systemd.extraConfig = "DefaultTimeoutStopSec=10s";
-  # systemd.user.extraConfig = "DefaultTimeoutStopSec=10s";
+  systemd.extraConfig = "DefaultTimeoutStopSec=10s";
+  systemd.user.extraConfig = "DefaultTimeoutStopSec=10s";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

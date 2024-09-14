@@ -81,6 +81,4 @@
       table.insert(alsa_monitor.rules, rule)
     '';
   };
-
-  systemd.services.easyeffects.serviceConfig.TimeoutSec = "5"; # Prevent wating for long time.
 }

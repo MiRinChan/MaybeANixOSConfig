@@ -15,8 +15,17 @@
     "en_US.UTF-8/UTF-8"
     "zh_CN.UTF-8/UTF-8"
   ];
-  # 你永远都是中国人！是的！我们中国人自古以来就有吃苦耐劳的精神！做什么都要比别人多加一句！！！
+  # 你永远都是中国人！
   nix.settings.substituters = ["https://mirror.sjtu.edu.cn/nix-channels/store"];
+  # NTP 服务器 (中国大陆服务器)
+  # To fix: Wating sync time for a long time. Thanks to Ryan Yin!
+  # Sep 14 20:42:51 rins systemd-timesyncd[1114]: Timed out waiting for reply from 193.182.111.12:123 (0.nixos.pool.ntp.org).
+  # Sep 14 20:44:11 rins systemd[1]: user@1000.service: Deactivated successfully.
+  networking.timeServers = [
+    "ntp.tencent.com" # 腾讯 NTP 服务器
+    "ntp.tuna.tsinghua.edu.cn" # 清华大学 NTP 服务器
+    "time.cloudflare.com" # Cloudflare NTP 服务器
+  ];
   # 输入法
   i18n.inputMethod = {
     type = "fcitx5";

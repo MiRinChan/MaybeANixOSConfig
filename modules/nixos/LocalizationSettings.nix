@@ -24,7 +24,7 @@
   networking.timeServers = [
     "ntp.tencent.com" # 腾讯 NTP 服务器
     "ntp.tuna.tsinghua.edu.cn" # 清华大学 NTP 服务器
-    "time.cloudflare.com" # Cloudflare NTP 服务器
+    # "time.cloudflare.com" # Cloudflare NTP 服务器 uncomment this if network is OK.
   ];
   # 输入法
   i18n.inputMethod = {

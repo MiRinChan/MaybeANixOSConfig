@@ -22,6 +22,7 @@
     devenv # provide code envireoment
     kdePackages.filelight # Quickly visualize your disk space usage
     gparted
+    s-tui
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

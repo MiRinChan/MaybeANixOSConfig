@@ -21,6 +21,7 @@
     alsa-utils # provide CLI
     devenv # provide code envireoment
     kdePackages.filelight # Quickly visualize your disk space usage
+    gparted
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

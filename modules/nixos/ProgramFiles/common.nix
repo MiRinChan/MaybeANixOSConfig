@@ -23,6 +23,7 @@
     kdePackages.filelight # Quickly visualize your disk space usage
     gparted
     s-tui
+    pkgs.sbctl # For debugging and troubleshooting Secure Boot.
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

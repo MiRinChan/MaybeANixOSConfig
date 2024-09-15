@@ -26,6 +26,14 @@
     # pretty theme
     catppuccin.url = "github:catppuccin/nix";
 
+    # lanzaboote for Secure boot
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+
+      # Optional but recommended to limit the size of your system closure.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -50,6 +58,7 @@
     catppuccin,
     home-manager,
     nur,
+    lanzaboote,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -92,6 +101,8 @@
           home-manager.nixosModules.home-manager
           catppuccin.nixosModules.catppuccin
           nur.nixosModules.nur
+          lanzaboote.nixosModules.lanzaboote
+
           {
             home-manager.useUserPackages = true;
             home-manager.users.mirin = import ./Users/home.nix;

@@ -122,6 +122,15 @@
     # Opinionated: make flake registry and nix path match flake inputs
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+
+    # Auto GC
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 30d";
+      dates = "Sun 19:00";
+    };
+    optimise.automatic = true;
+    optimise.dates = ["20:50"];
   };
 
   networking = {
@@ -196,15 +205,6 @@
   # Stop wating after I want shut down my computer. However we should check by "$ journalctl --boot -1 -xe" to find why.
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.user.extraConfig = "DefaultTimeoutStopSec=10s";
-
-  # Auto GC
-  nix.gc = {
-    automatic = true;
-    options = "--delete-older-than 30d";
-    dates = "Sun 19:00";
-  };
-  nix.optimise.automatic = true;
-  nix.optimise.dates = ["20:50"];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

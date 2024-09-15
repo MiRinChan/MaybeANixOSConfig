@@ -24,6 +24,7 @@
     gparted # provide a gui for parted
     pkgs.sbctl # For debugging and troubleshooting Secure Boot.
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
+    jq # provide a json proceessor
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

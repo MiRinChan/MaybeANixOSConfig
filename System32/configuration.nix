@@ -52,21 +52,24 @@
   # NixOS，启动！
   boot = {
     loader = {
-      grub = let
-      in {
+      systemd-boot = {
         enable = true;
-        device = "nodev";
-        efiSupport = true;
-        gfxmodeEfi = "auto";
-        gfxmodeBios = "auto";
-        gfxpayloadEfi = "auto";
-        gfxpayloadBios = "auto";
       };
 
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot";
-      };
+      # grub = {
+      #   enable = true;
+      #   device = "nodev";
+      #   efiSupport = true;
+      #   gfxmodeEfi = "auto";
+      #   gfxmodeBios = "auto";
+      #   gfxpayloadEfi = "auto";
+      #   gfxpayloadBios = "auto";
+      # };
+
+      # efi = {
+      #   canTouchEfiVariables = true;
+      #   efiSysMountPoint = "/boot";
+      # };
     };
 
     kernelParams = [

@@ -54,7 +54,7 @@
     loader = {
       systemd-boot = {
         enable = true;
-        consoleMode = "auto";
+        consoleMode = "max";
       };
 
       # grub = {

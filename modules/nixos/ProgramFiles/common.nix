@@ -21,9 +21,9 @@
     alsa-utils # provide CLI
     devenv # provide code envireoment
     kdePackages.filelight # Quickly visualize your disk space usage
-    gparted
-    s-tui
+    gparted # provide a gui for parted
     pkgs.sbctl # For debugging and troubleshooting Secure Boot.
+    libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

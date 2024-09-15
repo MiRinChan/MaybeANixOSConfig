@@ -51,15 +51,15 @@
 
   # NixOS，启动！
   boot = {
-    # lanzaboote = {
-    #   enable = true;
-    #   pkiBundle = "/etc/secureboot";
-    # };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
 
     loader = {
       systemd-boot = {
-        # enable = lib.mkForce false; # lanzaboote replace it. btw keep option.
-        enable = true;
+        enable = lib.mkForce false; # lanzaboote replace it. btw keep option.
+        # enable = true;
         consoleMode = "max";
       };
 

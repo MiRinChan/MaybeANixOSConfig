@@ -53,8 +53,13 @@
   boot = {
     loader = {
       systemd-boot = {
-        enable = true;
+        enable = lib.mkForce false; # lanzaboote replace it. btw keep option.
         consoleMode = "max";
+      };
+
+      lanzaboote = {
+        enable = true;
+        pkiBundle = "/etc/secureboot";
       };
 
       # grub = {

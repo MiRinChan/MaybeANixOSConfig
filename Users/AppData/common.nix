@@ -9,6 +9,7 @@
     kde-rounded-corners
     btop
     klassy
+    LightlyShaders
 
     furmark
 

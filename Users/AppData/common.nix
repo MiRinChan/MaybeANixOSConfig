@@ -12,6 +12,8 @@
 
     furmark
 
+    osu-lazer
+
     kdePackages.kgpg
     kdePackages.kleopatra
 

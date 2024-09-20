@@ -5,35 +5,30 @@
   ...
 }: {
   home.packages = with pkgs; [
-    kdePackages.kcolorchooser
+    # 特效
     kde-rounded-corners
-    btop
     klassy
     LightlyShaders
 
-    furmark
+    # GUI 生产力
+    kdePackages.kcolorchooser # 颜色选择器
+    kdePackages.kgpg # Gpg 加密
+    kdePackages.kleopatra # Gpg 加密
+    krita # 画图
+    inkscape # 画图
+    furmark # 图形性能检测器
 
+    # 游戏
     osu-lazer
-
-    kdePackages.kgpg
-    kdePackages.kleopatra
-
-    krita
-    inkscape
-
-    ffmpeg_7-full
 
     # Firefox
     firefox # for internet
     librewolf # for internet tool
+    #cHROMIUM
+    ungoogled-chromium
 
-    ungoogled-chromium #cHROMIUM
-
-    nekoray # Magic internet
-
-    git # git
-
-    nnn # terminal file manager
+    # 源代码管理
+    git
 
     # 解压
     zip
@@ -41,10 +36,12 @@
     unzip
     p7zip
 
-    # utils
+    # 工具
     fzf # fuzzy finder
+    btop
+    nnn # terminal file manager
 
-    # misc
+    # 杂项
     file
     which
     tree
@@ -53,6 +50,7 @@
     gawk
     zstd
     gnupg
+    ffmpeg_7-full # provide ffmpeg
 
     # 网路工具
     mtr # A network diagnostic tool
@@ -62,6 +60,7 @@
     socat # replacement of openbsd-netcat
     nmap # A utility for network discovery and security auditing
     ipcalc # it is a calculator for the IPv4/v6 addresses
+    nekoray # Magic internet
 
     # nix related
     #
@@ -69,21 +68,21 @@
     # with more details log output
     nix-output-monitor
 
-    # productivity
+    # 生产力
 
-    iotop # io monitoring
-    iftop # network monitoring
+    iotop # I/O 监视
+    iftop # 网络监视
 
     # system call monitoring
     strace # system call monitoring
     ltrace # library call monitoring
     lsof # list open files
 
-    # system tools
+    # 系统工具
     sysstat
-    lm_sensors # for `sensors` command
+    lm_sensors # provide `sensors` command
     ethtool
-    pciutils # lspci
-    usbutils # lsusb
+    pciutils # provide lspci
+    usbutils # provide lsusb
   ];
 }

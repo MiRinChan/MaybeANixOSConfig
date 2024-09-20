@@ -17,6 +17,8 @@
     krita # 画图
     inkscape # 画图
     furmark # 图形性能检测器
+    kdePackages.kdenlive # 视频剪辑
+    reaper # 音频剪辑
 
     # 游戏
     osu-lazer

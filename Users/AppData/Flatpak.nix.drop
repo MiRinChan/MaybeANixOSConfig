@@ -1,3 +1,4 @@
+# 弃用
 {flake-inputs, ...}: {
   imports = [
     flake-inputs.flatpak.homeManagerModules.nix-flatpak

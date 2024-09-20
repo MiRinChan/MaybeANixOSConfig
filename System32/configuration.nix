@@ -191,7 +191,7 @@
       location = "https://dl.flathub.org/repo/";
     }
   ];
-  services.flatpak.update.onActivation = true;
+  # services.flatpak.update.onActivation = true;
   services.flatpak.overrides = {
     global = {
       # Force Wayland by default

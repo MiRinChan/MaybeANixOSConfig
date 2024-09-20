@@ -4,5 +4,6 @@
     ./steam.nix
     ./common.nix
     ./virtualMachine.nix
+    ./sunshine.nix
   ];
 }

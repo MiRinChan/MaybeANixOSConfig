@@ -15,6 +15,7 @@
     outputs.nixosModules.nvidiaDriver
     outputs.nixosModules.ADBDriver
     outputs.nixosModules.soundSettings
+    outputs.nixosModules.FHSEnviroment
 
     # 用户配置
     ./UsersConf.nix

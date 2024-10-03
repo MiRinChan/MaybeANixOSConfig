@@ -1,25 +1,45 @@
-{ config, pkgs, lib, ... }:
-
-{
-  environment.systemPackages = with pkgs; [
+{pkgs, ...}: {
+  # FHS environment, flatpak, appImage, etc.
+  environment.systemPackages = [
     # create a fhs environment by command `fhs`, so we can run non-nixos packages in nixos!
-    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
-      pkgs.buildFHSUserEnv (base // {
-      name = "fhs";
-      targetPkgs = pkgs: (
-        # pkgs.buildFHSUserEnv 只提供一个最小的 FHS 环境，缺少很多常用软件所必须的基础包
-        # 所以直接使用它很可能会报错
-        #
-        # pkgs.appimageTools 提供了大多数程序常用的基础包，所以我们可以直接用它来补充
-        (base.targetPkgs pkgs) ++ with pkgs; [
-          pkg-config
-          ncurses
-          # 如果你的 FHS 程序还有其他依赖，把它们添加在这里
-        ]
-      );
-      profile = "export FHS=1";
-      runScript = "bash";
-      extraOutputsToInstall = ["dev"];
-    }))
+    (
+      let
+        base = pkgs.appimageTools.defaultFhsEnvArgs;
+      in
+        pkgs.buildFHSUserEnv (base
+          // {
+            name = "fhs";
+            targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [pkgs.pkg-config];
+            profile = "export FHS=1";
+            runScript = "bash";
+            extraOutputsToInstall = ["dev"];
+          })
+    )
   ];
+
+  # https://github.com/Mic92/nix-ld
+  #
+  # nix-ld will install itself at `/lib64/ld-linux-x86-64.so.2` so that
+  # it can be used as the dynamic linker for non-NixOS binaries.
+  #
+  # nix-ld works like a middleware between the actual link loader located at `/nix/store/.../ld-linux-x86-64.so.2`
+  # and the non-NixOS binaries. It will:
+  #
+  #   1. read the `NIX_LD` environment variable and use it to find the actual link loader.
+  #   2. read the `NIX_LD_LIBRARY_PATH` environment variable and use it to set the `LD_LIBRARY_PATH` environment variable
+  #      for the actual link loader.
+  #
+  # nix-ld's nixos module will set default values for `NIX_LD` and `NIX_LD_LIBRARY_PATH` environment variables, so
+  # it can work out of the box:
+  #
+  #  - https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/programs/nix-ld.nix#L37-L40
+  #
+  # You can overwrite `NIX_LD_LIBRARY_PATH` in the environment where you run the non-NixOS binaries to customize the
+  # search path for shared libraries.
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+    ];
+  };
 }

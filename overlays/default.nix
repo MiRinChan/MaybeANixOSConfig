@@ -26,4 +26,10 @@
       config.allowUnfree = true;
     };
   };
+  RinsRepo-packages = final: _prev: {
+    RinsRepo = import inputs.RinsRepo {
+      system = final.system;
+      config.allowUnfree = true;
+    };
+  };
 }

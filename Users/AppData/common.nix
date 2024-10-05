@@ -20,6 +20,7 @@
     kdePackages.kdenlive # 视频剪辑
     reaper # 音频剪辑
     veracrypt # 磁盘加密
+    resilio-sync # 同步
 
     # 游戏
     osu-lazer

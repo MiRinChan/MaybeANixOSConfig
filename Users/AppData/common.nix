@@ -38,6 +38,7 @@
     xz
     unzip
     p7zip
+    unrar
 
     # 工具
     fzf # fuzzy finder

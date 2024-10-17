@@ -4,5 +4,4 @@ pkgs: {
   # example = pkgs.callPackage ./example { };
   klassy = pkgs.callPackage ./klassy.nix {};
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
-  LightlyShaders = pkgs.callPackage ./LightlyShaders.nix {};
 }

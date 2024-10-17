@@ -6,9 +6,7 @@
 }: {
   home.packages = with pkgs; [
     # 特效
-    kde-rounded-corners
     klassy
-    LightlyShaders
 
     # GUI 生产力
     kdePackages.kcolorchooser # 颜色选择器

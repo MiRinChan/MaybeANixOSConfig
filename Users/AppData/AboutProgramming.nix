@@ -6,7 +6,7 @@
   programs.vscode = {
     enable = true;
     # package = pkgs.vscode.override {commandLineArgs = "--locale=zh-CN --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime ";};
-    package = pkgs.vscode.override {commandLineArgs = "--enable-wayland-ime";};
+    package = pkgs.vscode.override {commandLineArgs = "--enable-wayland-ime -n";};
   };
 
   home.packages = with pkgs; [

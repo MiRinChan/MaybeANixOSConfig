@@ -26,6 +26,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     docker # provide container
+    docker-compose # provide docker-compose command
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

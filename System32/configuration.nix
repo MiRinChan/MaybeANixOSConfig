@@ -149,8 +149,9 @@
 
     firewall = {
       enable = true;
+      # FTP/FTPS/SFTP 2121
       # Sunshine 47984 47989 47990 48010
-      allowedTCPPorts = [47984 47989 47990 48010];
+      allowedTCPPorts = [2121 47984 47989 47990 48010];
       # Sunshine 8000-8010 47998-48000
       allowedUDPPortRanges = [
         {

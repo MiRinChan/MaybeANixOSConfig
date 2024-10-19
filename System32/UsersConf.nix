@@ -9,7 +9,7 @@
     mirin = {
       # 别忘了设密码
       isNormalUser = true;
-      extraGroups = ["wheel" "adbusers"];
+      extraGroups = ["wheel" "adbusers" "docker"];
       shell = pkgs.zsh;
     };
   };

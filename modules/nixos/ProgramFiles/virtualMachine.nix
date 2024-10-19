@@ -8,4 +8,15 @@
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = ["user-with-access-to-virtualbox"];
   virtualisation.virtualbox.host.enableExtensionPack = true;
+
+  # provide docker container
+  environment.systemPackages = with pkgs; [
+    docker-compose # provide docker-compose command
+  ];
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+  virtualisation.docker.storageDriver = "btrfs";
 }

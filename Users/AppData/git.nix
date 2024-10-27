@@ -1,7 +1,7 @@
 {config, ...}: {
   programs.git = {
     enable = true;
-    config = {
+    extraConfig = {
       init = {
         defaultBranch = "master";
       };

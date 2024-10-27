@@ -12,4 +12,4 @@ DIFFERENT RESULT.
 
 Todo list:
     [x] C 语言环境搭建 注：虚拟机然后 SSH 进去搞的
-    [] 学习 C 语言
+    [] 学习 C 语言 flag：真的要完成 X_X

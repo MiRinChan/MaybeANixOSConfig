@@ -37,7 +37,6 @@
     unzip
     p7zip
     unrar
-    pkcrack
 
     # 工具
     fzf # fuzzy finder

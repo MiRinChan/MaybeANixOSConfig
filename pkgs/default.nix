@@ -4,5 +4,5 @@ pkgs: {
   # example = pkgs.callPackage ./example { };
   klassy = pkgs.callPackage ./klassy.nix {};
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
-  RQuickShare = pkgs.callPackage ./RQuickShare.nix {};
+  rquickshare-legacy = pkgs.callPackage ./RQuickShare.nix {};
 }

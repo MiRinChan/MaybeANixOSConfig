@@ -1,4 +1,3 @@
-# From https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/rq/rquickshare/package.nix
 {
   appimageTools,
   lib,
@@ -8,16 +7,16 @@
   version = "0.11.2";
   src = fetchurl {
     url = "https://github.com/Martichou/rquickshare/releases/download/v${version}/r-quick-share-legacy_v${version}_glibc-2.31_amd64.AppImage";
-    hash = "sha256-7w1zybCPRg4RK5bKHoHLDUDXVDQL23ox/6wh8H9vTPg=";
+    hash = "sha256-VXYiYrTSedH8xFjuxbdplzVdfnO6s3ftY2I121Unlfw=";
   };
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
 in
   appimageTools.wrapType2 {
     inherit pname version src;
     extraInstallCommands = ''
-      install -Dm444 ${appimageContents}/rquickshare.desktop -t $out/share/applications
-      substituteInPlace $out/share/applications/rquickshare.desktop \
-        --replace-fail 'Exec=rquickshare' 'Exec=rquickshare %u'
+      install -Dm444 ${appimageContents}/r-quick-share.desktop -t $out/share/applications
+      substituteInPlace $out/share/applications/r-quick-share.desktop \
+        --replace-fail 'Exec=r-quick-share' 'Exec=rquickshare %u'
       cp -r ${appimageContents}/usr/share/icons $out/share
     '';
 

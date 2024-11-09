@@ -18,6 +18,7 @@
     kdePackages.kdenlive # 视频剪辑
     reaper # 音频剪辑
     veracrypt # 磁盘加密
+    pkgs.stable.rquickshare # 快速分享
 
     # 游戏
     osu-lazer

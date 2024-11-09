@@ -34,10 +34,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    RinsRepo = {
-      url = "github:MiRinChan/MaybeSomeNixPackages";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # RinsRepo = {
+    #   url = "github:MiRinChan/MaybeSomeNixPackages";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # C:/Users/
     home-manager = {

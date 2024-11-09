@@ -7,7 +7,7 @@
   pname = "rquickshare";
   version = "0.11.2";
   src = fetchurl {
-    url = "https://github.com/Martichou/rquickshare/releases/download/v${version}/r-quick-share-main_v${version}_glibc-2.31_amd64.AppImage";
+    url = "https://github.com/Martichou/rquickshare/releases/download/v${version}/r-quick-share-legacy_v${version}_glibc-2.31_amd64.AppImage";
     hash = "sha256-7w1zybCPRg4RK5bKHoHLDUDXVDQL23ox/6wh8H9vTPg=";
   };
   appimageContents = appimageTools.extractType2 {inherit pname version src;};

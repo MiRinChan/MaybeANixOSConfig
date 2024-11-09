@@ -101,7 +101,7 @@
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
-    kernelPackages = pkgs.linuxPackages_6_10;
+    kernelPackages = pkgs.linuxPackages_6_11;
 
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;

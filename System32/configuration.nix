@@ -215,7 +215,9 @@
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.user.extraConfig = "DefaultTimeoutStopSec=10s";
 
-  chaotic.hdr.specialisation.enable = true; # Enable HDR Display
+  # Enable HDR Display
+  chaotic.hdr.enable = true;
+  chaotic.hdr.specialisation.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

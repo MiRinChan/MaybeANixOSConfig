@@ -101,7 +101,7 @@
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
-    kernelPackages = pkgs.linuxPackages_6_11;
+    #kernelPackages = pkgs.linuxPackages_6_11;
 
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;
@@ -112,6 +112,10 @@
     };
     initrd.systemd.enable = true;
   };
+
+  # Kernel
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  chaotic.scx.enable = true; # by default uses scx_rustland scheduler
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;

@@ -39,6 +39,9 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
+    # Chaotic's Nyx
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -64,6 +67,7 @@
     home-manager,
     nur,
     lanzaboote,
+    chaotic,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -107,6 +111,7 @@
           catppuccin.nixosModules.catppuccin
           nur.nixosModules.nur
           lanzaboote.nixosModules.lanzaboote
+          chaotic.nixosModules.default
 
           {
             home-manager.useUserPackages = true;

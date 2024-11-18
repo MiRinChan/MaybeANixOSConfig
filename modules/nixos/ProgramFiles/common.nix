@@ -30,6 +30,10 @@
     kdePackages.kaccounts-providers # provide online account login
     kdePackages.signond # provide online account login
     kdePackages.kio-gdrive # provide Google Drive
+    kdePackages.kio-extras
+    kdePackages.plasma-browser-integration
+    kdePackages.kio
+    libsForQt5.qoauth
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

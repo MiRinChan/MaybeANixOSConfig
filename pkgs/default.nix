@@ -5,4 +5,5 @@ pkgs: {
   klassy = pkgs.callPackage ./klassy.nix {};
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
   rquickshare-legacy = pkgs.callPackage ./RQuickShare.nix {};
+  signon-plugin-oauth2 = pkgs.callPackage ./signon-plugin-oauth2.nix {};
 }

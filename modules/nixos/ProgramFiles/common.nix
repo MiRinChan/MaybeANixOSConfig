@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -25,6 +26,10 @@
     pkgs.sbctl # For debugging and troubleshooting Secure Boot.
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
+    kdePackages.kaccounts-integration # provide online account login
+    kdePackages.kaccounts-providers # provide online account login
+    kdePackages.signond # provide online account login
+    kdePackages.kio-gdrive # provide Google Drive
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

@@ -14,6 +14,7 @@
     kdePackages.kleopatra # Gpg 加密
     krita # 画图
     inkscape # 画图
+    oculante # 看图
     furmark # 图形性能检测器
     kdePackages.kdenlive # 视频剪辑
     reaper # 音频剪辑

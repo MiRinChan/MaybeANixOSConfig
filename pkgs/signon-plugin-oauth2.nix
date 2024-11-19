@@ -1,12 +1,9 @@
 {
   lib,
   fetchFromGitLab,
-  qtbase,
   stdenv,
-  wrapQtAppsHook,
-  signond,
   pkg-config,
-  qmake,
+  libsForQt5,
 }:
 stdenv.mkDerivation rec {
   pname = "signon-plugin-oauth2";
@@ -21,14 +18,14 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [
-    qtbase
-    signond
+    libsForQt5.qtbase
+    libsForQt5.signond
   ];
 
   nativeBuildInputs = [
-    wrapQtAppsHook
+    libsForQt5.wrapQtAppsHook
     pkg-config
-    qmake
+    libsForQt5.qmake
   ];
 
   INSTALL_ROOT = "$out";

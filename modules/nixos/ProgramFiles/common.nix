@@ -33,7 +33,7 @@
     kdePackages.kio-extras
     kdePackages.plasma-browser-integration
     kdePackages.kio
-    libsForQt5.qoauth
+    signon-plugin-oauth2
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

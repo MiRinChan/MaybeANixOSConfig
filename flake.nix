@@ -39,9 +39,6 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    # Chaotic's Nyx
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -67,13 +64,13 @@
     home-manager,
     nur,
     lanzaboote,
-    chaotic,
     ...
   } @ inputs: let
     inherit (self) outputs;
     # 支持的系统架构
     systems = [
       "x86_64-linux"
+      # "aarch64-linux"
     ];
     # 这是一个通过调用您传递给它的函数来生成属性的函数，每个系统作为参数
     forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -111,7 +108,6 @@
           catppuccin.nixosModules.catppuccin
           nur.nixosModules.nur
           lanzaboote.nixosModules.lanzaboote
-          chaotic.nixosModules.default
 
           {
             home-manager.useUserPackages = true;

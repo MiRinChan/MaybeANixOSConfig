@@ -101,7 +101,7 @@
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
-    #kernelPackages = pkgs.linuxPackages_6_11;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;
@@ -112,9 +112,6 @@
     };
     initrd.systemd.enable = true;
   };
-
-  # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
@@ -226,9 +223,8 @@
     DefaultStartLimitIntervalSec=20s
   '';
 
-  # Enable HDR Display
-  chaotic.hdr.enable = true;
-  chaotic.hdr.specialisation.enable = true;
+  # Enable binfmt emulation.
+  # boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

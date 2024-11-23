@@ -20,6 +20,7 @@
     reaper # 音频剪辑
     veracrypt # 磁盘加密
     rquickshare-legacy # 快速分享
+    qgis # 地理信息系统
 
     # 游戏
     osu-lazer

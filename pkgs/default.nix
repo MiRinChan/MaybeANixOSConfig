@@ -6,4 +6,5 @@ pkgs: {
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
   rquickshare-legacy = pkgs.callPackage ./RQuickShare.nix {};
   signon-plugin-oauth2 = pkgs.callPackage ./signon-plugin-oauth2.nix {};
+  scrcpy3 = pkgs.callPackage ./scrcpy3.nix {};
 }

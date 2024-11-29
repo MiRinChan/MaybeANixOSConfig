@@ -21,7 +21,7 @@
     veracrypt # 磁盘加密
     rquickshare-legacy # 快速分享
     qgis # 地理信息系统
-    scrcpy # Android 屏传
+    scrcpy3 # Android 屏传
 
     # 游戏
     osu-lazer

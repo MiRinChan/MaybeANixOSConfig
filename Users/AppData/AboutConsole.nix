@@ -20,8 +20,11 @@
       btw = ''echo "I'm using..." && hyfetch'';
       neofetch = "hyfetch";
       ls = "eza";
+
+      # My personal config
       vm = ''VBoxManage startvm "{d58d055c-e878-46bb-9c7f-d8b444a0e10b}" --type headless'';
       vmpf = ''VBoxManage controlvm "{d58d055c-e878-46bb-9c7f-d8b444a0e10b}" acpipowerbutton'';
+      kbcheck = ''devbox run -c ~/Documents/KeyboxCheckerPython/devbox.json python3 main.py'';
     };
     history = {
       size = 10000;

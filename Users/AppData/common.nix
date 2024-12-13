@@ -22,6 +22,9 @@
     rquickshare-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
+    signon-plugin-oauth2
+    signon-ui
+    signond
 
     # 游戏
     osu-lazer

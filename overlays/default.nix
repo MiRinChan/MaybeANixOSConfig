@@ -12,6 +12,18 @@
     #     });
   };
 
+  fix-kio-gdrive = final: prev: {
+    kdePackages =
+      prev.kdePackages
+      // {
+        signon-plugin-oauth2 = final.kdePackages.callPackage ../pkgs/signon-plugin-oauth2 {};
+        signond = final.kdePackages.callPackage ../pkgs/signond {
+          inherit (final.kdePackages) signon-plugin-oauth2;
+        };
+        signon-ui = final.kdePackages.callPackage ../pkgs/signon-ui {};
+      };
+  };
+
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {

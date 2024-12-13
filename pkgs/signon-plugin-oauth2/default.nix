@@ -2,10 +2,13 @@
   stdenv,
   lib,
   fetchFromGitLab,
+  qmake,
   pkg-config,
-  kdePackages,
+  qtbase,
   signond,
+  wrapQtAppsHook
 }:
+
 stdenv.mkDerivation rec {
   pname = "signon-plugin-oauth2";
   version = "0.25-unstable-2023-10-15";
@@ -19,13 +22,13 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [
-    kdePackages.qmake
+    qmake
     pkg-config
-    kdePackages.wrapQtAppsHook
+    wrapQtAppsHook
   ];
 
   buildInputs = [
-    kdePackages.qtbase
+    qtbase
     signond
   ];
 
@@ -37,7 +40,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Signond OAuth 1.0/2.0 plugin";
     homepage = "https://gitlab.com/accounts-sso/signon-plugin-oauth2";
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     platforms = platforms.linux;
   };
 }

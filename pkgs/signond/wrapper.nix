@@ -6,17 +6,17 @@
   signon-plugin-oauth2,
   withKWallet,
   signon-kwallet-extension,
-  makeWrapper,
+  makeWrapper
 }:
+
 symlinkJoin {
   name = "signond-with-plugins-${signond.version}";
 
-  paths =
-    [signond]
+  paths = [ signond ]
     ++ lib.optional withOAuth2 signon-plugin-oauth2
     ++ lib.optional withKWallet signon-kwallet-extension;
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   postBuild = ''
     wrapProgram $out/bin/signond \

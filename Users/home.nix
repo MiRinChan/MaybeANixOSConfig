@@ -29,7 +29,6 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
       outputs.overlays.stable-packages
-      outputs.overlays.fix-kio-gdrive
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -40,6 +39,18 @@
       #     patches = [ ./change-hello-to-hi.patch ];
       #   });
       # })
+
+      (final: prev: {
+        kdePackages =
+          prev.kdePackages
+          // {
+            signon-plugin-oauth2 = final.kdePackages.callPackage ../pkgs/signond/signon-plugin-oauth2.nix {};
+            signond = final.kdePackages.callPackage ../pkgs/signond {
+              inherit (final.kdePackages) signon-plugin-oauth2;
+            };
+            signon-ui = final.kdePackages.callPackage ../pkgs/signon-ui {};
+          };
+      })
     ];
     # Configure your nixpkgs instance
     config = {

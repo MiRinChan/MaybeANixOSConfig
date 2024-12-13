@@ -106,7 +106,7 @@
           # home manager
           home-manager.nixosModules.home-manager
           catppuccin.nixosModules.catppuccin
-          nur.nixosModules.nur
+          nur.modules.nixos.default
           lanzaboote.nixosModules.lanzaboote
 
           {

@@ -1,39 +1,42 @@
 {
+  stdenv,
   lib,
   fetchFromGitLab,
-  stdenv,
   pkg-config,
-  libsForQt5,
+  kdePackages,
+  signond,
 }:
 stdenv.mkDerivation rec {
   pname = "signon-plugin-oauth2";
-  version = "0.25";
+  version = "0.25-unstable-2023-10-15";
 
+  # pinned to fork with Qt6 support
   src = fetchFromGitLab {
-    owner = "accounts-sso";
-    repo = pname;
-    # Use a later commit than 0.25, as this disabled -Werror and prevents us from needing to patch.
-    rev = "d759439066f0a34e5ad352ebab0b3bb2790d429e";
-    sha256 = "sha256-4oyfxksatR/xZT7UvECfo3je3A77+XOnhTIrxBCEH2c=";
+    owner = "nicolasfella";
+    repo = "signon-plugin-oauth2";
+    rev = "fab698862466994a8fdc9aa335c87b4f05430ce6";
+    hash = "sha256-KCBLaqQdBkb6KfVKMmFSLOiXx3rUiEmK41Bc3mi86Ls=";
   };
 
-  buildInputs = [
-    libsForQt5.qtbase
-    libsForQt5.signond
-  ];
-
   nativeBuildInputs = [
-    libsForQt5.wrapQtAppsHook
+    kdePackages.qmake
     pkg-config
-    libsForQt5.qmake
+    kdePackages.wrapQtAppsHook
   ];
 
-  INSTALL_ROOT = "$out";
-  SIGNON_PLUGINS_DIR = "${placeholder "out"}/lib/signond/plugins";
+  buildInputs = [
+    kdePackages.qtbase
+    signond
+  ];
+
+  qmakeFlags = [
+    "INSTALL_PREFIX=${placeholder "out"}"
+    "SIGNON_PLUGINS_DIR=${placeholder "out"}/lib/signon"
+  ];
 
   meta = with lib; {
+    description = "Signond OAuth 1.0/2.0 plugin";
     homepage = "https://gitlab.com/accounts-sso/signon-plugin-oauth2";
-    description = "OAuth 1.0/2.0 plugin for the SignOn daemon";
     maintainers = with maintainers; [];
     platforms = platforms.linux;
   };

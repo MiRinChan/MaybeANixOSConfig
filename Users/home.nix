@@ -40,11 +40,11 @@
       #   });
       # })
 
-      (final: prev: {
+            (final: prev: {
         kdePackages =
           prev.kdePackages
           // {
-            signon-plugin-oauth2 = final.kdePackages.callPackage ../pkgs/signond/signon-plugin-oauth2.nix {};
+            signon-plugin-oauth2 = final.kdePackages.callPackage ../pkgs/signon-plugin-oauth2 {};
             signond = final.kdePackages.callPackage ../pkgs/signond {
               inherit (final.kdePackages) signon-plugin-oauth2;
             };

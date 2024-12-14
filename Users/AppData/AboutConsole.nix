@@ -134,16 +134,16 @@
   programs.hyfetch = {
     enable = true;
     settings = {
-      preset = "transfeminine";
+      preset = "transgender";
       mode = "rgb";
       light_dark = "dark";
       lightness = 0.65;
       color_align = {
-        mode = "horizontal";
+        mode = "random0";
         custom_colors = [];
         fore_back = null;
       };
-      backend = "neofetch";
+      backend = "fastfetch";
       args = null;
       distro = null;
       pride_month_shown = [];

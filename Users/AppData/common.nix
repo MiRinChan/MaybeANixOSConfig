@@ -22,16 +22,23 @@
     rquickshare-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
-    signon-plugin-oauth2
-    signon-ui
-    signond
+
+    kdePackages.kaccounts-integration
+    kdePackages.kaccounts-providers
+    (kdePackages.signond.override {
+      withOAuth2 = true;
+      withKWallet = true;
+    })
+    kdePackages.signon-plugin-oauth2
+    kdePackages.signon-ui
+    kdePackages.kio-gdrive
 
     # 游戏
     osu-lazer
 
     # Firefox
-    firefox # for internet
-    librewolf # for internet tool
+    stable.firefox # for internet
+    stable.librewolf # for internet tool
     #cHROMIUM
     ungoogled-chromium
 
@@ -49,6 +56,7 @@
     fzf # fuzzy finder
     btop
     nnn # terminal file manager
+    fastfetch
 
     # 杂项
     file

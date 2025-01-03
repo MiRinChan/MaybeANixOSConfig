@@ -48,7 +48,7 @@
       maple-mono-SC-NF
       monaspace
       sarasa-gothic
-      fira-code-nerdfont
+      nerd-fonts.fira-code
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
@@ -110,7 +110,7 @@
     };
     aggregatedFonts = pkgs.buildEnv {
       name = "system-fonts";
-      paths = config.fonts.fonts;
+      paths = config.fonts.packages;
       pathsToLink = ["/share/fonts"];
     };
   in {

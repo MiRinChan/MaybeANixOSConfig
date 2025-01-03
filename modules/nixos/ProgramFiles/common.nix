@@ -14,7 +14,6 @@
     eza # Prettier ls
     kdePackages.kgpg # kGpg
     kdePackages.kleopatra # kleopatra
-    mono5 # .NET development framework
     flatpak-builder # Flatpak builder
     appstream # Software metadata handling library, proride CLI
     easyeffects # Sound effect
@@ -27,6 +26,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
+    nur.repos.shadowrz.klassy-qt6
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

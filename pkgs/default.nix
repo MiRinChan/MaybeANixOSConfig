@@ -2,7 +2,7 @@
 # You can build them using 'nix build .#example'
 pkgs: {
   # example = pkgs.callPackage ./example { };
-  klassy = pkgs.callPackage ./klassy.nix {};
+  lunar = pkgs.callPackage ./lunar.nix {};
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
   rquickshare-legacy = pkgs.callPackage ./RQuickShare.nix {};
   scrcpy3 = pkgs.callPackage ./scrcpy3.nix {};

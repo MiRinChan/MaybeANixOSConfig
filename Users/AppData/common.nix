@@ -5,8 +5,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    # 特效
-    klassy
 
     # GUI 生产力
     kdePackages.kcolorchooser # 颜色选择器

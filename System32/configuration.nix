@@ -94,6 +94,7 @@
       "nvidia.NVreg_TemporaryFilePath=/var/tmp" # Set temporary file path for NVIDIA driver
       "nvidia.NVreg_UsePageAttributeTable=1" # Enable NVIDIA Page Attribute Table
       "nvidia.NVreg_EnablePCIeGen3=1" # Enable PCIe Gen3 for NVIDIA
+      "kvm.enable_virt_at_load=0" # VirtualBox
     ];
 
     kernelModules = ["nvidia" "v4l2loopback"]; # v4l2loopback: webcam.

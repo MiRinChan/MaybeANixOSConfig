@@ -33,6 +33,7 @@
 
     # 游戏
     osu-lazer
+    lunar # Minecraft
 
     # Firefox
     stable.firefox # for internet

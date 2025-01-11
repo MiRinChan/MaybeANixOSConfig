@@ -13,7 +13,7 @@ appimageTools.wrapType2 rec {
 
   src = fetchurl {
     url = "https://launcherupdates.lunarclientcdn.com/Lunar%20Client-${version}.AppImage";
-    hash = "sha512-dziL9lnpsiJ2BV+jNOhVMvZtYY/K4chyiZB5/fMCw9/4/3Boe/DO7s2steEOhxEsPqUcWaf1Sjs6DFSX/CHUqw==";
+    hash = "sha512-Gpm17h5U9Cw9r5EHE1wF5e0aza9yaGPUf+rhMVAhXjrVYBqiUsc/UG11TXWqarKlLpRmPDe+BvCF0qqTtTEZhw==";
   };
 
   extraInstallCommands =
@@ -24,8 +24,8 @@ appimageTools.wrapType2 rec {
       source "${makeWrapper}/nix-support/setup-hook"
       wrapProgram $out/bin/lunar-client \
         --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
-      install -Dm444 ${contents}/launcher.desktop $out/share/applications/lunar-client.desktop
-      install -Dm444 ${contents}/launcher.png $out/share/pixmaps/lunar-client.png
+      install -Dm444 ${contents}/lunarclient.desktop $out/share/applications/lunar-client.desktop
+      install -Dm444 ${contents}/lunarclient.png $out/share/pixmaps/lunar-client.png
       substituteInPlace $out/share/applications/lunar-client.desktop \
         --replace 'Exec=AppRun --no-sandbox %U' 'Exec=lunar-client' \
         --replace 'Icon=launcher' 'Icon=lunar-client'

@@ -5,5 +5,6 @@
     ./common.nix
     ./virtualMachine.nix
     ./sunshine.nix
+    ./rclone.nix
   ];
 }

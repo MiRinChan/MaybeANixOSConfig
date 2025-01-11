@@ -26,7 +26,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    nur.repos.shadowrz.klassy-qt6
+    nur.repos.shadowrz.klassy-qt6 # klassy
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

@@ -39,6 +39,13 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
+    solaar = {
+      url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
+      #url = "https://flakehub.com/f/Svenum/Solaar-Flake/0.1.1.tar.gz"; # uncomment line for solaar version 1.1.13
+      #url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -62,6 +69,7 @@
     alejandra,
     catppuccin,
     home-manager,
+    solaar,
     nur,
     lanzaboote,
     ...
@@ -103,12 +111,11 @@
           flatpak.nixosModules.nix-flatpak
           # > 主要 NixOS 配置文件 <
           ./System32/configuration.nix
-          # home manager
-          home-manager.nixosModules.home-manager
+          home-manager.nixosModules.home-manager # home manager
           catppuccin.nixosModules.catppuccin
           nur.modules.nixos.default
           lanzaboote.nixosModules.lanzaboote
-
+          solaar.nixosModules.default
           {
             home-manager.useUserPackages = true;
             home-manager.users.mirin = import ./Users/home.nix;

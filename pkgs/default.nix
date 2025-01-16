@@ -6,4 +6,5 @@ pkgs: {
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};
   rquickshare-legacy = pkgs.callPackage ./RQuickShare.nix {};
   scrcpy3 = pkgs.callPackage ./scrcpy3.nix {};
+  wallpaper-engine-kde-plugin = pkgs.callPackage ./wallpaper-engine-kde-plugin {};
 }

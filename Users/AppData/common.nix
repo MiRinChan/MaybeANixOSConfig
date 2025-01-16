@@ -5,7 +5,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-
     # GUI 生产力
     kdePackages.kcolorchooser # 颜色选择器
     kdePackages.kgpg # Gpg 加密
@@ -30,6 +29,7 @@
     kdePackages.signon-plugin-oauth2
     kdePackages.signon-ui
     kdePackages.kio-gdrive
+    wallpaper-engine-kde-plugin
 
     # 游戏
     osu-lazer

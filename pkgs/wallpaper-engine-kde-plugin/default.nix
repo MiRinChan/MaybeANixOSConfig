@@ -18,13 +18,13 @@
 in
   stdenv.mkDerivation rec {
     pname = "wallpaper-engine-kde-plugin";
-    version = "1e604105c586c7938c5b2c19e3dc8677b2eb4bb4";
+    version = "ed58dd8b920dbb2bf0859ab64e0b5939b8a32a0e";
 
     src = fetchFromGitHub {
       owner = "catsout";
       repo = pname;
       rev = version;
-      hash = "sha256-bKGQxyS8gUi+37lODLVHphMoQwLKZt/hpSjR5MN+5GA=";
+      hash = "sha256-ICQLtw+qaOMf0lkqKegp+Dkl7eUgPqKDn8Fj5Osb7eA=";
       fetchSubmodules = true;
     };
 

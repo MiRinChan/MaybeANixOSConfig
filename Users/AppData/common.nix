@@ -20,16 +20,14 @@
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
 
-    kdePackages.kaccounts-integration
-    kdePackages.kaccounts-providers
-    (kdePackages.signond.override {
-      withOAuth2 = true;
-      withKWallet = true;
-    })
-    kdePackages.signon-plugin-oauth2
-    kdePackages.signon-ui
-    kdePackages.kio-gdrive
+    kdePackages.powerdevil
+
+    # Wallpaper Engine Plugin and dependence
     wallpaper-engine-kde-plugin
+    kdePackages.qtwebsockets
+    kdePackages.qtwebchannel
+    kdePackages.qtmultimedia
+    kdePackages.qtwebengine
 
     # 游戏
     osu-lazer

@@ -13,3 +13,14 @@ DIFFERENT RESULT.
 Todo list:
     [x] C 语言环境搭建 注：虚拟机然后 SSH 进去搞的
     [] 学习 C 语言 flag：真的要完成 X_X
+
+
+Note: 
+    用 Bottles 打不开窗口的解决办法（不优雅
+        ~/.local/share/flatpak/overrides/
+
+        [Context]
+        sockets=x11;
+
+    光标在 GTK Flatpak 里变大变高（在 GTK 4.18 修复 将于 2025 三月发布 https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/7722）
+        $ dconf write /org/gnome/desktop/interface/cursor-size 32

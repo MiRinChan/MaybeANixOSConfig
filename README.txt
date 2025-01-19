@@ -24,3 +24,9 @@ Note:
 
     光标在 GTK Flatpak 里变大变高（在 GTK 4.18 修复 将于 2025 三月发布 https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/7722）
         $ dconf write /org/gnome/desktop/interface/cursor-size 32
+
+    Fullscreen go to black screen. see https://bugs.kde.org/show_bug.cgi?id=427920.
+        Close VRR. System Settings -> Display configuration -> Adaptive Sync: Never.
+
+    Wine 里打补丁之类的修改 dll 操作
+        一定要在 winecfg 里要求使用 native, builtin

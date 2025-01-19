@@ -17,4 +17,7 @@
     enable = true;
     package = pkgs.gamescope;
   };
+  environment.systemPackages = with pkgs; [
+    protontricks
+  ];
 }

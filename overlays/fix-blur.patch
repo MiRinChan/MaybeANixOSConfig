@@ -1,0 +1,44 @@
+diff --git a/src/effect/offscreeneffect.cpp b/src/effect/offscreeneffect.cpp
+index 42d56f5844..53203a95fc 100644
+--- a/src/effect/offscreeneffect.cpp
++++ b/src/effect/offscreeneffect.cpp
+@@ -6,6 +6,7 @@
+ 
+ #include "effect/offscreeneffect.h"
+ #include "core/output.h"
++#include "core/pixelgrid.h"
+ #include "core/rendertarget.h"
+ #include "core/renderviewport.h"
+ #include "effect/effecthandler.h"
+@@ -107,9 +108,9 @@ void OffscreenEffect::apply(EffectWindow *window, int mask, WindowPaintData &dat
+ 
+ void OffscreenData::maybeRender(EffectWindow *window)
+ {
+-    const QRectF logicalGeometry = window->expandedGeometry();
+     const qreal scale = window->screen()->scale();
+-    const QSize textureSize = (logicalGeometry.size() * scale).toSize();
++    const QRectF logicalGeometry = window->expandedGeometry();
++    const QSize textureSize = snapToPixelGrid(scaledRect(logicalGeometry, scale)).size();
+ 
+     if (!m_texture || m_texture->size() != textureSize) {
+         m_texture = GLTexture::allocate(GL_RGBA8, textureSize);
+@@ -175,7 +176,7 @@ void OffscreenData::paint(const RenderTarget &renderTarget, const RenderViewport
+     RenderGeometry geometry;
+     geometry.setVertexSnappingMode(m_vertexSnappingMode);
+     for (auto &quad : quads) {
+-        geometry.appendWindowQuad(quad, scale);
++        geometry.appendWindowQuad(quad, 1.0);
+     }
+     geometry.postProcessTextureCoordinates(m_texture->matrix(NormalizedCoordinates));
+ 
+@@ -233,8 +234,8 @@ void OffscreenEffect::drawWindow(const RenderTarget &renderTarget, const RenderV
+     }
+     OffscreenData *offscreenData = it->second.get();
+ 
+-    const QRectF expandedGeometry = window->expandedGeometry();
+-    const QRectF frameGeometry = window->frameGeometry();
++    const QRectF expandedGeometry = snapToPixelGridF(scaledRect(window->expandedGeometry(), viewport.scale()));
++    const QRectF frameGeometry = snapToPixelGridF(scaledRect(window->frameGeometry(), viewport.scale()));
+ 
+     QRectF visibleRect = expandedGeometry;
+     visibleRect.moveTopLeft(expandedGeometry.topLeft() - frameGeometry.topLeft());

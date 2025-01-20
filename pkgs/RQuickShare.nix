@@ -7,7 +7,7 @@
   version = "0.11.4";
   src = fetchurl {
     url = "https://github.com/Martichou/rquickshare/releases/download/v${version}/r-quick-share-legacy_v${version}_glibc-2.31_amd64.AppImage";
-    hash = "sha256-VXYiYrTSedH8xFjuxbdplzVdfnO6s3ftY2I121Unlfw=";
+    hash = "sha256-fnpZc3IW0lgNT21dla4xP5DDcTbyl7JjG5GTXu0EMHg=";
   };
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
 in

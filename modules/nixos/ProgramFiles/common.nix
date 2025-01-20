@@ -27,6 +27,7 @@
     jq # provide a json proceessor
     qemu # qemu
     nur.repos.shadowrz.klassy-qt6 # klassy
+    pkgs.unstable.kde-rounded-corners # Rounded
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

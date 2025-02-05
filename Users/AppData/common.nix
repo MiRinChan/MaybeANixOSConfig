@@ -19,6 +19,7 @@
     rquickshare-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
+    stable.davinci-resolve
 
     kdePackages.powerdevil
 

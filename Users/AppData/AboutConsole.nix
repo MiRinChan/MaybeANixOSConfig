@@ -20,6 +20,7 @@
       btw = ''echo "I'm using..." && hyfetch'';
       neofetch = "hyfetch";
       ls = "eza";
+      XTERM = "export TERM=xterm";
 
       # My personal config
       vm = ''VBoxManage startvm "{d58d055c-e878-46bb-9c7f-d8b444a0e10b}" --type headless'';

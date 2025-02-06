@@ -7,7 +7,7 @@
     # Pin 特定频道
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
-    nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b.url = "github:nixos/nixpkgs/d209d800b7df2d4b05ea1266b14a47cba5da129b";
+    nixpkgs-d209.url = "github:nixos/nixpkgs/d209d800b7df2d4b05ea1266b14a47cba5da129b";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
     ### Nixpkgs ###
 
@@ -64,7 +64,7 @@
     nixpkgs,
     nixpkgs-unstable,
     nixpkgs-stable,
-    nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b,
+    nixpkgs-d209,
     nixpak,
     nixpak-pkgs,
     flatpak,

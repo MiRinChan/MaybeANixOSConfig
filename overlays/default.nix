@@ -38,9 +38,8 @@
       config.allowUnfree = true;
     };
   };
-
-  d209d800b7df2d4b05ea1266b14a47cba5da129b-packages = final: _prev: {
-    stable = import inputs.nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b {
+  d209-packages = final: _prev: {
+    d209 = import inputs.nixpkgs-d209 {
       system = final.system;
       config.allowUnfree = true;
     };

@@ -543,7 +543,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b": {
+    "nixpkgs-d209": {
       "locked": {
         "lastModified": 1733391459,
         "narHash": "sha256-vMrbDps6fTJ0BAXgI1t3WX2A447emfEaNLz+EYRUPmg=",
@@ -744,7 +744,7 @@
         "nixpak": "nixpak",
         "nixpak-pkgs": "nixpak-pkgs",
         "nixpkgs": "nixpkgs_5",
-        "nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b": "nixpkgs-d209d800b7df2d4b05ea1266b14a47cba5da129b",
+        "nixpkgs-d209": "nixpkgs-d209",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",

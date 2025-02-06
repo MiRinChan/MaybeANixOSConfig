@@ -15,7 +15,7 @@
     furmark # 图形性能检测器
     kdePackages.kdenlive # 视频剪辑
     reaper # 音频剪辑
-    veracrypt # 磁盘加密
+    pkgs.d209d800b7df2d4b05ea1266b14a47cba5da129b-packages.veracrypt # 磁盘加密
     rquickshare-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传

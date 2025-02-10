@@ -20,6 +20,7 @@
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
     stable.davinci-resolve
+    gimp
 
     kdePackages.powerdevil
 

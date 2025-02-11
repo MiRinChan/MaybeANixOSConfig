@@ -112,6 +112,8 @@
       enable = true;
     };
     initrd.systemd.enable = true;
+
+    supportedFilesystems = [ "ntfs" ];
   };
 
   nix = let

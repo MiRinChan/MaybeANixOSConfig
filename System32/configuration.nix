@@ -99,6 +99,9 @@
 
     kernelModules = ["nvidia" "v4l2loopback"]; # v4l2loopback: webcam.
     extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+    extraModprobeConfig = ''
+      options v4l2loopback exclusive_caps=1 max_buffers=2 video_nr=9 card_label="虚拟摄像头"
+    '';
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
@@ -113,7 +116,7 @@
     };
     initrd.systemd.enable = true;
 
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = ["ntfs"];
   };
 
   nix = let
@@ -229,6 +232,11 @@
     DefaultTimeoutStopSec=10s
     DefaultStartLimitBurst=20s
     DefaultStartLimitIntervalSec=20s
+  '';
+
+  services.udev.extraRules = ''
+    # Galaxy Flasher
+    SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
   '';
 
   # Enable binfmt emulation.

@@ -30,3 +30,7 @@ Note:
 
     Wine 里打补丁之类的修改 dll 操作
         一定要在 winecfg 里要求使用 native, builtin
+
+    推流 WebCam
+        gphoto2 --stdout --capture-movie |
+        ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -f v4l2 /dev/video0

@@ -13,5 +13,6 @@
     # 编程环境
     devbox
     direnv
+    conda
   ];
 }

@@ -16,7 +16,14 @@
     "zh_CN.UTF-8/UTF-8"
   ];
   # 你永远都是中国人！
-  nix.settings.substituters = ["https://mirror.sjtu.edu.cn/nix-channels/store"];
+  nix.settings.substituters = lib.mkForce [
+    "https://mirrors.ustc.edu.cn/nix-channels/store"
+    "https://cache.nixos.org"
+    "https://nix-community.cachix.org"
+    "https://luogu-judge.cachix.org"
+    "https://niri.cachix.org"
+    "https://cache.garnix.io"
+  ];
   # NTP 服务器 (中国大陆服务器)
   # To fix: Wating sync time for a long time. Thanks to Ryan Yin!
   # Sep 14 20:42:51 rins systemd-timesyncd[1114]: Timed out waiting for reply from 193.182.111.12:123 (0.nixos.pool.ntp.org).

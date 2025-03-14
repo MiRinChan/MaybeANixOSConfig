@@ -29,10 +29,15 @@
     nur.repos.shadowrz.klassy-qt6 # klassy
     pkgs.unstable.kde-rounded-corners # Rounded
     ntfs3g # NTFS
+    ffmpeg
+    gphoto2
+    mpv
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
+
+  # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos
 }

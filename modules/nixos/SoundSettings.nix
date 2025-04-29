@@ -62,7 +62,7 @@
   # 低延迟
   security.rtkit.enable = true;
   # 禁用 pulseaudio，与 pipewire 冲突
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   environment.etc."share/wireplumber/scripts/52-usb-dac.lua" = {
     text = ''

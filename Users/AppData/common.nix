@@ -21,6 +21,7 @@
     scrcpy3 # Android 屏传
     stable.davinci-resolve
     gimp
+    tsukimi # emby
 
     kdePackages.powerdevil
 

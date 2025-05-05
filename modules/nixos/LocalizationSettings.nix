@@ -16,15 +16,26 @@
     "zh_CN.UTF-8/UTF-8"
   ];
   # 你永远都是中国人！
-  nix.settings.substituters = lib.mkForce [
-    "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
-    "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://cache.nixos.org"
-    "https://nix-community.cachix.org"
-    "https://luogu-judge.cachix.org"
-    "https://niri.cachix.org"
-    "https://cache.garnix.io"
-  ];
+  nix.settings = {
+    # given the users in this list the right to specify additional substituters via:
+    #    1. `nixConfig.substituters` in `flake.nix`
+    #    2. command line args `--options substituters http://xxx`
+    trusted-users = ["mirin"];
+
+    substituters = lib.mkForce [
+      "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+      # "https://luogu-judge.cachix.org"
+      # "https://niri.cachix.org"
+      # "https://cache.garnix.io"
+    ];
+
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
   # NTP 服务器 (中国大陆服务器)
   # To fix: Wating sync time for a long time. Thanks to Ryan Yin!
   # Sep 14 20:42:51 rins systemd-timesyncd[1114]: Timed out waiting for reply from 193.182.111.12:123 (0.nixos.pool.ntp.org).
@@ -53,7 +64,7 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
-      maple-mono-SC-NF
+      maple-mono.NF-CN
       monaspace
       sarasa-gothic
       nerd-fonts.fira-code

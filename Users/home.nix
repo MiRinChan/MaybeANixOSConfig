@@ -18,7 +18,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     ./AppData
-    catppuccin.homeManagerModules.catppuccin
+    catppuccin.homeModules.catppuccin
   ];
 
   nixpkgs = {

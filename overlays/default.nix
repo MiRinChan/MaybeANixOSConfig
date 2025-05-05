@@ -11,17 +11,17 @@
     #     ...
     #     });
 
-    kdePackages =
-      prev.kdePackages
-      // {
-        kwin = prev.kdePackages.kwin.overrideAttrs (old: {
-          patches =
-            (old.patches or [])
-            ++ [
-              ./fix-blur.patch
-            ];
-        });
-      };
+    # kdePackages =
+    #   prev.kdePackages
+    #   // {
+    #     kwin = prev.kdePackages.kwin.overrideAttrs (old: {
+    #       patches =
+    #         (old.patches or [])
+    #         ++ [
+    #           ./fix-blur.patch
+    #         ];
+    #     });
+    #   };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

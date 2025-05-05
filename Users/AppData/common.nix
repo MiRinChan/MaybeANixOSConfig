@@ -57,6 +57,7 @@
     btop
     nnn # terminal file manager
     fastfetch
+    texliveTeTeX
 
     # 杂项
     file

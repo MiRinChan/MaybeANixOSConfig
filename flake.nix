@@ -52,11 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    klassy = {
-      url = "github:dshatz/klassy-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -85,7 +80,6 @@
     nur,
     lanzaboote,
     nekoflake,
-    klassy,
     ...
   } @ inputs: let
     inherit (self) outputs;

@@ -32,6 +32,7 @@
     ffmpeg
     gphoto2
     mpv
+    kdePackages.kdecoration
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

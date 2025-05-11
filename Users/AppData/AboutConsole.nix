@@ -38,7 +38,7 @@
   };
   programs.kitty = {
     enable = true;
-    font.name = "Maple Mono SC NF";
+    font.name = "Maple Mono NF CN Medium";
     settings = {
       confirm_os_window_close = 0;
       dynamic_background_opacity = true;

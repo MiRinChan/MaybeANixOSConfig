@@ -22,6 +22,7 @@
     #         ];
     #     });
     #   };
+    nekoray = inputs.nekoflake.packages.${prev.system}.nekoray or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

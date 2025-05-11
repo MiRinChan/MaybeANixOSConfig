@@ -35,10 +35,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # RinsRepo = {
-    #   url = "github:MiRinChan/MaybeSomeNixPackages";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    nekoflake = {
+      url = "github:s0me1newithhand7s/nekoflake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     solaar = {
       url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
@@ -46,6 +46,9 @@
       #url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    alejandra.url = "github:kamadorueda/alejandra/4.0.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
 
     # C:/Users/
     home-manager = {
@@ -74,6 +77,7 @@
     solaar,
     nur,
     lanzaboote,
+    nekoflake,
     ...
   } @ inputs: let
     inherit (self) outputs;

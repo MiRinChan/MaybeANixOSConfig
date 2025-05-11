@@ -52,6 +52,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    klassy = {
+      url = "github:MiRinChan/ShadowRZs-nur-packages-fix-klassy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";

@@ -47,8 +47,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    alejandra.url = "github:kamadorueda/alejandra/4.0.0";
-    alejandra.inputs.nixpkgs.follows = "nixpkgs";
+    alejandra = {
+      url = "github:kamadorueda/alejandra/4.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    klassy = {
+      url = "github:dshatz/klassy-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # C:/Users/
     home-manager = {
@@ -78,6 +85,7 @@
     nur,
     lanzaboote,
     nekoflake,
+    klassy,
     ...
   } @ inputs: let
     inherit (self) outputs;

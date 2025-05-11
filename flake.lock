@@ -423,6 +423,26 @@
         "type": "github"
       }
     },
+    "klassy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1746969660,
+        "narHash": "sha256-u9lwtBCVXd/5M2KTJtQPpRKhbvEWREGC5QDQVV1bjis=",
+        "owner": "MiRinChan",
+        "repo": "ShadowRZs-nur-packages-fix-klassy",
+        "rev": "9738d57ab4260fc85d09e7be49b8bd680efc39b3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MiRinChan",
+        "repo": "ShadowRZs-nur-packages-fix-klassy",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -712,6 +732,7 @@
         "catppuccin": "catppuccin",
         "flatpak": "flatpak",
         "home-manager": "home-manager",
+        "klassy": "klassy",
         "lanzaboote": "lanzaboote",
         "nekoflake": "nekoflake",
         "nixpak": "nixpak",

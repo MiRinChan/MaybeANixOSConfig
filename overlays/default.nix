@@ -23,6 +23,7 @@
     #     });
     #   };
     nekoray = inputs.nekoflake.packages.${prev.system}.nekoray or {};
+    klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

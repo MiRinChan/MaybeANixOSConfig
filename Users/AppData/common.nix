@@ -13,7 +13,7 @@
     inkscape # 画图
     oculante # 看图
     furmark # 图形性能检测器
-    kdePackages.kdenlive # 视频剪辑
+    stable.kdePackages.kdenlive # 视频剪辑
     reaper # 音频剪辑
     d209.veracrypt # 磁盘加密
     rquickshare-legacy # 快速分享

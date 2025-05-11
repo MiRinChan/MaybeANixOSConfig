@@ -13,7 +13,7 @@
       # 默认字体
       defaultFonts = {
         monospace = [
-          "Maple Mono SC NF"
+          "Maple Mono NF CN Medium"
           "FiraCode Nerd Font Mono"
           "Source Han Mono SC"
           "Source Han Mono"

@@ -423,26 +423,6 @@
         "type": "github"
       }
     },
-    "klassy": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1736740805,
-        "narHash": "sha256-z2d82dAMexmd4Ek3qlaQ2BR+FtcWrKX3xM3hC50loYI=",
-        "owner": "dshatz",
-        "repo": "klassy-nix",
-        "rev": "d481746da4e6e0de53778d5c18e12b59d6d4c3e7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dshatz",
-        "repo": "klassy-nix",
-        "type": "github"
-      }
-    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -686,11 +666,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1746959171,
-        "narHash": "sha256-LpQ9lH5bQP7GP14xFpcALpZEAADwqu5qgpSbPWsZTw0=",
+        "lastModified": 1746967521,
+        "narHash": "sha256-iWwlt5z444V62Dyzy/ucmkCROgHnVYNHPfsKCtJSwRI=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "9fc3907ba68b6b46b24a5ce1bc16fbe3bdaa0640",
+        "rev": "d1678cf3e5ff2000250d1b86c6e1b4b9d507c981",
         "type": "github"
       },
       "original": {
@@ -732,7 +712,6 @@
         "catppuccin": "catppuccin",
         "flatpak": "flatpak",
         "home-manager": "home-manager",
-        "klassy": "klassy",
         "lanzaboote": "lanzaboote",
         "nekoflake": "nekoflake",
         "nixpak": "nixpak",

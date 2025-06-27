@@ -33,6 +33,7 @@
     gphoto2
     mpv
     kdePackages.kdecoration
+    cmake
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

@@ -14,5 +14,7 @@
     devbox
     direnv
     conda
+    git-repo
+    act
   ];
 }

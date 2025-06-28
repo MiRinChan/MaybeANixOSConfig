@@ -32,7 +32,7 @@
     };
     oh-my-zsh = {
       enable = true;
-      plugins = ["git" "thefuck" "direnv"];
+      plugins = ["git" "direnv"];
       theme = "";
     };
   };
@@ -130,7 +130,6 @@
     };
     enableTransience = true;
   };
-  programs.thefuck.enable = true;
 
   programs.hyfetch = {
     enable = true;

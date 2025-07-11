@@ -16,5 +16,6 @@
     conda
     git-repo
     act
+    ghidra
   ];
 }

@@ -57,6 +57,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -85,6 +90,7 @@
     nur,
     lanzaboote,
     nekoflake,
+    fenix,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -139,6 +145,19 @@
             home-manager.extraSpecialArgs.flake-inputs = inputs;
             home-manager.extraSpecialArgs.catppuccin = catppuccin;
           }
+          ({pkgs, ...}: {
+            nixpkgs.overlays = [fenix.overlays.default];
+            environment.systemPackages = with pkgs; [
+              (fenix.complete.withComponents [
+                "cargo"
+                "clippy"
+                "rust-src"
+                "rustc"
+                "rustfmt"
+              ])
+              rust-analyzer-nightly
+            ];
+          })
         ];
       };
     };

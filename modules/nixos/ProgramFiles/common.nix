@@ -34,6 +34,7 @@
     mpv
     kdePackages.kdecoration
     cmake
+    gcc
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

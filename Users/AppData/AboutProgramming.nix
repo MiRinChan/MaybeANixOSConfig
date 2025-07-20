@@ -17,5 +17,6 @@
     git-repo
     act
     ghidra
+    devenv
   ];
 }

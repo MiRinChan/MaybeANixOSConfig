@@ -104,8 +104,15 @@
   in {
     # 定制的包
     # 可用 'nix build', 'nix shell' 等
-    packages.x86_64-linux.default = fenix.packages.x86_64-linux.minimal.toolchain;
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+    packages = forAllSystems (
+      system: let
+        pkgsForSystem = nixpkgs.legacyPackages.${system}; # 获取当前系统的 pkgs
+        myCustomPkgs = import ./pkgs pkgsForSystem; # 导入你的自定义包
+      in
+        if system == "x86_64-linux"
+        then myCustomPkgs // {default = fenix.packages.${system}.minimal.toolchain;}
+        else myCustomPkgs
+    );
     # nix 文件的格式化程序，可通过 'nix fmt'
     # 除了 “alejandra” 之外的其他选项包括“nixpkgs-fmt”
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);

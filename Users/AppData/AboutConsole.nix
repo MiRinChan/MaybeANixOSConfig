@@ -14,7 +14,7 @@
     '';
 
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch && systemctl --user restart plasma-plasmashell.service";
       proxy = "export ALL_PROXY=socks5://127.0.0.1:2080 && export HTTP_PROXY=http://127.0.0.1:2080 && export HTTPS_PROXY=http://127.0.0.1:2080";
       deproxy = "unset ALL_PROXY && unset HTTP_PROXY && unset HTTPS_PROXY";
       btw = ''echo "I'm using..." && hyfetch'';

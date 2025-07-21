@@ -35,6 +35,7 @@
     kdePackages.kdecoration
     cmake
     gcc
+    gdb
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

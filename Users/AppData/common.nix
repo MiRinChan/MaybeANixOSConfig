@@ -22,6 +22,7 @@
     davinci-resolve
     gimp
     tsukimi # emby
+    prismlauncher # Minecraft
 
     kdePackages.powerdevil
 

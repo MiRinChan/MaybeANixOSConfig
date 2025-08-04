@@ -33,6 +33,8 @@
     kdePackages.qtmultimedia
     kdePackages.qtwebengine
 
+    kdePackages.kconfig
+
     # 游戏
     osu-lazer
     lunar # Minecraft

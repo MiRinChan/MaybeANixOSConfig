@@ -138,11 +138,12 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
 
     # Auto GC
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 30d";
-      dates = "Sun 19:00";
-    };
+    # Added in modules/nixos/ProgramFiles/common.nix
+    # gc = {
+    #   automatic = true;
+    #   options = "--delete-older-than 30d";
+    #   dates = "Sun 19:00";
+    # };
     optimise.automatic = true;
     optimise.dates = ["20:50"];
   };

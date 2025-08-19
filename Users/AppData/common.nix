@@ -23,6 +23,7 @@
     gimp
     tsukimi # emby
     prismlauncher # Minecraft
+    openutau # utau
 
     kdePackages.powerdevil
 

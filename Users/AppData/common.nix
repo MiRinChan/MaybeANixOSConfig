@@ -29,7 +29,7 @@
     kdePackages.powerdevil
 
     # Wallpaper Engine Plugin and dependence
-    wallpaper-engine-kde-plugin
+    # wallpaper-engine-kde-plugin
     kdePackages.qtwebsockets
     kdePackages.qtwebchannel
     kdePackages.qtmultimedia

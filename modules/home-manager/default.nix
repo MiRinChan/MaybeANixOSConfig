@@ -3,5 +3,5 @@
 {
   # List your module files here
   # my-module = import ./my-module.nix;
-  fontConfiguration = import ./FontConfiguration.nix;
+  # fontConfiguration = import ./FontConfiguration.nix;
 }

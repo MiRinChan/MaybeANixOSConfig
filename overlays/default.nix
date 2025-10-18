@@ -22,7 +22,12 @@
     #         ];
     #     });
     #   };
-    nekoray = inputs.nekoflake.packages.${prev.system}.nekoray or {};
+    nekoray = (inputs.nekoflake.packages.${prev.system}.nekoray or {}).overrideAttrs (oldAttrs: {
+      # 2. 覆盖 (override) 原有的 cmakeFlags
+      cmakeFlags = (oldAttrs.cmakeFlags or []) ++ [
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+      ];
+    });
     klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
     shanocast = inputs.shanocast.packages.${prev.system}.shanocast or {};
   };

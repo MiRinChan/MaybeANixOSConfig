@@ -31,7 +31,6 @@
         ];
     });
     klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
-    # shanocast = inputs.shanocast.packages.${prev.system}.shanocast or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

@@ -62,8 +62,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    shanocast = {
-      url = "github:rgerganov/shanocast";
+    winboat = {
+      url = "github:TibixDev/winboat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -96,7 +96,7 @@
     lanzaboote,
     nekoflake,
     fenix,
-    shanocast,
+    winboat,
     ...
   } @ inputs: let
     inherit (self) outputs;

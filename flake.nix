@@ -62,6 +62,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    shanocast = {
+      url = "github:rgerganov/shanocast";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -91,6 +96,7 @@
     lanzaboote,
     nekoflake,
     fenix,
+    shanocast,
     ...
   } @ inputs: let
     inherit (self) outputs;

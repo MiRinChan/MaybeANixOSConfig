@@ -37,6 +37,8 @@
     gcc
     gdb
     nh # seem also programs.nh
+    nur.repos.linyinfeng.easylpac
+    lpac
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {
@@ -49,6 +51,10 @@
     clean.enable = true;
     clean.extraArgs = "--keep-since 30d --keep 10";
     flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
+  };
+
+  services.pcscd = {
+    enable = true;
   };
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos

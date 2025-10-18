@@ -31,18 +31,7 @@
         ];
     });
     klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
-    shanocast = (inputs.shanocast.packages.${prev.system}.shanocast or {}).overrideAttrs (oldAttrs: {
-      # 1. 过滤 CXXFLAGS（C++ 编译标志）
-      #    使用 builtins.filter 移除列表中的 "-Werror" 字符串
-      CXXFLAGS = builtins.filter (flag: flag != "-Werror") (oldAttrs.CXXFLAGS or "");
-
-      # 2. 过滤 NIX_CFLAGS_COMPILE（Nix 通用编译标志，也常包含 -Werror）
-      NIX_CFLAGS_COMPILE = builtins.filter (flag: flag != "-Werror") (oldAttrs.NIX_CFLAGS_COMPILE or "");
-
-      # 3. 如果编译失败是由于特定的警告被提升为错误，
-      #    可以尝试添加 -Wno-XXX 来禁用该警告，例如：
-      # NIX_CXXFLAGS_COMPILE = (oldAttrs.NIX_CXXFLAGS_COMPILE or "") + " -Wno-maybe-uninitialized";
-    });
+    # shanocast = inputs.shanocast.packages.${prev.system}.shanocast or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

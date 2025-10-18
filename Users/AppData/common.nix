@@ -24,7 +24,6 @@
     tsukimi # emby
     prismlauncher # Minecraft
     openutau # utau
-    # shanocast # Cast local media to chromecast devices
 
     kdePackages.powerdevil
 

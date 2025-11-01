@@ -109,7 +109,6 @@
 
   programs.nekoray = {
     enable = true;
-    package = pkgsUnstable.nekoray;
     tunMode.enable = true;
     tunMode.setuid = false;
   };

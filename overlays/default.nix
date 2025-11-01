@@ -22,15 +22,16 @@
     #         ];
     #     });
     #   };
-    nekoray = (inputs.nekoflake.packages.${prev.system}.nekoray or {}).overrideAttrs (oldAttrs: {
-      # 2. 覆盖 (override) 原有的 cmakeFlags
-      cmakeFlags =
-        (oldAttrs.cmakeFlags or [])
-        ++ [
-          "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
-        ];
-    });
+    # nekoray = (inputs.nekoflake.packages.${prev.system}.nekoray or {}).overrideAttrs (oldAttrs: {
+    #   # 2. 覆盖 (override) 原有的 cmakeFlags
+    #   cmakeFlags =
+    #     (oldAttrs.cmakeFlags or [])
+    #     ++ [
+    #       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+    #     ];
+    # });
     klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
+    winboat = inputs.winboat.packages.${prev.system}.winboat or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

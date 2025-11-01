@@ -106,10 +106,4 @@
     pciutils # provide lspci
     usbutils # provide lsusb
   ];
-
-  programs.nekoray = {
-    enable = true;
-    tunMode.enable = true;
-    tunMode.setuid = false;
-  };
 }

@@ -18,5 +18,6 @@
     act
     ghidra
     devenv
+    gemini-cli
   ];
 }

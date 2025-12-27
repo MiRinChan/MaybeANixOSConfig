@@ -18,6 +18,7 @@
     act
     ghidra
     devenv
+    zulu
     gemini-cli
   ];
 }

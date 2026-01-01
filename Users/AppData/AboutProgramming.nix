@@ -19,6 +19,6 @@
     ghidra
     devenv
     zulu
-    gemini-cli
+    # gemini-cli
   ];
 }

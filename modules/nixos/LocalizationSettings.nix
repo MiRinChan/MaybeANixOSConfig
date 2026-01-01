@@ -123,16 +123,4 @@
       '';
     };
   };
-  system.fsPackages = [pkgs.bindfs];
-  fileSystems = let
-    mkRoSymBind = path: {
-      device = path;
-      fsType = "fuse.bindfs";
-      options = ["ro" "resolve-symlinks" "x-gvfs-hide"];
-    };
-  in {
-    # 直接绑定系统生成的字体目录，不需要自己 buildEnv
-    "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
-    "/usr/share/fonts" = mkRoSymBind "/run/current-system/sw/share/fonts";
-  };
 }

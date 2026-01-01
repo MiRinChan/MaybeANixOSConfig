@@ -130,14 +130,9 @@
       fsType = "fuse.bindfs";
       options = ["ro" "resolve-symlinks" "x-gvfs-hide"];
     };
-    aggregatedFonts = pkgs.buildEnv {
-      name = "system-fonts";
-      paths = config.fonts.packages;
-      pathsToLink = ["/share/fonts"];
-    };
   in {
-    # Create an FHS mount to support flatpak host icons/fonts
+    # 直接绑定系统生成的字体目录，不需要自己 buildEnv
     "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
-    "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
+    "/usr/share/fonts" = mkRoSymBind "/run/current-system/sw/share/fonts";
   };
 }

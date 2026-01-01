@@ -36,6 +36,8 @@
     ltrace = prev.ltrace.overrideAttrs (_: {
       doCheck = false;
     });
+
+
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

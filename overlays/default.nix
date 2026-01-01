@@ -22,7 +22,7 @@
     #         ];
     #     });
     #   };
-    # nekoray = (inputs.nekoflake.packages.${prev.system}.nekoray or {}).overrideAttrs (oldAttrs: {
+    # nekoray = (inputs.nekoflake.packages.${prev.stdenv.hostPlatform.system}.nekoray or {}).overrideAttrs (oldAttrs: {
     #   # 2. 覆盖 (override) 原有的 cmakeFlags
     #   cmakeFlags =
     #     (oldAttrs.cmakeFlags or [])
@@ -30,33 +30,32 @@
     #       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
     #     ];
     # });
-    klassy-qt6 = inputs.klassy.packages.${prev.system}.klassy-qt6 or {};
-    winboat = inputs.winboat.packages.${prev.system}.winboat or {};
+    klassy-qt6 = inputs.klassy.packages.${prev.stdenv.hostPlatform.system}.klassy-qt6 or {};
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
   stable-packages = final: _prev: {
     stable = import inputs.nixpkgs-stable {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
   d209-packages = final: _prev: {
     d209 = import inputs.nixpkgs-d209 {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
   # RinsRepo-packages = final: _prev: {
   #   RinsRepo = import inputs.RinsRepo {
-  #     system = final.system;
+  #     system = final.stdenv.hostPlatform.system;
   #     config.allowUnfree = true;
   #   };
   # };

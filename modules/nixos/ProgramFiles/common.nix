@@ -53,7 +53,7 @@
     flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
   };
 
-  programs.nekoray = {
+  programs.throne = {
     enable = true;
     tunMode.enable = true;
     tunMode.setuid = false;

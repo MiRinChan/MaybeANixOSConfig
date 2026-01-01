@@ -62,11 +62,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    winboat = {
-      url = "github:TibixDev/winboat";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -96,7 +91,6 @@
     lanzaboote,
     nekoflake,
     fenix,
-    winboat,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -144,7 +138,7 @@
           ({pkgs, ...}: {
             nixpkgs.overlays = [fenix.overlays.default];
             environment.systemPackages = with pkgs; [
-              (fenix.packages.${system}.complete.withComponents [
+              (fenix.packages.${stdenv.hostPlatform.system}.complete.withComponents [
                 "cargo"
                 "clippy"
                 "rust-src"

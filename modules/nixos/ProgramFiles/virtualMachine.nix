@@ -5,9 +5,16 @@
   ...
 }: {
   # provide virtual machine
-  virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = ["user-with-access-to-virtualbox"];
-  virtualisation.virtualbox.host.enableExtensionPack = true;
+
+  virtualisation.virtualbox = {
+    host = {
+      enable = true;
+      enableExtensionPack = true;
+      enableKvm = true;
+      package = pkgs.stable.virtualbox;
+    };
+  };
 
   # provide docker container
   environment.systemPackages = with pkgs; [

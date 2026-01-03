@@ -12,6 +12,7 @@
       enable = true;
       enableExtensionPack = true;
       enableKvm = true;
+      addNetworkInterface = false;
       package = pkgs.stable.virtualbox;
     };
   };

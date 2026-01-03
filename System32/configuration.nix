@@ -106,7 +106,7 @@
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;
@@ -211,7 +211,12 @@
       # Force Wayland by default
       Context.sockets = ["wayland" "!x11" "!fallback-x11"];
 
-      Context.filesystems = "xdg-config/fontconfig:ro";
+      Context.filesystems = [
+        "$HOME/.local/share/fonts:ro"
+        "$HOME/.icons:ro"
+        "/nix/store:ro"
+        "xdg-config/fontconfig:ro"
+      ];
 
       Environment = {
         # Fix un-themed cursor in some Wayland apps

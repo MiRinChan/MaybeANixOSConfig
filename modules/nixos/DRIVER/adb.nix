@@ -5,5 +5,5 @@
   ...
 }: {
   # provide adb
-  programs.adb.enable = true;
+  programs.android-tools.enable = true;
 }

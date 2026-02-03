@@ -52,11 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    klassy = {
-      url = "github:MiRinChan/ShadowRZs-nur-packages-fix-klassy";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";

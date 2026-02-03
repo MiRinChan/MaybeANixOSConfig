@@ -30,14 +30,11 @@
     #       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
     #     ];
     # });
-    klassy-qt6 = inputs.klassy.packages.${prev.stdenv.hostPlatform.system}.klassy-qt6 or {};
 
     # 禁用 ltrace 的 tests
     ltrace = prev.ltrace.overrideAttrs (_: {
       doCheck = false;
     });
-
-
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

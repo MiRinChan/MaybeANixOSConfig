@@ -25,6 +25,7 @@
     prismlauncher # Minecraft
     openutau # utau
     tutanota-desktop # 安全邮箱客户端
+    klassy-qt6
 
     kdePackages.powerdevil
 

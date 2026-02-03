@@ -26,7 +26,6 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    klassy-qt6 # klassy
     pkgs.unstable.kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg

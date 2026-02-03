@@ -39,6 +39,7 @@
     nh # seem also programs.nh
     nur.repos.linyinfeng.easylpac
     lpac
+    android-tools
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

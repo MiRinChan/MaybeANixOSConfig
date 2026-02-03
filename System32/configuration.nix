@@ -13,7 +13,6 @@
     outputs.nixosModules.theProgramInstallForAllUsers
     outputs.nixosModules.localizationSettings
     outputs.nixosModules.nvidiaDriver
-    outputs.nixosModules.ADBDriver
     outputs.nixosModules.soundSettings
     outputs.nixosModules.FHSEnviroment
 

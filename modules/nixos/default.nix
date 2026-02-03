@@ -6,7 +6,6 @@
   theProgramInstallForAllUsers = import ./ProgramFiles;
   localizationSettings = import ./LocalizationSettings.nix;
   nvidiaDriver = import ./DRIVER/nvidia.nix;
-  ADBDriver = import ./DRIVER/adb.nix;
   soundSettings = import ./SoundSettings.nix;
   FHSEnviroment = import ./FHSEnviroment.nix;
 }

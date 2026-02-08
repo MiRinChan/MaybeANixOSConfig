@@ -39,6 +39,9 @@
     nur.repos.linyinfeng.easylpac
     lpac
     android-tools
+    papirus-icon-theme
+    kdePackages.breeze-icons 
+    adwaita-icon-theme 
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {

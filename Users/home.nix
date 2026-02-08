@@ -70,6 +70,22 @@
     };
   };
 
+  # 强制定义图标主题
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
+  # 针对 KDE 的 Qt 变量映射
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+    style.name = "breeze";
+  };
+
   home.packages = with pkgs; [steam];
 
   # Nicely reload system units when changing configs

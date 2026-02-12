@@ -40,8 +40,8 @@
     lpac
     android-tools
     papirus-icon-theme
-    kdePackages.breeze-icons 
-    adwaita-icon-theme 
+    kdePackages.breeze-icons
+    adwaita-icon-theme
   ];
   programs.zsh.enable = true;
   programs.gnupg.agent = {
@@ -65,6 +65,8 @@
   services.pcscd = {
     enable = true;
   };
+
+  services.udisks2.enable = true;
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos
 }

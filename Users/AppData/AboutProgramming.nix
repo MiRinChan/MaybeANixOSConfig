@@ -18,7 +18,6 @@
     act
     ghidra
     devenv
-    zulu
     stable.gemini-cli
     antigravity
   ];

@@ -37,6 +37,8 @@
     openutau # utau
     klassy-qt6
     digikam
+    graalvmPackages.graalvm-ce
+    onlyoffice-desktopeditors
 
     kdePackages.powerdevil
 

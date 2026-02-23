@@ -26,7 +26,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    pkgs.unstable.kde-rounded-corners # Rounded
+    pkgs.stable.kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg
     gphoto2

@@ -26,7 +26,7 @@
     flatpak.url = "github:gmodena/nix-flatpak?ref=v0.4.1";
 
     # pretty theme
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin.url = "github:catppuccin/nix/release-25.11";
 
     # lanzaboote for Secure boot
     lanzaboote = {

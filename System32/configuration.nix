@@ -149,6 +149,7 @@
   };
 
   networking = {
+    enableIPv6 = true;
     # 主机名称
     hostName = "rins";
     # NetworkManager

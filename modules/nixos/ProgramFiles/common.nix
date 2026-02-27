@@ -16,7 +16,22 @@
     kdePackages.kleopatra # kleopatra
     flatpak-builder # Flatpak builder
     appstream # Software metadata handling library, proride CLI
-    easyeffects # Sound effect
+    (easyeffects.overrideAttrs (oldAttrs: {
+      preFixup = let
+        lv2Plugins = [
+          calf
+          zam-plugins
+          lsp-plugins
+          x42-plugins
+        ];
+      in
+        (oldAttrs.preFixup or "")
+        + ''
+          gappsWrapperArgs+=(
+            --set LV2_PATH "${lib.makeSearchPath "lib/lv2" lv2Plugins}"
+          )
+        '';
+    }))
     qpwgraph # Graphic PipeWire Configer
     alsa-utils # provide CLI
     devenv # provide code envireoment
@@ -44,9 +59,12 @@
     adwaita-icon-theme
   ];
   programs.zsh.enable = true;
+
+  programs.ssh.startAgent = true;
+
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = true;
+    enableSSHSupport = false; # 关掉这里的 SSH 支持
   };
 
   programs.nh = {

@@ -6,6 +6,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # Pin 特定频道
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-d209.url = "github:nixos/nixpkgs/d209d800b7df2d4b05ea1266b14a47cba5da129b";
@@ -73,6 +74,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-master,
     nixpkgs-unstable,
     nixpkgs-stable,
     nixpkgs-d209,

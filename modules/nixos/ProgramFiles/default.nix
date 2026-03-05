@@ -4,7 +4,7 @@
     ./steam.nix
     ./common.nix
     ./virtualMachine.nix
-    ./sunshine.nix
+    # ./sunshine.nix
     #./rclone.nix
   ];
 }

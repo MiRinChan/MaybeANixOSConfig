@@ -19,6 +19,6 @@
     ghidra
     devenv
     stable.gemini-cli
-    antigravity
+    master.antigravity
   ];
 }

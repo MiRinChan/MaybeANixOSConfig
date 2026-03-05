@@ -30,7 +30,7 @@
     rquickshare-the-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
-    davinci-resolve
+    # davinci-resolve
     gimp
     tsukimi # emby
     prismlauncher # Minecraft
@@ -38,6 +38,7 @@
     klassy-qt6
     digikam
     graalvmPackages.graalvm-ce
+    xleak
 
     kdePackages.powerdevil
 

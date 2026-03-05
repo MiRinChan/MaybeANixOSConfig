@@ -39,8 +39,7 @@
     digikam
     graalvmPackages.graalvm-ce
     xleak
-    csvlook
-    
+    csvkit
 
     kdePackages.powerdevil
 

@@ -3,8 +3,7 @@
 
   inputs = {
     ### Nixpkgs ###
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # Pin 特定频道
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";

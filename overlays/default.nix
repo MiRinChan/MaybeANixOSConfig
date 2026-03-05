@@ -35,6 +35,8 @@
     ltrace = prev.ltrace.overrideAttrs (_: {
       doCheck = false;
     });
+
+    lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

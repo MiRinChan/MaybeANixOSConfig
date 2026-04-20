@@ -21,6 +21,7 @@
       commit = {
         gpgsign = true;
       };
+      signing.format = "openpgp";
     };
   };
   programs.gh = {

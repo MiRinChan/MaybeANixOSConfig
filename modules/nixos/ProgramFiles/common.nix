@@ -57,6 +57,7 @@
     papirus-icon-theme
     kdePackages.breeze-icons
     adwaita-icon-theme
+    iloader
   ];
   programs.zsh.enable = true;
 
@@ -87,4 +88,18 @@
   services.udisks2.enable = true;
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos
+
+  programs.kdeconnect.enable = true;
+
+  home-manager.users.mirin.services.kdeconnect.enable = true;
+
+  networking.firewall = rec {
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
+  };
 }

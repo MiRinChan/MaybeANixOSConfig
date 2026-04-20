@@ -58,6 +58,7 @@
     kdePackages.breeze-icons
     adwaita-icon-theme
     iloader
+    usbmuxd
   ];
   programs.zsh.enable = true;
 

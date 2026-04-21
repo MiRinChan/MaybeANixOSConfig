@@ -60,6 +60,11 @@
     iloader
     usbmuxd
   ];
+
+  programs.mosh.enable = true;
+
+  services.usbmuxd.enable = true;
+
   programs.zsh.enable = true;
 
   programs.ssh.startAgent = true;

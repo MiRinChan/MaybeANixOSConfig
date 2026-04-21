@@ -61,7 +61,10 @@
     usbmuxd
   ];
 
-  programs.mosh.enable = true;
+  programs.mosh = {
+    enable = true;
+    openFirewall = true;
+  };
 
   services.usbmuxd.enable = true;
 

@@ -166,6 +166,7 @@
       # Wallpaper Engine 7884
       allowedUDPPorts = [];
       # Sunshine 8000-8010 47998-48000
+      # Mosh 60000-61000
       allowedUDPPortRanges = [
         {
           from = 47998;
@@ -174,6 +175,10 @@
         {
           from = 8000;
           to = 8010;
+        }
+        {
+          from = 60000;
+          to = 61000;
         }
       ];
     };

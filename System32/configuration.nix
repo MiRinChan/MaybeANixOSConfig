@@ -158,6 +158,17 @@
 
     firewall = {
       enable = true;
+      checkReversePath = true;
+
+      extraCommands = ''
+        iptables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN
+        ip6tables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN
+      '';
+      extraStopCommands = ''
+        iptables -t mangle -D nixos-fw-rpfilter -i throne-tun -j RETURN 2>/dev/null || true
+        ip6tables -t mangle -D nixos-fw-rpfilter -i throne-tun -j RETURN 2>/dev/null || true
+      '';
+
       # FTP/FTPS/SFTP 2121
       # Sunshine 47984 47989 47990 48010
       # Wallpaper Engine 7889

@@ -15,13 +15,6 @@
     # NUR Package
     nur.url = github:nix-community/NUR;
 
-    # sandbox NixPak
-    nixpak = {
-      url = "github:nixpak/nixpak";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpak-pkgs.url = "github:nixpak/pkgs";
-
     # Flatpak
     flatpak.url = "github:gmodena/nix-flatpak?ref=v0.4.1";
 
@@ -33,11 +26,6 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
 
       # Optional but recommended to limit the size of your system closure.
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nekoflake = {
-      url = "github:s0me1newithhand7s/nekoflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -77,8 +65,6 @@
     nixpkgs-unstable,
     nixpkgs-stable,
     nixpkgs-d209,
-    nixpak,
-    nixpak-pkgs,
     flatpak,
     alejandra,
     catppuccin,
@@ -86,7 +72,6 @@
     solaar,
     nur,
     lanzaboote,
-    nekoflake,
     fenix,
     ...
   } @ inputs: let

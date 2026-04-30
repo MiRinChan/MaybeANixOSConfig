@@ -7,30 +7,6 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    #     example = prev.example.overrideAttrs (oldAttrs: rec {
-    #     ...
-    #     });
-
-    # kdePackages =
-    #   prev.kdePackages
-    #   // {
-    #     kwin = prev.kdePackages.kwin.overrideAttrs (old: {
-    #       patches =
-    #         (old.patches or [])
-    #         ++ [
-    #           ./fix-blur.patch
-    #         ];
-    #     });
-    #   };
-    # nekoray = (inputs.nekoflake.packages.${prev.stdenv.hostPlatform.system}.nekoray or {}).overrideAttrs (oldAttrs: {
-    #   # 2. 覆盖 (override) 原有的 cmakeFlags
-    #   cmakeFlags =
-    #     (oldAttrs.cmakeFlags or [])
-    #     ++ [
-    #       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
-    #     ];
-    # });
-
     # 禁用 ltrace 的 tests
     ltrace = prev.ltrace.overrideAttrs (_: {
       doCheck = false;
@@ -65,10 +41,4 @@
       config.allowUnfree = true;
     };
   };
-  # RinsRepo-packages = final: _prev: {
-  #   RinsRepo = import inputs.RinsRepo {
-  #     system = final.stdenv.hostPlatform.system;
-  #     config.allowUnfree = true;
-  #   };
-  # };
 }

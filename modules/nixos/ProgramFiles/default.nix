@@ -3,8 +3,7 @@
     ./openrgb.nix
     ./steam.nix
     ./common.nix
+    ./services.nix
     ./virtualMachine.nix
-    # ./sunshine.nix
-    #./rclone.nix
   ];
 }

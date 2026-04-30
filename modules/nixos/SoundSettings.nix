@@ -63,22 +63,4 @@
   security.rtkit.enable = true;
   # 禁用 pulseaudio，与 pipewire 冲突
   services.pulseaudio.enable = false;
-
-  environment.etc."share/wireplumber/scripts/52-usb-dac.lua" = {
-    text = ''
-      rule = {
-        matches = {
-          {
-            { "node.nick", "equals", "MOONDROP Dawn Pro" },
-          },
-        },
-        apply_properties = {
-          ["audio.format"] = "s32le",
-          ["audio.rate"] = 384000,
-        },
-      }
-
-      table.insert(alsa_monitor.rules, rule)
-    '';
-  };
 }

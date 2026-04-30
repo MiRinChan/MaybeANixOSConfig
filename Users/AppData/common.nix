@@ -20,23 +20,13 @@
     kdePackages.kcolorchooser # 颜色选择器
     kdePackages.kgpg # Gpg 加密
     kdePackages.kleopatra # Gpg 加密
-    krita # 画图
-    inkscape # 画图
-    stable.oculante # 看图
     furmark # 图形性能检测器
-    stable.kdePackages.kdenlive # 视频剪辑
-    reaper # 音频剪辑
     d209.veracrypt # 磁盘加密
     rquickshare-the-legacy # 快速分享
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
-    # davinci-resolve
-    gimp
     tsukimi # emby
-    prismlauncher # Minecraft
-    openutau # utau
     klassy-qt6
-    digikam
     graalvmPackages.graalvm-ce
     xleak
     csvkit
@@ -44,17 +34,12 @@
     kdePackages.powerdevil
 
     # Wallpaper Engine Plugin and dependence
-    # wallpaper-engine-kde-plugin
     kdePackages.qtwebsockets
     kdePackages.qtwebchannel
     kdePackages.qtmultimedia
     kdePackages.qtwebengine
 
     kdePackages.kconfig
-
-    # 游戏
-    osu-lazer
-    lunar # Minecraft
 
     # Firefox
     stable.firefox # for internet

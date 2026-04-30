@@ -2,9 +2,11 @@
   imports = [
     ./AboutConsole.nix
     ./AboutProgramming.nix
+    ./audio-production.nix
     ./common.nix
-    # ./Flatpak.nix
+    ./gaming.nix
     ./git.nix
+    ./graphics.nix
     ./mediaPlayer.nix
   ];
 }

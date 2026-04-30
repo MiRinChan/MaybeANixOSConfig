@@ -9,7 +9,7 @@
     package = pkgs.openrgb-with-all-plugins;
   };
   environment.systemPackages = [pkgs.i2c-tools];
-  users.groups.i2c.members = ["username"]; # create i2c group and add default user to it
+  users.groups.i2c.members = ["mirin"]; # create i2c group and add default user to it
 
   # solaar setup
   services.solaar = {

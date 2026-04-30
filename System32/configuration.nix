@@ -60,20 +60,9 @@
 
     loader = {
       systemd-boot = {
-        enable = lib.mkForce false; # lanzaboote replace it. btw keep option.
-        # enable = true;
+        enable = lib.mkForce false; # lanzaboote replace it.
         consoleMode = "max";
       };
-
-      # grub = {
-      #   enable = true;
-      #   device = "nodev";
-      #   efiSupport = true;
-      #   gfxmodeEfi = "auto";
-      #   gfxmodeBios = "auto";
-      #   gfxpayloadEfi = "auto";
-      #   gfxpayloadBios = "auto";
-      # };
 
       efi = {
         canTouchEfiVariables = true;

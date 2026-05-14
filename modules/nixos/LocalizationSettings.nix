@@ -5,7 +5,29 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  # The NUR derivation rebuilds the bundled TTF and currently fails on this
+  # nixpkgs snapshot, so reuse upstream's generated TTF for font installation.
+  gallantFont = pkgs.nur.repos.prince213.gallant.overrideAttrs (_: {
+    buildPhase = ''
+      runHook preBuild
+      runHook postBuild
+    '';
+  });
+  gallantConsoleFont =
+    pkgs.runCommand "${gallantFont.pname}-console-font-${gallantFont.version}" {
+      nativeBuildInputs = [pkgs.bdf2psf];
+    } ''
+      mkdir -p "$out/share/consolefonts"
+      cd ${pkgs.bdf2psf}/share/bdf2psf
+      bdf2psf \
+        --fb "${gallantFont.src}/gallant.bdf" \
+        standard.equivalents \
+        ascii.set+useful.set+linux.set \
+        512 \
+        "$out/share/consolefonts/gallant.psfu"
+    '';
+in {
   # 设置时区
   time.timeZone = "Asia/Shanghai";
   # 语言和编码
@@ -72,6 +94,7 @@
       source-han-mono
       source-han-sans
       source-han-serif
+      gallantFont
     ];
     fontconfig = {
       enable = true;
@@ -116,4 +139,8 @@
     };
   };
 
+  console = {
+    packages = [gallantConsoleFont];
+    font = "gallant";
+  };
 }

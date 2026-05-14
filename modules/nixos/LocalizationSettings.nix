@@ -141,6 +141,8 @@ in {
 
   console = {
     packages = [gallantConsoleFont];
-    font = "gallant";
+    font = "${gallantConsoleFont}/share/consolefonts/gallant.psfu";
+    earlySetup = true;
+    keyMap = "us";
   };
 }

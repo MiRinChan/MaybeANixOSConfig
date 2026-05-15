@@ -125,10 +125,16 @@
   };
   programs.starship = {
     enable = true;
-    settings.character = {
-      success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
-      error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
-    };
+    settings.character =
+      if term == "linux"
+      then {
+        success_symbol = "[$](fg:#5BCEFA)";
+        error_symbol = "[Error $](fg:red)";
+      }
+      else {
+        success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
+        error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
+      };
     enableTransience = true;
   };
 

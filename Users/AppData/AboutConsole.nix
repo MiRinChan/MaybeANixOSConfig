@@ -2,7 +2,9 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  term = builtins.getEnv "TERM";
+in {
   # zsh
   programs.zsh = {
     enable = true;

@@ -2,9 +2,7 @@
   config,
   pkgs,
   ...
-}: let
-  term = builtins.getEnv "TERM";
-in {
+}: {
   # zsh
   programs.zsh = {
     enable = true;
@@ -12,21 +10,33 @@ in {
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     initContent = ''
-      export ALL_PROXY=socks5://127.0.0.1:2080 && export HTTP_PROXY=http://127.0.0.1:2080 && export HTTPS_PROXY=http://127.0.0.1:2080 && echo "Hello." && eval "$(direnv hook zsh) && eval $(ssh-agent -s)  "
+      export ALL_PROXY=socks5://127.0.0.1:2080
+      export HTTP_PROXY=http://127.0.0.1:2080
+      export HTTPS_PROXY=http://127.0.0.1:2080
+      if [ "$TERM" = "linux" ]; then
+        export STARSHIP_CONFIG="${pkgs.writeText "starship-tty.toml" ''
+        [character]
+        success_symbol = "[\$](fg:#5BCEFA)"
+        error_symbol = "[Error \$](fg:red)"
+      ''}"
+      fi
+      echo "Hello."
+      eval "$(direnv hook zsh)"
+      eval $(ssh-agent -s)
     '';
 
     shellAliases = {
       rebuild = "nh os switch ~/nixos-config --ask && systemctl --user restart plasma-plasmashell.service";
-      proxy = "export ALL_PROXY=socks5://127.0.0.1:2080 && export HTTP_PROXY=http://127.0.0.1:2080 && export HTTPS_PROXY=http://127.0.0.1:2080";
-      deproxy = "unset ALL_PROXY && unset HTTP_PROXY && unset HTTPS_PROXY";
-      btw = ''echo "I'm using..." && hyfetch'';
-      neofetch = "hyfetch";
+      proxy = ''
+        export ALL_PROXY=socks5://127.0.0.1:2080
+        export HTTP_PROXY=http://127.0.0.1:2080
+        export HTTPS_PROXY=http://127.0.0.1:2080'';
+      deproxy = ''
+        unset ALL_PROXY
+        unset HTTP_PROXY
+        unset HTTPS_PROXY'';
       ls = "eza";
       XTERM = "export TERM=xterm";
-
-      # My personal config
-      vm = ''VBoxManage startvm "{d58d055c-e878-46bb-9c7f-d8b444a0e10b}" --type headless'';
-      vmpf = ''VBoxManage controlvm "{d58d055c-e878-46bb-9c7f-d8b444a0e10b}" acpipowerbutton'';
     };
     history = {
       size = 10000;
@@ -127,16 +137,10 @@ in {
   };
   programs.starship = {
     enable = true;
-    settings.character =
-      if term == "linux"
-      then {
-        success_symbol = "[$](fg:#5BCEFA)";
-        error_symbol = "[Error $](fg:red)";
-      }
-      else {
-        success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
-        error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
-      };
+    settings.character = {
+      success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
+      error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
+    };
     enableTransience = true;
   };
 

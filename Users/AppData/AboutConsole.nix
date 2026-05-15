@@ -10,19 +10,16 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     initContent = ''
-      export ALL_PROXY=socks5://127.0.0.1:2080
-      export HTTP_PROXY=http://127.0.0.1:2080
-      export HTTPS_PROXY=http://127.0.0.1:2080
       if [ "$TERM" = "linux" ]; then
         export STARSHIP_CONFIG="${pkgs.writeText "starship-tty.toml" ''
         [character]
-        success_symbol = "[\$](fg:#5BCEFA)"
-        error_symbol = "[Error \$](fg:red)"
+        success_symbol = '[\$](fg:#5BCEFA)'
+        error_symbol = '[Error \$](fg:red)'
       ''}"
       fi
       echo "Hello."
       eval "$(direnv hook zsh)"
-      eval $(ssh-agent -s)
+      eval $(ssh-agent -s) > /dev/null 2>&1
     '';
 
     shellAliases = {

@@ -28,6 +28,12 @@
         "$out/share/consolefonts/gallant.psfu"
     '';
 in {
+  nixpkgs.config = {
+    problems.handlers = {
+      gallant.broken = "warn"; # or "ignore"
+    };
+  };
+
   # 设置时区
   time.timeZone = "Asia/Shanghai";
   # 语言和编码

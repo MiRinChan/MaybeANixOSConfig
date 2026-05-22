@@ -6,6 +6,7 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
+    msedit # MS-DOS Editor
     screen # Screen
     kdePackages.ksvg # Require by SDDM
     alejandra # Code formater

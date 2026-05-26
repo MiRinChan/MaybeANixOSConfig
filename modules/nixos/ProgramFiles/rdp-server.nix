@@ -4,12 +4,15 @@
   lib,
   ...
 }: {
-  # 启用 KDE 远程桌面（RDP）
-  services.kde.remote-desktop = {
+  { config, pkgs, lib, ... }:
+
+{
+  services.xrdp = {
     enable = true;
-    # 可选：允许未加密连接（局域网内推荐）
-    # allowUnencrypted = true;
+    # KDE Plasma 6 (X11) — xrdp 对 Wayland 支持欠佳
+    defaultWindowManager = "${pkgs.plasma6.plasma-workspace}/bin/startplasma-x11";
   };
+}
 
   # 防火墙放行 RDP 端口（3389）
   networking.firewall.allowedTCPPorts = [3389];

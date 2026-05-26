@@ -4,16 +4,13 @@
   lib,
   ...
 }: {
-  { config, pkgs, lib, ... }:
-
-{
-  services.xrdp = {
+  # Wayland VNC 服务器
+  services.wayvnc = {
     enable = true;
-    # KDE Plasma 6 (X11) — xrdp 对 Wayland 支持欠佳
-    defaultWindowManager = "${pkgs.plasma6.plasma-workspace}/bin/startplasma-x11";
+    # 局域网内可放行端口
+    openFirewall = true;
   };
-}
 
-  # 防火墙放行 RDP 端口（3389）
-  networking.firewall.allowedTCPPorts = [3389];
+  # 防火墙放行 VNC 端口（5900）
+  networking.firewall.allowedTCPPorts = [5900];
 }

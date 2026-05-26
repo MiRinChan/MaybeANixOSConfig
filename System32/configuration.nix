@@ -189,7 +189,9 @@
 
   # 图形化
   services = {
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+    };
     displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
     displayManager.sddm.wayland.enable = true;

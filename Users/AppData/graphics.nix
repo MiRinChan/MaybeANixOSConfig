@@ -7,4 +7,12 @@
     stable.kdePackages.kdenlive # 视频剪辑
     stable.oculante # 看图
   ];
+
+  services.wayvnc = {
+    autoStart = true;
+    enable = true;
+    settings = {
+      port = 5900;
+    };
+  };
 }

@@ -20,4 +20,12 @@
   environment.systemPackages = with pkgs; [
     protontricks
   ];
+
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
+    openFirewall = true;
+  };
+  hardware.uinput.enable = true;
 }

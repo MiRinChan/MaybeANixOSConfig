@@ -26,6 +26,21 @@
     autoStart = true;
     capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
     openFirewall = true;
+    package = pkgs.sunshine.overrideAttrs (old: {
+      buildInputs =
+        (old.buildInputs or [])
+        ++ [
+          pkgs.cudaPackages.cuda_cudart
+          pkgs.cudaPackages.cuda_nvrtc
+        ];
+
+      postFixup =
+        (old.postFixup or "")
+        + ''
+          wrapProgram $out/bin/sunshine \
+            --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib:${pkgs.cudaPackages.cuda_cudart}/lib:${pkgs.cudaPackages.cuda_nvrtc}/lib
+        '';
+    });
   };
   hardware.uinput.enable = true;
 }

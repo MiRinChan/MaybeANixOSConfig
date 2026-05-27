@@ -14,6 +14,38 @@
   };
   codexDefaultConfig = (pkgs.formats.toml {}).generate "codex-config-default" codexSettings;
   codexHome = "${config.home.homeDirectory}/.codex";
+  codexGuiSudo = pkgs.writeShellScriptBin "codex-gui-sudo" ''
+    set -euo pipefail
+
+    if [ "$#" -eq 0 ]; then
+      echo "usage: codex-gui-sudo [--shell COMMAND | COMMAND ARG...]" >&2
+      exit 2
+    fi
+
+    if [ "$1" = "--shell" ]; then
+      shift
+      if [ "$#" -eq 0 ]; then
+        echo "codex-gui-sudo: --shell requires a command" >&2
+        exit 2
+      fi
+      command_text="$*"
+      run_script="cd $(printf '%q' "$PWD") && $command_text"
+    else
+      quoted=()
+      for arg in "$@"; do
+        quoted+=("$(printf '%q' "$arg")")
+      done
+      command_text="''${quoted[*]}"
+      run_script="cd $(printf '%q' "$PWD") && exec $command_text"
+    fi
+
+    message=$(printf 'Codex wants to run this command as root:\n\n%s\n\nWorking directory:\n%s' "$command_text" "$PWD")
+    ${pkgs.kdePackages.kdialog}/bin/kdialog \
+      --title "Codex privileged command" \
+      --warningcontinuecancel "$message"
+
+    exec /run/wrappers/bin/pkexec ${pkgs.bash}/bin/bash -lc "$run_script"
+  '';
 in {
   programs.mcp = {
     enable = true;
@@ -32,6 +64,8 @@ in {
       sha256 = "125agnm8kmvg3rr3a07lwp9dfdyxki2s2q4rm8y8v2qrc03iimb5";
     }}";
   };
+
+  home.packages = [codexGuiSudo];
 
   home.file.".codex/config.defaults.toml".source = codexDefaultConfig;
 

@@ -53,6 +53,8 @@
       confirm_os_window_close = 0;
       dynamic_background_opacity = true;
       enable_audio_bell = false;
+      allow_remote_control = "socket-only";
+      listen_on = "unix:$XDG_RUNTIME_DIR/kitty-remote-control.sock";
       mouse_hide_wait = "-1.0";
       window_padding_width = 10;
       # background_opacity = "0.95";

@@ -2,6 +2,7 @@
   imports = [
     ./AboutConsole.nix
     ./AboutProgramming.nix
+    ./codex.nix
     ./audio-production.nix
     ./common.nix
     ./gaming.nix

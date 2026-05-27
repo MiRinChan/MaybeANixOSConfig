@@ -87,9 +87,9 @@
   networking.firewall = {
     enable = true;
     # Always allow traffic from your Tailscale network
-    trustedInterfaces = [ config.services.tailscale.interfaceName ];
+    trustedInterfaces = [config.services.tailscale.interfaceName];
     # Allow the Tailscale UDP port through the firewall
-    allowedUDPPorts = [ config.services.tailscale.port ];
+    allowedUDPPorts = [config.services.tailscale.port];
   };
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos

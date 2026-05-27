@@ -11,9 +11,8 @@
   libnotify,
   libproxy,
   signond,
-  wrapQtAppsHook
+  wrapQtAppsHook,
 }:
-
 stdenv.mkDerivation rec {
   pname = "signon-ui";
   version = "0.17-unstable-2023-10-16";
@@ -49,7 +48,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Signond Qt UI";
     homepage = "https://gitlab.com/accounts-sso/signon-ui";
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [];
     platforms = platforms.linux;
   };
 }

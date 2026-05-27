@@ -11,15 +11,13 @@
   withKWallet ? false,
   signon-kwallet-extension,
   makeWrapper,
-  symlinkJoin
-}:
-
-let
+  symlinkJoin,
+}: let
   unwrapped = stdenv.mkDerivation rec {
     pname = "signond";
     version = "8.61-unstable-2023-11-24";
 
-    outputs = [ "out" ];
+    outputs = ["out"];
 
     # pinned to fork with Qt6 support
     src = fetchFromGitLab {
@@ -35,7 +33,8 @@ let
       wrapQtAppsHook
     ];
 
-    buildInputs = [ qtbase ]
+    buildInputs =
+      [qtbase]
       ++ lib.optional withOAuth2 signon-plugin-oauth2
       ++ lib.optional withKWallet signon-kwallet-extension;
 
@@ -47,12 +46,15 @@ let
     meta = with lib; {
       homepage = "https://gitlab.com/accounts-sso/signond";
       description = "Signon Daemon for Qt";
-      maintainers = with maintainers; [ freezeboy ];
+      maintainers = with maintainers; [freezeboy];
       platforms = platforms.linux;
     };
   };
-in if (!withOAuth2 && !withKWallet) then unwrapped
-   else import ./wrapper.nix {
-     inherit lib symlinkJoin withOAuth2 signon-plugin-oauth2 withKWallet signon-kwallet-extension makeWrapper;
-     signond = unwrapped;
-   }
+in
+  if (!withOAuth2 && !withKWallet)
+  then unwrapped
+  else
+    import ./wrapper.nix {
+      inherit lib symlinkJoin withOAuth2 signon-plugin-oauth2 withKWallet signon-kwallet-extension makeWrapper;
+      signond = unwrapped;
+    }

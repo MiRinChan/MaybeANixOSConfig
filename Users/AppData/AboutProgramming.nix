@@ -18,7 +18,6 @@
     act
     ghidra
     devenv
-    stable.gemini-cli
-    master.antigravity
+    rkdeveloptool
   ];
 }

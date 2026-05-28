@@ -117,19 +117,19 @@
           nur.modules.nixos.default
           lanzaboote.nixosModules.lanzaboote
           solaar.nixosModules.default
-          ({pkgs, ...}: {
-            nixpkgs.overlays = [fenix.overlays.default];
-            environment.systemPackages = with pkgs; [
-              (fenix.packages.${stdenv.hostPlatform.system}.complete.withComponents [
-                "cargo"
-                "clippy"
-                "rust-src"
-                "rustc"
-                "rustfmt"
-              ])
-              rust-analyzer-nightly
-            ];
-          })
+          # ({pkgs, ...}: {
+          #   nixpkgs.overlays = [fenix.overlays.default];
+          #   environment.systemPackages = with pkgs; [
+          #     (fenix.packages.${stdenv.hostPlatform.system}.complete.withComponents [
+          #       "cargo"
+          #       "clippy"
+          #       "rust-src"
+          #       "rustc"
+          #       "rustfmt"
+          #     ])
+          #     rust-analyzer-nightly
+          #   ];
+          # })
           {
             home-manager.useUserPackages = true;
             home-manager.users.mirin = import ./Users/home.nix;

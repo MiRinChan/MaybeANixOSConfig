@@ -5,10 +5,15 @@
   copyDesktopItems,
   makeDesktopItem,
   makeWrapper,
+  autoPatchelfHook,
   electron_39,
   ffmpeg_7-full,
   whisper-cpp,
   nodejs_22,
+  libx11,
+  libxrandr,
+  libxt,
+  libxtst,
 }:
 buildNpmPackage rec {
   pname = "recordly";
@@ -23,11 +28,23 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-7W2SErZIWZuYek0gJgRuDeiLoPyGFYf4x1oFffrZruQ=";
 
+  patches = [
+    ./recordly-linux-hud-hover.patch
+  ];
+
   nodejs = nodejs_22;
 
   nativeBuildInputs = [
+    autoPatchelfHook
     copyDesktopItems
     makeWrapper
+  ];
+
+  buildInputs = [
+    libx11
+    libxrandr
+    libxt
+    libxtst
   ];
 
   npmFlags = ["--ignore-scripts"];
@@ -73,7 +90,7 @@ buildNpmPackage rec {
       --prefix PATH : ${lib.makeBinPath [ffmpeg_7-full whisper-cpp]} \
       --set WHISPER_CPP_PATH ${lib.getExe' whisper-cpp "whisper-cli"} \
       --set RECORDLY_DISABLE_AUTO_UPDATES 1 \
-      --add-flags "''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime=true}}"
+      --add-flags '--enable-features=WebRTCPipeWireCapturer''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+,UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime=true}}'
   '';
 
   desktopItems = [

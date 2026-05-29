@@ -9,4 +9,5 @@ pkgs: {
   # wallpaper-engine-kde-plugin = pkgs.callPackage ./wallpaper-engine-kde-plugin {};
   klassy-qt6 = pkgs.callPackage ./klassy-qt6 {};
   iloader = pkgs.callPackage ./iloader.nix {};
+  recordly = pkgs.callPackage ./recordly.nix {};
 }

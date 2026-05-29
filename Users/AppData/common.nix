@@ -27,6 +27,7 @@
     scrcpy3 # Android 屏传
     tsukimi # emby
     klassy-qt6
+    recordly
     graalvmPackages.graalvm-ce
     xleak
     csvkit

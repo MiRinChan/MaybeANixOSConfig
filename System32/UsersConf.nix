@@ -9,7 +9,7 @@
     mirin = {
       # 别忘了设密码
       isNormalUser = true;
-      extraGroups = ["wheel" "adbusers" "docker" "uinput" "video" "render" "libvirtd"];
+      extraGroups = ["wheel" "adbusers" "docker" "uinput" "video" "render" "libvirtd" "kvm" "vboxusers"];
       shell = pkgs.zsh;
     };
   };

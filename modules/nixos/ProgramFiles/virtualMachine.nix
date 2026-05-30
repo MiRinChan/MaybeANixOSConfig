@@ -25,10 +25,20 @@
       package = pkgs.qemu_kvm;
       runAsRoot = true;
       swtpm.enable = true; # 软件 TPM，Windows 11 客户机需要
-      ovmf = {
-        enable = true;
-        packages = [pkgs.OVMFFull.fd]; # UEFI 固件 + Secure Boot 支持
-      };
+      vhostUserPackages = [pkgs.virtiofsd];
+      verbatimConfig = ''
+        namespaces = []
+
+        cgroup_device_acl = [
+          "/dev/null", "/dev/full", "/dev/zero",
+          "/dev/random", "/dev/urandom",
+          "/dev/ptmx", "/dev/userfaultfd",
+          "/dev/kvm", "/dev/net/tun",
+          "/dev/dri/card1", "/dev/dri/renderD128",
+          "/dev/nvidia0", "/dev/nvidiactl", "/dev/nvidia-modeset",
+          "/dev/nvidia-uvm", "/dev/nvidia-uvm-tools"
+        ]
+      '';
     };
   };
   programs.virt-manager.enable = true;

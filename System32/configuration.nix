@@ -148,6 +148,9 @@
     firewall = {
       enable = true;
       checkReversePath = true;
+      # libvirt default network (virbr0) needs to keep working when throne-tun
+      # is up, otherwise VM NAT traffic gets treated as untrusted bridge traffic.
+      trustedInterfaces = [ "virbr0" ];
 
       extraCommands = ''
         iptables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN

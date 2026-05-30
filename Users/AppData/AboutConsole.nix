@@ -159,7 +159,7 @@
       # args = null;
       # distro = null;
       # pride_month_shown = [];
-      # pride_month_disable = false;
+      pride_month_disable = false;
     };
   };
 }

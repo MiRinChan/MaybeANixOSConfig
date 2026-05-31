@@ -95,7 +95,7 @@
 
     # pkgs.linuxPackages == lts
     # pkgs.linuxPackages_latest == stable
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
 
     #kernelPackages = pkgs.linuxPackages_latest;
     #kernelPackages = pkgs.linuxPackages_xanmod_stable;
@@ -150,7 +150,7 @@
       checkReversePath = true;
       # libvirt default network (virbr0) needs to keep working when throne-tun
       # is up, otherwise VM NAT traffic gets treated as untrusted bridge traffic.
-      trustedInterfaces = [ "virbr0" ];
+      trustedInterfaces = ["virbr0"];
 
       extraCommands = ''
         iptables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN
@@ -195,9 +195,11 @@
     xserver = {
       enable = true;
     };
-    displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
-    displayManager.sddm.wayland.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
 
   # Make electron and Chrome happy.

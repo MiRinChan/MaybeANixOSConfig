@@ -241,6 +241,12 @@
     };
   };
 
+  systemd.services.flatpak-install = {
+    # restart flatpak install after network becomes online.
+    after = ["NetworkManager.service" "network-online.target"];
+    wants = ["network-online.target"];
+  };
+
   xdg.portal.enable = true;
 
   # Stop wating after I want shut down my computer. However we should check by "$ journalctl --boot -1 -xe" to find why.

@@ -40,4 +40,14 @@
   hardware.graphics = {
     enable = true;
   };
+
+# 睡眠不好用。
+
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 }

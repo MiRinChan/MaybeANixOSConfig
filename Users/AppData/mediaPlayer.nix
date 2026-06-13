@@ -24,7 +24,17 @@
       scripts = [pkgs.mpvScripts.mpris];
     };
 
-    obs-studio.enable = true;
+    obs-studio = {
+      enable = true;
+      package = pkgs.obs-studio.overrideAttrs (old: {
+        postFixup =
+          (old.postFixup or "")
+          + ''
+            wrapProgram $out/bin/obs \
+              --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
+          '';
+      });
+    };
   };
 
   services = {

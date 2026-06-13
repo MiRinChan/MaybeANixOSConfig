@@ -7,11 +7,11 @@
 }:
 appimageTools.wrapType2 rec {
   pname = "lunar-client";
-  version = "3.3.2";
+  version = "3.6.11-ow";
 
   src = fetchurl {
     url = "https://launcherupdates.lunarclientcdn.com/Lunar%20Client-${version}.AppImage";
-    hash = "sha512-Gpm17h5U9Cw9r5EHE1wF5e0aza9yaGPUf+rhMVAhXjrVYBqiUsc/UG11TXWqarKlLpRmPDe+BvCF0qqTtTEZhw==";
+    hash = "sha512-WHjeAA+vS/gC8ZI2jUWpiJasvT+AgEWB14/ZnJGIOJPi4PUxtBNseM6HR8Aql8a8JGzobyZS9ISqYtFJEiYQ+A==";
   };
 
   extraInstallCommands = let

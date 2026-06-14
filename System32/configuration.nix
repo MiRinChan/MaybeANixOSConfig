@@ -249,18 +249,6 @@
 
   xdg.portal.enable = true;
 
-  # Stop wating after I want shut down my computer. However we should check by "$ journalctl --boot -1 -xe" to find why.
-  systemd.settings.Manager = {
-    DefaultTimeoutStopSec = "10s";
-    DefaultStartLimitBurst = "20s";
-    DefaultStartLimitIntervalSec = "20s";
-  };
-  systemd.user.extraConfig = ''
-    DefaultTimeoutStopSec=10s
-    DefaultStartLimitBurst=20s
-    DefaultStartLimitIntervalSec=20s
-  '';
-
   services.udev.extraRules = ''
     # Galaxy Flasher
     SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"

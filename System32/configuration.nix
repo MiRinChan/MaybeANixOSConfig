@@ -254,8 +254,9 @@
     SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
   '';
 
-  # Enable binfmt emulation.
-  # boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

@@ -4,19 +4,6 @@
   pkgs,
   ...
 }: {
-  # provide virtual machine
-  users.extraGroups.vboxusers.members = ["user-with-access-to-virtualbox"];
-
-  virtualisation.virtualbox = {
-    host = {
-      enable = true;
-      enableExtensionPack = true;
-      enableKvm = true;
-      addNetworkInterface = false;
-      package = pkgs.stable.virtualbox;
-    };
-  };
-
   # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
   # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 System32/UsersConf.nix）。
   virtualisation.libvirtd = {

@@ -21,6 +21,12 @@
     # pretty theme
     catppuccin.url = "github:catppuccin/nix/release-25.11";
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     # lanzaboote for Secure boot
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
@@ -68,6 +74,7 @@
     flatpak,
     alejandra,
     catppuccin,
+    plasma-manager,
     home-manager,
     solaar,
     nur,
@@ -112,6 +119,7 @@
         };
         modules = [
           ./Users/home.nix
+          plasma-manager.homeModules.plasma-manager
         ];
       };
     };

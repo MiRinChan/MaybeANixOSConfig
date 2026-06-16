@@ -11,6 +11,7 @@
   libass,
   lz4,
   fribidi,
+  expat,
   python3,
   lib,
 }: let
@@ -28,10 +29,14 @@ in
       fetchSubmodules = true;
     };
 
-    patches = [./cmake.patch];
+    patches = [
+      ./cmake.patch
+      ./gcc15-cstdint.patch
+    ];
 
     cmakeFlags = [
       "-DQT_MAJOR_VERSION=6"
+      "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
     ];
 
     nativeBuildInputs = [
@@ -39,6 +44,14 @@ in
       qt6.wrapQtAppsHook
       kdePackages.extra-cmake-modules
       pkg-config
+    ];
+
+    buildInputs = [
+      expat
+    ];
+
+    NIX_CFLAGS_COMPILE = [
+      "-I${qt6.qtbase}/include/QtGui/${qt6.qtbase.version}/QtGui"
     ];
 
     propagatedBuildInputs =

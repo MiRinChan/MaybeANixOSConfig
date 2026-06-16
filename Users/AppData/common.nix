@@ -26,7 +26,6 @@
     qgis # 地理信息系统
     scrcpy3 # Android 屏传
     tsukimi # emby
-    klassy-qt6
     graalvmPackages.graalvm-ce
     xleak
     csvkit

@@ -7,7 +7,6 @@ in {
     catppuccin-kde
     klassy-qt6
     plasma-overdose-kde-theme
-    wallpaper-engine-kde-plugin
     whitesur-cursors
   ];
 

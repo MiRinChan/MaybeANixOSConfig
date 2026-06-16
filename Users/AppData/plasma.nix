@@ -52,6 +52,10 @@ in {
           "org.kde.plasma.panelspacer"
           {
             systemTray = {
+              settings.config = {
+                popupHeight = 434;
+                popupWidth = 432;
+              };
               items.extra = [
                 "org.kde.plasma.battery"
                 "org.kde.plasma.brightness"

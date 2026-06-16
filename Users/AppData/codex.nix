@@ -8,11 +8,11 @@
     features.memories = true;
     memories.no_memories_if_mcp_or_web_search = true;
     mcp_servers.nixos = {
-      command = "/etc/profiles/per-user/${config.home.username}/bin/mcp-nixos";
+      command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
       enabled = true;
     };
     mcp_servers.git = {
-      command = "/etc/profiles/per-user/${config.home.username}/bin/mcp-server-git";
+      command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
       enabled = true;
     };
   };

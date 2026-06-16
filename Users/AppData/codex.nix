@@ -1,23 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  codexSettings = {
-    features.memories = true;
-    memories.no_memories_if_mcp_or_web_search = true;
-    mcp_servers.nixos = {
-      command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-      enabled = true;
-    };
-    mcp_servers.git = {
-      command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-      enabled = true;
-    };
-  };
-  codexDefaultConfig = (pkgs.formats.toml {}).generate "codex-config-default" codexSettings;
-  codexHome = "${config.home.homeDirectory}/.codex";
+{pkgs, ...}: let
   codexGuiSudo = pkgs.writeShellScriptBin "codex-gui-sudo" ''
     set -euo pipefail
 
@@ -77,19 +58,4 @@ in {
     pkgs.mcp-nixos
     pkgs.mcp-server-git
   ];
-
-  home.file.".codex/config.defaults.toml".source = codexDefaultConfig;
-
-  home.activation.initWritableCodexConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    config_file="${codexHome}/config.toml"
-    defaults="${codexHome}/config.defaults.toml"
-
-    mkdir -p "${codexHome}"
-
-    if [ ! -e "$config_file" ] || [ -L "$config_file" ]; then
-      rm -f "$config_file"
-      cp "$defaults" "$config_file"
-      chmod 600 "$config_file"
-    fi
-  '';
 }

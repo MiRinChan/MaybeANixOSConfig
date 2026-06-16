@@ -19,19 +19,7 @@ in {
       lookAndFeel = "org.kde.breezedark.desktop";
       iconTheme = "Cobalt-dark";
       cursor.theme = "WhiteSur-cursors";
-
-      wallpaperCustomPlugin = {
-        plugin = "com.github.catsout.wallpaperEngineKde";
-        config.General = {
-          CustomConf = "eyJmYXZvciI6W119";
-          Fps = 60;
-          PauseMode = 2;
-          "SteamLibraryPath[$e]" = "file:$HOME/.local/share/Steam";
-          VideoBackend = 1;
-          "WallpaperSource[$e]" = "file:$HOME/.local/share/Steam/steamapps/workshop/content/431960/2542269423/scene.json+scene";
-          WallpaperWorkShopId = 2542269423;
-        };
-      };
+      wallpaper = lockWallpaper;
     };
 
     # Panels: translated manually from plasma-org.kde.plasma.desktop-appletsrc.
@@ -41,6 +29,10 @@ in {
         location = "bottom";
         screen = 0;
         hiding = "autohide";
+        lengthMode = "custom";
+        minLength = 2160;
+        maxLength = 2160;
+        offset = 0;
         floating = false;
         opacity = "adaptive";
         widgets = [
@@ -123,6 +115,7 @@ in {
         lengthMode = "custom";
         minLength = 540;
         maxLength = 895;
+        offset = 0;
         widgets = [
           {
             iconTasks = {
@@ -249,21 +242,7 @@ in {
       "Search"
     ];
 
-    kscreenlocker.appearance = {
-      wallpaperCustomPlugin = {
-        plugin = "com.github.catsout.wallpaperEngineKde";
-        config.General = {
-          FilterStr = "011011110111111111111111111111111111";
-          Fps = 60;
-          MouseInput = false;
-          PauseFilterByScreen = false;
-          "SteamLibraryPath[$e]" = "file:$HOME/.local/share/Steam";
-          VideoBackend = 1;
-          "WallpaperSource[$e]" = "file:$HOME/.local/share/Steam/steamapps/workshop/content/431960/2677973855/miku.mp4+video";
-          WallpaperWorkShopId = 2677973855;
-        };
-      };
-    };
+    kscreenlocker.appearance.wallpaper = lockWallpaper;
 
     spectacle.shortcuts = {
       captureEntireDesktop = "Print";
@@ -428,10 +407,7 @@ in {
         "Mouse".X11LibInputXAccelProfileFlat = true;
       };
 
-      "kscreenlockerrc"."Greeter/Wallpaper/org.kde.image/General" = {
-        Image = toString lockWallpaper;
-        PreviewImage = toString lockWallpaper;
-      };
+      "kscreenlockerrc"."Greeter/Wallpaper/org.kde.image/General".PreviewImage = toString lockWallpaper;
 
       "plasma-localerc"."Formats".LANG = "en_US.UTF-8";
 

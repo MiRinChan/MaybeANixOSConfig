@@ -42,7 +42,7 @@ Active settings from rc files:
 | Icons | `Cobalt-dark` | Local/user asset; deployed from backup via `xdg.dataFile`. |
 | Cursor | `WhiteSur-cursors` | `whitesur-cursors` exists in nixpkgs; added to `home.packages`. |
 | Splash | empty | Omitted as unset/default. |
-| Wallpaper plugin | `com.github.catsout.wallpaperEngineKde` | Existing local package file is now exposed as `pkgs.wallpaper-engine-kde-plugin`. |
+| Wallpaper | `/home/mirin/Pictures/v2-76efa32deb7d299c06b3ddf5735f81ac_r.png` | Current active desktop wallpaper uses `org.kde.image`; copied to `Users/AppData/assets/wallpapers/` and referenced from `plasma.nix`. |
 
 Local themes deployed by `theme-packages.nix`:
 
@@ -57,7 +57,7 @@ Package audit notes:
 
 - Confirmed through NixOS MCP before the external usage limit was hit: `klassy`, `catppuccin-kde`, `whitesur-cursors`, and `plasma-overdose-kde-theme` exist in nixpkgs unstable.
 - After the external usage limit was hit, further remote package lookups were not retried. Remaining local themes are treated as local/user assets.
-- `pkgs.wallpaper-engine-kde-plugin` needed current-toolchain build fixes: `expat` for pkg-config, `CMAKE_POLICY_VERSION_MINIMUM=3.5` for the vendored CMake project, the QtGui private include path used by `qpa/qplatformnativeinterface.h`, and a small GCC 15 `<cstdint>` patch for vendored `glslang`.
+- `pkgs.wallpaper-engine-kde-plugin` is still exposed and buildable, but it is no longer installed by this migration because the current active wallpaper is a static image.
 
 ## Native Mappings
 
@@ -65,13 +65,13 @@ The main module is `Users/AppData/plasma.nix`.
 
 Mapped to high-level plasma-manager options:
 
-- `programs.plasma.workspace`: Plasma theme, color scheme, look-and-feel, icon theme, cursor, Wallpaper Engine custom plugin.
+- `programs.plasma.workspace`: Plasma theme, color scheme, look-and-feel, icon theme, cursor, static image wallpaper.
 - `programs.plasma.panels`: bottom and top panels, Kickoff, spacer, system tray, weather tray config, margin separator, digital clock, task manager, show desktop.
 - `programs.plasma.desktop`: folder-view icon alignment/sorting and mouse actions.
 - `programs.plasma.kwin`: blur, dim admin mode, magic-lamp minimize, shake cursor, translucency, glide open/close, night light, virtual desktops, and base tiling layout.
 - `programs.plasma.shortcuts`: meaningful non-default global shortcuts from `kglobalshortcutsrc`.
 - `programs.plasma.krunner.shortcuts`: KRunner launch shortcut.
-- `programs.plasma.kscreenlocker.appearance`: lock-screen Wallpaper Engine custom plugin.
+- `programs.plasma.kscreenlocker.appearance`: lock-screen image wallpaper.
 - `programs.plasma.spectacle.shortcuts`: Spectacle launch/fullscreen/rectangular-region shortcuts.
 - `programs.plasma.input.keyboard.layouts`: `us`.
 - `programs.plasma.fonts`: general, fixed-width, menu, small, toolbar, and window-title fonts.

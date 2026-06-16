@@ -80,7 +80,8 @@
   programs.throne = {
     enable = true;
     tunMode.enable = true;
-    tunMode.setuid = false;
+    # tunMode.setuid = true;
+    # package = pkgs.stable.throne;
   };
 
   services.tailscale.enable = true;

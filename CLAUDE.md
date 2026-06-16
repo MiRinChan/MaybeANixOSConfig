@@ -14,17 +14,24 @@ Note from `README.txt`: not everything is declarative — applying this config o
 nix fmt                                       # format with alejandra
 nixos-rebuild build  --flake .#rins           # build only
 sudo nixos-rebuild switch --flake .#rins      # apply system config
-home-manager switch  --flake .#mirin          # apply user config (if running standalone)
+home-manager switch --flake .#mirin -b backup # apply user config
 nix build .#<pkg>                             # build a custom package from ./pkgs
 ```
 
-Home-manager is wired into the NixOS config (see `flake.nix` `home-manager.users.mirin`), so a `nixos-rebuild switch` normally applies user config too. `home-manager.backupFileExtension = "backup"` is set, so conflicting dotfiles are moved to `*.backup`.
+`nh` equivalents:
+
+```sh
+nh os switch --ask --hostname rins ~/nixos-config
+nh home switch --ask --configuration mirin --backup-extension backup ~/nixos-config
+```
+
+Home-manager is intentionally separate from the NixOS rebuild. Run `nixos-rebuild` for system config and `home-manager switch` for user config. Use `-b backup` with standalone Home Manager so conflicting dotfiles are moved to `*.backup`.
 
 ## Architecture
 
 | Path | Role |
 |------|------|
-| `flake.nix` | Inputs, overlays, single `nixosConfigurations.rins` |
+| `flake.nix` | Inputs, overlays, `nixosConfigurations.rins`, `homeConfigurations.mirin` |
 | `System32/configuration.nix` | Boot (lanzaboote), networking + firewall, plasma6/SDDM, flatpak, system-wide systemd tweaks |
 | `System32/UsersConf.nix` | `users.users.mirin` (groups, shell) |
 | `System32/hardware-configuration.nix` | Generated hardware config |

@@ -14,8 +14,6 @@
 
   programs.kdeconnect.enable = true;
 
-  home-manager.users.mirin.services.kdeconnect.enable = true;
-
   networking.firewall = rec {
     allowedTCPPortRanges = [
       {

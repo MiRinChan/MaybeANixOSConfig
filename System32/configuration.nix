@@ -249,9 +249,10 @@
   xdg.portal.enable = true;
 
   services.udev.extraRules = ''
-    # Galaxy Flasher
-    SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
+    # WebHID / hidraw
+    SUBSYSTEM=="hidraw", MODE="0660", TAG+="uaccess"
   '';
+
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";

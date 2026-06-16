@@ -1,0 +1,20 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Frosted",
+                "Email": "my@mail.address"
+            }
+        ],
+        "Name": "Frosted",
+        "Description": "Brings a very dynamic electrical energy atmosphere to the desktop",
+        "Id": "Frosted",
+        "Version": "1.3.8",
+        "Category": "",
+        "EnabledByDefault": true,
+        "License": "GPL",
+        "Website": "https://store.kde.org/p/1980674"
+    },
+    "X-Plasma-API": "5.0"
+}
+

@@ -1,0 +1,113 @@
+[Media Browser]
+Allow Expansion=false
+Decoration position=2
+Show hidden files=false
+Sort by=Name
+Sort directories first=true
+Sort hidden files last=false
+Sort reversed=false
+View Style=DetailTree
+
+[OnlineResources]
+provider=Freesound
+zoom=7
+
+[Recent Dirs]
+KdenliveClipFolder[$e]=$HOME/Videos,$HOME/Documents
+KdenliveProjectsFolder[$e]=$HOME/Videos,$HOME/Videos/,$HOME/Documents
+
+[Recent Files]
+File1[$e]=$HOME/Videos/8adGenshinPV.kdenlive
+File2[$e]=$HOME/Videos/8adGenshinPV-6000.kdenlive
+File3[$e]=$HOME/Videos/shenjing.kdenlive
+File4[$e]=$HOME/Videos/minishijie.kdenlive
+Name1[$e]=8adGenshinPV.kdenlive
+Name2[$e]=8adGenshinPV-6000.kdenlive
+Name3[$e]=shenjing.kdenlive
+Name4[$e]=minishijie.kdenlive
+
+[RenderWidget]
+showoptions=false
+
+[Scope_Histogram]
+autoRefresh=true
+bEnabled=true
+gEnabled=true
+logScale=false
+rEnabled=true
+realtime=false
+rec601=false
+sEnabled=false
+yEnabled=true
+
+[Scope_RGB Parade]
+autoRefresh=true
+axis=false
+gradref=false
+paintmode=0
+realtime=false
+
+[Scope_Vectorscope]
+75PBox=false
+autoRefresh=true
+axis=false
+backgroundmode=0
+colorspace_ypbpr=false
+gain=1
+iqlines=false
+paintmode=0
+realtime=false
+
+[Scope_Waveform]
+autoRefresh=true
+paintmode=0
+realtime=false
+rec601=false
+
+[UiSettings]
+ColorSchemePath=AbsoluteDark.colors
+
+[bin]
+treeviewheaders=AAAA/wAAAAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAJ/gEAAAAIAAAABgAAADEAAAADAAAAOQAAAAcAAAA0AAAAAQAAADkAAAAIAAAAZAAAAAIAAABlAAAABQAAAFQAAAAEAAAAMQAAAIgAAAAJAQEAAQAAAAAAAAAAAAAAAGT/////AAAAgQAAAAAAAAAJAAAAiAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAD6AAAAABBAAAAAAAAAAAAAAAAAAAAAQ==
+
+[capture]
+decklink_extension=mov
+decklink_parameters=vcodec=dnxhd vb=145000k acodec=pcm_s16le threads=%threads
+grab_extension=mov
+grab_parameters=-crf 25 -vcodec libx264 -preset veryfast -threads 0
+v4l_extension=mpg
+v4l_parameters=qscale=4 ab=192k vcodec=mpeg2video acodec=mp2 threads=%threads
+
+[env]
+defaultimageapp=/etc/profiles/per-user/mirin/bin/krita
+defaultprojectfolder[$e]=$HOME/Videos
+kdenliverendererpath[$e]=/nix/store/2dz38ikmwdbrl16kvprhj0i64lvjr9b8-kdenlive-24.08.1/bin/kdenlive_render
+lastCacheCheck=2025,7,10,22,11,46.989
+
+[misc]
+profile_fps_filter=任意
+profile_scanning_filter=逐行扫描
+
+[project]
+SupportedHWCodecs=h264_nvenc,hevc_nvenc,av1_nvenc
+transcodeFriendly=Lossy x264 I frame only (NVidia GPU)
+
+[timeline]
+trackheight=62
+
+[unmanaged]
+consumerslist=avformat,multi,null,decklink,jack,xgl,blipflash,cbrts,qglsl,rtaudio,sdl,sdl_audio,sdl_preview,sdl_still,sdl2,sdl2_audio,xml
+default_profile=atsc_1080p_25
+defaultrescaleheight=540
+defaultrescalewidth=960
+force_breeze=true
+guidesCategories=Category 1:0:#9b59b6,Category 2:1:#3daee9,Category 3:2:#1abc9c,Category 4:3:#1cdc9a,Category 5:4:#c9ce3b,Category 6:5:#fdbc4b,Category 7:6:#f39c1f,Category 8:7:#f47750,Category 9:8:#da4453
+monitor_audio=false
+producerslist=avformat,avformat-novalidate,abnormal,blank,color,colour,consumer,hold,loader,loader-nogl,melt,melt_file,noise,timewarp,tone,decklink,glaxnimate,framebuffer,blipflash,count,pgm,subtitle,qimage,qtext,kdenlivetitle,vorbis,xml,xml-string,xml-nogl,xml-clip
+properties_panel_page=4
+renderProfile=NVENC H264 ABR
+use_dark_breeze=true
+widgetstyle=Default
+
+[version]
+version=25.04.2

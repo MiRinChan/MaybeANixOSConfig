@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "zayronxio.gm@gmail.com",
+                "Name": "zayronxio"
+            }
+        ],
+        "Id": "purslane.Nord",
+        "License": "CC-BY-SA-4.0",
+        "Name": "purslane Nord"
+        "Name[x-test]": "xxpurslane.Nordxx"
+        },
+        "X-KDE-PlasmaImageWallpaper-AccentColor": {
+        "Dark": "#88c0d0",
+        "Light": "#88c0d0"
+        }
+    }
+

@@ -1,0 +1,5 @@
+[General]
+Certificate=/home/mirin/.local/share/krdpserver/krdp.crt
+CertificateKey=/home/mirin/.local/share/krdpserver/krdp.key
+Quality=100
+SystemUserEnabled=true

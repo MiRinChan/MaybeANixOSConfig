@@ -1,0 +1,33 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "gicalucejo@gmail.com",
+                "Name": "jomada"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "ServiceTypes": [
+            "Plasma/LookAndFeel"
+        ],
+        "EnabledByDefault": true,
+        "Name": "Moe",
+        "Description": "Moe Desktop Design",
+        "Id": "Moe",
+        "Version": "2.4",
+        "License": "GPL 3+",
+        "Website": "https://seduccionlinux.wordpress.com",
+        "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;",
+        "X-Plasma-APIVersion": "2"
+    },
+     "X-KPackage-Dependencies": [
+        "kns://colorschemes.knsrc/api.kde-look.org/1284573",
+        "kns://plasma-themes.knsrc/api.kde-look.org/1284575",
+        "kns://aurorae.knsrc/api.kde-look.org/1437785",
+        "kns://wallpaper.knsrc/api.kde-look.org/1498263",
+        "kns://wallpaper.knsrc/api.kde-look.org/1884162",
+        "kns://xcursor.knsrc/api.kde-look.org/1411743",
+        "kns://icons.knsrc/api.kde-look.org/1661983"
+    ]
+}

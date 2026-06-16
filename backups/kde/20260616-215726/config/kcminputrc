@@ -1,0 +1,6 @@
+[Keyboard]
+Repeat=false
+
+[Mouse]
+X11LibInputXAccelProfileFlat=true
+cursorTheme=WhiteSur-cursors

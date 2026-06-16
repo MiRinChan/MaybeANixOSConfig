@@ -1,0 +1,41 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "zayronxio@gmail.com",
+                "Name": "zayronxio"
+            }
+        ],
+        "Category": "",
+        "ServiceTypes": [
+            "Plasma/LookAndFeel"
+        ],
+        "Description": "theme that imitates the appearance of windows 11",
+        "Id": "windows.eleven.Dark.P6",
+        "License": "GPLv3+",
+        "Name": "windows Eleven Dark Plasma 6",
+        "Website": "https://store.kde.org/p/2140860"
+        },
+        "X-KPackage-Dependencies": [
+        "kns://colorschemes.knsrc/api.kde-look.org/2083780",
+        "kns://plasma-themes.knsrc/api.kde-look.org/1989107",
+        "kns://plasma-themes.knsrc/api.kde-look.org/2023421",
+        "kns://plasmoids.knsrc/api.kde-look.org/2137418",
+        "kns://plasmoids.knsrc/api.kde-look.org/2138251",
+        "kns://plasmoids.knsrc/api.kde-look.org/2139890",
+        "kns://plasmoids.knsrc/api.kde-look.org/2136307",
+        "kns://plasmoids.knsrc/api.kde-look.org/2179317",
+        "kns://plasmoids.knsrc/api.kde-look.org/2161461",
+        "kns://aurorae.knsrc/api.kde-look.org/1984455",
+        "kns://plasmoids.knsrc/api.kde-look.org/2168131",
+        "kns://plasmoids.knsrc/api.kde-look.org/2175475",
+        "kns://plasmoids.knsrc/api.kde-look.org/2171750",
+        "kns://wallpaper.knsrc/api.kde-look.org/2106013",
+        "kns://wallpaper.knsrc/api.kde-look.org/1978301",
+        "kns://wallpaper.knsrc/api.kde-look.org/1999772",
+        "kns://icons.knsrc/api.kde-look.org/1977340",
+        "kns://wallpaper.knsrc/api.kde-look.org/2181707",
+        "kns://plasmoids.knsrc/api.kde-look.org/2180887"
+         ]
+         }

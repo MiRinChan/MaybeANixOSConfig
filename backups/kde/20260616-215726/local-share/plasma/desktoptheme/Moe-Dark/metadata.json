@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "gicalucejo@gmail.com",
+                "Name": "jomada"
+            }
+        ],
+        "Category": "",
+        "Description": "Moe-Dark for Plasma",
+        "EnabledByDefault": true,
+        "Id": "Moe-Dark",
+        "License": "LGPL",
+        "Name": "Moe-Dark",
+        "Version": "3.0",
+        "Website": "https://seduccionlinux.wordpress.com"
+    },
+    "X-Plasma-API": "5.0"
+}

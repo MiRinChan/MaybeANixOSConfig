@@ -12,17 +12,24 @@ Per `README.txt`: not everything is declarative — the repo is authoritative fo
 nix fmt                                       # alejandra — required style
 nixos-rebuild build  --flake .#rins           # build without activating
 sudo nixos-rebuild switch --flake .#rins      # apply system config
-home-manager switch  --flake .#mirin          # apply user config standalone
+home-manager switch --flake .#mirin -b backup # apply user config
 nix build .#<name>                            # build a custom package from ./pkgs
 ```
 
-Home-manager is wired into the NixOS rebuild, so `nixos-rebuild switch` normally applies user config too. `home-manager.backupFileExtension = "backup"` is set — conflicting dotfiles get renamed to `*.backup`.
+`nh` equivalents:
+
+```sh
+nh os switch --ask --hostname rins ~/nixos-config
+nh home switch --ask --configuration mirin --backup-extension backup ~/nixos-config
+```
+
+Home-manager is intentionally separate from the NixOS rebuild. Run `nixos-rebuild` for system config and `home-manager switch` for user config. Use `-b backup` with standalone Home Manager so conflicting dotfiles get renamed to `*.backup`.
 
 ## File Map
 
 | Path | Role |
 |------|------|
-| `flake.nix` | Inputs, overlays, single `nixosConfigurations.rins` |
+| `flake.nix` | Inputs, overlays, `nixosConfigurations.rins`, `homeConfigurations.mirin` |
 | `flake.lock` | Pinned inputs — commit when running `nix flake update` |
 | `System32/configuration.nix` | Boot (lanzaboote), networking + firewall, plasma6/SDDM, flatpak, systemd tweaks, nix settings |
 | `System32/UsersConf.nix` | `users.users.mirin` (groups: wheel/adbusers/docker/uinput/video/render; shell zsh) |

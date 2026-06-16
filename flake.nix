@@ -100,6 +100,22 @@
     # 您可能想要导出可重复使用的 home-manager 模块
     # 这些通常是您要上传到 home-manager 的内容
     homeManagerModules = import ./modules/home-manager;
+    # Home Manager 配置入口点
+    # 可用 'home-manager switch --flake .#mirin'
+    homeConfigurations = {
+      mirin = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          flake-inputs = inputs;
+          catppuccin = catppuccin;
+        };
+        modules = [
+          ./Users/home.nix
+        ];
+      };
+    };
+
     # NixOS 配置入口点
     # 可用 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
@@ -112,7 +128,6 @@
           flatpak.nixosModules.nix-flatpak
           # > 主要 NixOS 配置文件 <
           ./System32/configuration.nix
-          home-manager.nixosModules.home-manager # home manager
           catppuccin.nixosModules.catppuccin
           nur.modules.nixos.default
           lanzaboote.nixosModules.lanzaboote
@@ -130,16 +145,6 @@
           #     rust-analyzer-nightly
           #   ];
           # })
-          {
-            home-manager.useUserPackages = true;
-            home-manager.users.mirin = import ./Users/home.nix;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {
-              inherit inputs outputs;
-            };
-            home-manager.extraSpecialArgs.flake-inputs = inputs;
-            home-manager.extraSpecialArgs.catppuccin = catppuccin;
-          }
         ];
       };
     };

@@ -21,18 +21,7 @@
       eval "$(direnv hook zsh)"
       eval $(ssh-agent -s) > /dev/null 2>&1
     '';
-
     shellAliases = {
-      rebuild = "nh os switch ~/nixos-config --ask && systemctl --user restart plasma-plasmashell.service";
-      proxy = ''
-        export ALL_PROXY=socks5://127.0.0.1:2080
-        export HTTP_PROXY=http://127.0.0.1:2080
-        export HTTPS_PROXY=http://127.0.0.1:2080'';
-      deproxy = ''
-        unset ALL_PROXY
-        unset HTTP_PROXY
-        unset HTTPS_PROXY'';
-      ls = "eza";
       XTERM = "export TERM=xterm";
     };
     history = {
@@ -45,6 +34,28 @@
       theme = "";
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    waypipe # Running Wayland applications over SSH with Waypipe
+    (writeShellScriptBin "wff" ''
+      exec ${waypipe}/bin/waypipe --no-gpu ssh "$1" \
+        env MOZ_ENABLE_WAYLAND=1 XDG_SESSION_TYPE=wayland \
+        firefox --new-instance "''${@:2}"
+    '') # Firefox at remote
+    (writeShellScriptBin "proxy" ''
+      export ALL_PROXY=socks5://127.0.0.1:2080
+      export HTTP_PROXY=http://127.0.0.1:2080
+      export HTTPS_PROXY=http://127.0.0.1:2080
+    '') # Set up proxy
+    (writeShellScriptBin "deproxy" ''
+      unset ALL_PROXY
+      unset HTTP_PROXY
+      unset HTTPS_PROXY
+    '') # Unset proxy
+    (writeShellScriptBin "rebuild" ''
+      nh os switch ~/nixos-config --ask && systemctl --user restart plasma-plasmashell.service
+    '') # Rebuild
+  ];
 
   programs.kitty = {
     enable = true;

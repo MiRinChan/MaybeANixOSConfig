@@ -59,6 +59,7 @@
     kdePackages.breeze-icons
     adwaita-icon-theme
     iloader
+    waypipe
   ];
 
   programs.zsh.enable = true;

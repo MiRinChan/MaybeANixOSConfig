@@ -1,0 +1,5 @@
+[FrameBuffer]
+preferredFrameBufferPlugin=pw
+
+[Security]
+allowUnattendedAccess=false

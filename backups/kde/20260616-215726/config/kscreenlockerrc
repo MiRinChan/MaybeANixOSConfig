@@ -1,0 +1,13 @@
+[Greeter][Wallpaper][com.github.catsout.wallpaperEngineKde][General]
+FilterStr=011011110111111111111111111111111111
+Fps=60
+MouseInput=false
+PauseFilterByScreen=false
+SteamLibraryPath[$e]=file:$HOME/.local/share/Steam
+VideoBackend=1
+WallpaperSource[$e]=file:$HOME/.local/share/Steam/steamapps/workshop/content/431960/2677973855/miku.mp4+video
+WallpaperWorkShopId=2677973855
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=/home/mirin/Pictures/v2-76efa32deb7d299c06b3ddf5735f81ac_r.png
+PreviewImage=/home/mirin/Pictures/v2-76efa32deb7d299c06b3ddf5735f81ac_r.png

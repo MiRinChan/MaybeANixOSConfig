@@ -35,7 +35,7 @@ MoveResize=100
 [Effect-windowview]
 BorderActivateAll=5
 
-[Effect-ًRound-Corners]
+[Effect-Round-Corners]
 ActiveOutlineUseCustom=false
 ActiveOutlineUsePalette=true
 InactiveCornerRadius=7
@@ -197,12 +197,3 @@ BorderSize=Normal
 BorderSizeAuto=false
 library=org.kde.klassy
 theme=Klassy
-
-[ًRound-Corners]
-AnimationEnabled=false
-InactiveCornerRadius=8
-InactiveShadowColor=255,255,255
-InactiveShadowSize=38
-ShadowColor=255,255,255
-ShadowSize=38
-Size=8

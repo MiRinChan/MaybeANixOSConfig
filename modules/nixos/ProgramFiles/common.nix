@@ -42,7 +42,8 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    pkgs.stable.kde-rounded-corners # Rounded
+    klassy-qt6 # KWin decoration/style plugin must be visible to the Plasma session.
+    pkgs.kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg
     gphoto2

@@ -6,21 +6,7 @@
   config,
   pkgs,
   ...
-}: let
-  codexSettings = {
-    features.memories = true;
-    memories.disable_on_external_context = true;
-    mcp_servers.nixos = {
-      command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-      enabled = true;
-    };
-    mcp_servers.git = {
-      command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-      enabled = true;
-    };
-  };
-  codexSystemConfig = (pkgs.formats.toml {}).generate "codex-config" codexSettings;
-in {
+}: {
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
@@ -217,7 +203,6 @@ in {
 
   # Make electron and Chrome happy.
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.etc."codex/config.toml".source = codexSystemConfig;
   programs.dconf.enable = true;
 
   # Flatpak

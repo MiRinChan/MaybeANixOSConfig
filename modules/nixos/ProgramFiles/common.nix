@@ -37,6 +37,16 @@
     alsa-utils # provide CLI
     devenv # provide code envireoment
     kdePackages.filelight # Quickly visualize your disk space usage
+    # KDE/desktop accessibility tools. Installed only; services and autostart stay manual.
+    maliit-keyboard # Wayland virtual keyboard
+    kdePackages.qtvirtualkeyboard # Qt virtual keyboard plugin
+    orca # Screen reader
+    speechd # Speech Dispatcher
+    espeak # Speech synthesizer
+    kdePackages.kmag # Screen magnifier
+    kdePackages.kmouth # Type-and-say front end for speech synthesizers
+    kdePackages.kmousetool # Automatic mouse click helper
+    kdePackages.kcharselect # Special character selector
     gparted # provide a gui for parted
     pkgs.sbctl # For debugging and troubleshooting Secure Boot.
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
@@ -94,6 +104,18 @@
     # Allow the Tailscale UDP port through the firewall
     allowedUDPPorts = [config.services.tailscale.port];
   };
+
+  systemd.services.tailscaled.postStart = ''
+    for i in $(${pkgs.coreutils}/bin/seq 1 30); do
+      if ${pkgs.iptables}/bin/iptables -S ts-input >/dev/null 2>&1; then
+        ${pkgs.iptables}/bin/iptables -C ts-input -i lo -s 100.64.0.0/10 -j ACCEPT 2>/dev/null || \
+        ${pkgs.iptables}/bin/iptables -I ts-input 1 -i lo -s 100.64.0.0/10 -j ACCEPT || true
+        exit 0
+      fi
+      ${pkgs.coreutils}/bin/sleep 0.2
+    done
+    exit 0
+  '';
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos
 }

@@ -12,587 +12,587 @@ in {
   # unmanaged KDE settings during activation. Turn it on only after this module is
   # proven complete for your session, panels, shortcuts, wallpaper plugins, and
   # application-specific settings.
-  programs.plasma = {
-    enable = true;
-    overrideConfig = false;
+  # programs.plasma = {
+  #   enable = true;
+  #   overrideConfig = false;
 
-    # Workspace: global theme, Plasma style, color scheme, icons, cursor, and wallpaper.
-    workspace = {
-      theme = "Scratchy";
-      colorScheme = "CatppuccinMochaFlamingo";
-      iconTheme = "Eleven-Dark";
-      cursor.theme = "WhiteSur-cursors";
-      wallpaper = lockWallpaper;
-    };
+  #   # Workspace: global theme, Plasma style, color scheme, icons, cursor, and wallpaper.
+  #   workspace = {
+  #     theme = "Scratchy";
+  #     colorScheme = "CatppuccinMochaFlamingo";
+  #     iconTheme = "Eleven-Dark";
+  #     cursor.theme = "WhiteSur-cursors";
+  #     wallpaper = lockWallpaper;
+  #   };
 
-    # Panels: translated manually from plasma-org.kde.plasma.desktop-appletsrc.
-    panels = [
-      {
-        height = 28;
-        location = "top";
-        screen = 0;
-        floating = false;
-        hiding = "autohide";
-        lengthMode = "fill";
-        offset = 0;
-        opacity = "adaptive";
-        widgets = [
-          {
-            kickoff = {
-              icon = "nix-snowflake-white";
-              label = "Start";
-              sortAlphabetically = true;
-              applicationsDisplayMode = "grid";
-              showButtonsFor = "powerAndSession";
-              showActionButtonCaptions = false;
-              popupHeight = 505;
-              popupWidth = 645;
-              settings.General.favoritesPortedToKAstats = true;
-            };
-          }
-          "org.kde.plasma.panelspacer"
-          {
-            systemTray = {
-              settings.config = {
-                popupHeight = 434;
-                popupWidth = 432;
-              };
-              items.extra = [
-                "org.kde.plasma.battery"
-                "org.kde.plasma.brightness"
-                "org.kde.plasma.cameraindicator"
-                "org.kde.plasma.clipboard"
-                "org.kde.plasma.devicenotifier"
-                "org.kde.plasma.manage-inputmethod"
-                "org.kde.plasma.mediacontroller"
-                "org.kde.plasma.notifications"
-                "org.kde.kscreen"
-                "org.kde.plasma.keyboardindicator"
-                "org.kde.plasma.keyboardlayout"
-                "org.kde.plasma.networkmanagement"
-                "org.kde.plasma.volume"
-                "org.kde.plasma.weather"
-                "org.kde.kdeconnect"
-              ];
-              items.shown = ["KGpg"];
-              items.configs."org.kde.plasma.weather".config = {
-                Appearance = {
-                  showTemperatureInBadge = true;
-                  showTemperatureInCompactMode = true;
-                };
-                Units = {
-                  pressureUnit = 5007;
-                  speedUnit = 9000;
-                  temperatureUnit = 6001;
-                  visibilityUnit = 2007;
-                };
-                WeatherStation = {
-                  placeDisplayName = "Shenzhen, China, CN";
-                  placeInfo = "Shenzhen, China, CN|1795565";
-                  provider = "bbcukmet";
-                };
-              };
-            };
-          }
-          "org.kde.plasma.marginsseparator"
-          {
-            digitalClock = {
-              date.format = "isoDate";
-              font = {
-                family = "Noto Sans";
-                size = 15;
-                style = "Bold";
-              };
-              settings.Appearance = {
-                customSpacing = 1.7;
-                enabledCalendarPlugins = "/usr/lib/qt5/plugins/plasmacalendarplugins/holidaysevents.so,holidaysevents,alternatecalendar";
-                fixedFont = true;
-              };
-            };
-          }
-        ];
-      }
-      {
-        height = 28;
-        location = "bottom";
-        screen = 0;
-        hiding = "autohide";
-        floating = false;
-        lengthMode = "fill";
-        offset = 0;
-        widgets = [
-          {
-            iconTasks = {
-              iconsOnly = false;
-              settings.General = {
-                groupedTaskVisualization = 1;
-                launchers = "";
-              };
-            };
-          }
-          "org.kde.plasma.showdesktop"
-        ];
-      }
-    ];
-    startup.desktopScript."force-panel-autohide" = {
-      priority = 8;
-      runAlways = true;
+  #   # Panels: translated manually from plasma-org.kde.plasma.desktop-appletsrc.
+  #   panels = [
+  #     {
+  #       height = 28;
+  #       location = "top";
+  #       screen = 0;
+  #       floating = false;
+  #       hiding = "autohide";
+  #       lengthMode = "fill";
+  #       offset = 0;
+  #       opacity = "adaptive";
+  #       widgets = [
+  #         {
+  #           kickoff = {
+  #             icon = "nix-snowflake-white";
+  #             label = "Start";
+  #             sortAlphabetically = true;
+  #             applicationsDisplayMode = "grid";
+  #             showButtonsFor = "powerAndSession";
+  #             showActionButtonCaptions = false;
+  #             popupHeight = 505;
+  #             popupWidth = 645;
+  #             settings.General.favoritesPortedToKAstats = true;
+  #           };
+  #         }
+  #         "org.kde.plasma.panelspacer"
+  #         {
+  #           systemTray = {
+  #             settings.config = {
+  #               popupHeight = 434;
+  #               popupWidth = 432;
+  #             };
+  #             items.extra = [
+  #               "org.kde.plasma.battery"
+  #               "org.kde.plasma.brightness"
+  #               "org.kde.plasma.cameraindicator"
+  #               "org.kde.plasma.clipboard"
+  #               "org.kde.plasma.devicenotifier"
+  #               "org.kde.plasma.manage-inputmethod"
+  #               "org.kde.plasma.mediacontroller"
+  #               "org.kde.plasma.notifications"
+  #               "org.kde.kscreen"
+  #               "org.kde.plasma.keyboardindicator"
+  #               "org.kde.plasma.keyboardlayout"
+  #               "org.kde.plasma.networkmanagement"
+  #               "org.kde.plasma.volume"
+  #               "org.kde.plasma.weather"
+  #               "org.kde.kdeconnect"
+  #             ];
+  #             items.shown = ["KGpg"];
+  #             items.configs."org.kde.plasma.weather".config = {
+  #               Appearance = {
+  #                 showTemperatureInBadge = true;
+  #                 showTemperatureInCompactMode = true;
+  #               };
+  #               Units = {
+  #                 pressureUnit = 5007;
+  #                 speedUnit = 9000;
+  #                 temperatureUnit = 6001;
+  #                 visibilityUnit = 2007;
+  #               };
+  #               WeatherStation = {
+  #                 placeDisplayName = "Shenzhen, China, CN";
+  #                 placeInfo = "Shenzhen, China, CN|1795565";
+  #                 provider = "bbcukmet";
+  #               };
+  #             };
+  #           };
+  #         }
+  #         "org.kde.plasma.marginsseparator"
+  #         {
+  #           digitalClock = {
+  #             date.format = "isoDate";
+  #             font = {
+  #               family = "Noto Sans";
+  #               size = 15;
+  #               style = "Bold";
+  #             };
+  #             settings.Appearance = {
+  #               customSpacing = 1.7;
+  #               enabledCalendarPlugins = "/usr/lib/qt5/plugins/plasmacalendarplugins/holidaysevents.so,holidaysevents,alternatecalendar";
+  #               fixedFont = true;
+  #             };
+  #           };
+  #         }
+  #       ];
+  #     }
+  #     {
+  #       height = 28;
+  #       location = "bottom";
+  #       screen = 0;
+  #       hiding = "autohide";
+  #       floating = false;
+  #       lengthMode = "fill";
+  #       offset = 0;
+  #       widgets = [
+  #         {
+  #           iconTasks = {
+  #             iconsOnly = false;
+  #             settings.General = {
+  #               groupedTaskVisualization = 1;
+  #               launchers = "";
+  #             };
+  #           };
+  #         }
+  #         "org.kde.plasma.showdesktop"
+  #       ];
+  #     }
+  #   ];
+  #   startup.desktopScript."force-panel-autohide" = {
+  #     priority = 8;
+  #     runAlways = true;
 
-      text = ''
-        for (const id of panelIds) {
-          const panel = panelById(id);
-          panel.hiding = "autohide";
-          panel.floating = false;
-        }
-      '';
-    };
-    # Desktop containment: folder view and mouse actions.
-    desktop = {
-      icons = {
-        alignment = "right";
-        sorting.mode = "manual";
-      };
-      mouseActions = {
-        middleClick = "applicationLauncher";
-        rightClick = "contextMenu";
-      };
-    };
+  #     text = ''
+  #       for (const id of panelIds) {
+  #         const panel = panelById(id);
+  #         panel.hiding = "autohide";
+  #         panel.floating = false;
+  #       }
+  #     '';
+  #   };
+  #   # Desktop containment: folder view and mouse actions.
+  #   desktop = {
+  #     icons = {
+  #       alignment = "right";
+  #       sorting.mode = "manual";
+  #     };
+  #     mouseActions = {
+  #       middleClick = "applicationLauncher";
+  #       rightClick = "contextMenu";
+  #     };
+  #   };
 
-    # KWin: effects/desktops/tiling stay in configFile because the native module
-    # rewrites plugin toggles and desktop IDs differently from the backup.
-    kwin = {
-      nightLight.enable = true;
-    };
+  #   # KWin: effects/desktops/tiling stay in configFile because the native module
+  #   # rewrites plugin toggles and desktop IDs differently from the backup.
+  #   kwin = {
+  #     nightLight.enable = true;
+  #   };
 
-    # Shortcuts: only non-default meaningful shortcuts from kglobalshortcutsrc.
-    shortcuts = {
-      "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
-      "kwin"."Grid View" = ["Meta+Tab" "Meta+G"];
-      "kwin"."Switch to Desktop 1" = "Ctrl+F1";
-      "kwin"."Switch to Desktop 2" = "Ctrl+F2";
-      "kwin"."Switch to Desktop 3" = "Ctrl+F3";
-      "kwin"."Switch to Desktop 4" = "Ctrl+F4";
-      "kwin"."Walk Through Windows" = "Alt+Tab";
-      "kwin"."Walk Through Windows (Reverse)" = "Alt+Shift+Tab";
-      "kwin"."Walk Through Windows of Current Application" = "Alt+`";
-      "kwin"."Walk Through Windows of Current Application (Reverse)" = "Alt+~";
-      "plasmashell"."activate application launcher" = "Meta";
-      "plasmashell"."next activity" = "Meta+A";
-      "plasmashell"."previous activity" = "Meta+Shift+A";
-      "services/org.kde.touchpadshortcuts.desktop"."ToggleTouchpad" = [
-        "Touchpad Toggle"
-        "Meta+Ctrl+Zenkaku Hankaku"
-      ];
-    };
+  #   # Shortcuts: only non-default meaningful shortcuts from kglobalshortcutsrc.
+  #   shortcuts = {
+  #     "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
+  #     "kwin"."Grid View" = ["Meta+Tab" "Meta+G"];
+  #     "kwin"."Switch to Desktop 1" = "Ctrl+F1";
+  #     "kwin"."Switch to Desktop 2" = "Ctrl+F2";
+  #     "kwin"."Switch to Desktop 3" = "Ctrl+F3";
+  #     "kwin"."Switch to Desktop 4" = "Ctrl+F4";
+  #     "kwin"."Walk Through Windows" = "Alt+Tab";
+  #     "kwin"."Walk Through Windows (Reverse)" = "Alt+Shift+Tab";
+  #     "kwin"."Walk Through Windows of Current Application" = "Alt+`";
+  #     "kwin"."Walk Through Windows of Current Application (Reverse)" = "Alt+~";
+  #     "plasmashell"."activate application launcher" = "Meta";
+  #     "plasmashell"."next activity" = "Meta+A";
+  #     "plasmashell"."previous activity" = "Meta+Shift+A";
+  #     "services/org.kde.touchpadshortcuts.desktop"."ToggleTouchpad" = [
+  #       "Touchpad Toggle"
+  #       "Meta+Ctrl+Zenkaku Hankaku"
+  #     ];
+  #   };
 
-    # Custom hotkey commands: khotkeysrc was absent in the backup.
-    hotkeys.commands = {};
+  #   # Custom hotkey commands: khotkeysrc was absent in the backup.
+  #   hotkeys.commands = {};
 
-    # Input: keyboard layout is native; repeat and generic X11 mouse flags fall back below.
-    input.keyboard.layouts = [
-      {layout = "us";}
-    ];
+  #   # Input: keyboard layout is native; repeat and generic X11 mouse flags fall back below.
+  #   input.keyboard.layouts = [
+  #     {layout = "us";}
+  #   ];
 
-    # Fonts from kdeglobals.
-    fonts = {
-      general = {
-        family = "Noto Sans";
-        pointSize = 10;
-      };
-      fixedWidth = {
-        family = "Maple Mono NF CN";
-        pointSize = 10;
-      };
-      menu = {
-        family = "Noto Sans";
-        pointSize = 10;
-      };
-      small = {
-        family = "Noto Sans";
-        pointSize = 8;
-      };
-      toolbar = {
-        family = "Noto Sans";
-        pointSize = 10;
-      };
-      windowTitle = {
-        family = "Noto Sans";
-        pointSize = 10;
-      };
-    };
+  #   # Fonts from kdeglobals.
+  #   fonts = {
+  #     general = {
+  #       family = "Noto Sans";
+  #       pointSize = 10;
+  #     };
+  #     fixedWidth = {
+  #       family = "Maple Mono NF CN";
+  #       pointSize = 10;
+  #     };
+  #     menu = {
+  #       family = "Noto Sans";
+  #       pointSize = 10;
+  #     };
+  #     small = {
+  #       family = "Noto Sans";
+  #       pointSize = 8;
+  #     };
+  #     toolbar = {
+  #       family = "Noto Sans";
+  #       pointSize = 10;
+  #     };
+  #     windowTitle = {
+  #       family = "Noto Sans";
+  #       pointSize = 10;
+  #     };
+  #   };
 
-    krunner.shortcuts.launch = [
-      "Alt+Space"
-      "Search"
-    ];
+  #   krunner.shortcuts.launch = [
+  #     "Alt+Space"
+  #     "Search"
+  #   ];
 
-    kscreenlocker.appearance.wallpaper = lockWallpaper;
+  #   kscreenlocker.appearance.wallpaper = lockWallpaper;
 
-    spectacle.shortcuts = {
-      captureEntireDesktop = "Print";
-      captureRectangularRegion = "Alt+F1";
-      launch = "Meta+Shift+S";
-    };
+  #   spectacle.shortcuts = {
+  #     captureEntireDesktop = "Print";
+  #     captureRectangularRegion = "Alt+F1";
+  #     launch = "Meta+Shift+S";
+  #   };
 
-    # Fallback: rc keys without native plasma-manager equivalents, or where the
-    # native option cannot preserve the exact original semantics.
-    configFile = {
-      "dolphinrc" = {
-        "General" = {
-          ViewMode = 1; # 1 = Details
-          GlobalViewProps = true;
-          FilterBar = true; # 默认打开 Filter Bar
-        };
+  #   # Fallback: rc keys without native plasma-manager equivalents, or where the
+  #   # native option cannot preserve the exact original semantics.
+  #   configFile = {
+  #     "dolphinrc" = {
+  #       "General" = {
+  #         ViewMode = 1; # 1 = Details
+  #         GlobalViewProps = true;
+  #         FilterBar = true; # 默认打开 Filter Bar
+  #       };
 
-        "DetailsMode" = {
-          IconSize = 22; # detail view 第二档
-          PreviewSize = 22;
-        };
+  #       "DetailsMode" = {
+  #         IconSize = 22; # detail view 第二档
+  #         PreviewSize = 22;
+  #       };
 
-        "PlacesPanel" = {
-          IconSize = 16; # 左侧 Places / 快捷栏小图标
-        };
-      };
+  #       "PlacesPanel" = {
+  #         IconSize = 16; # 左侧 Places / 快捷栏小图标
+  #       };
+  #     };
 
-      "kdeglobals" = {
-        "General" = {
-          AccentColor = "202,165,246";
-          LastUsedCustomAccentColor = "202,165,246";
-          TerminalApplication = "kitty";
-          TerminalService = "kitty.desktop";
-          XftHintStyle = "hintslight";
-          XftSubPixel = "none";
-        };
-        "KDE" = {
-          AnimationDurationFactor = 0.5;
-          LookAndFeelPackage = "org.kde.breezedark.desktop";
-          ShowDeleteCommand = false;
-          widgetStyle = "Klassy";
-        };
-        "KFileDialog Settings" = {
-          "Allow Expansion" = false;
-          "Automatically select filename extension" = true;
-          "Breadcrumb Navigation" = false;
-          "Decoration position" = 2;
-          "Show Full Path" = false;
-          "Show Inline Previews" = true;
-          "Show Preview" = false;
-          "Show Speedbar" = true;
-          "Show hidden files" = false;
-          "Sort by" = "Date";
-          "Sort directories first" = true;
-          "Sort hidden files last" = false;
-          "Sort reversed" = false;
-          "Speedbar Width" = 140;
-          "View Style" = "DetailTree";
-        };
-        "KScreen" = {
-          ScaleFactor = 1.5;
-          ScreenScaleFactors = "DP-2=1.5;";
-        };
-        "KShortcutsDialog Settings"."Dialog Size" = "600,480";
-        "PreviewSettings" = {
-          EnableRemoteFolderThumbnail = false;
-          MaximumRemoteSize = 0;
-        };
-        "WM" = {
-          activeBackground = "30,30,46";
-          activeBlend = "205,214,244";
-          activeForeground = "205,214,244";
-          inactiveBackground = "17,17,27";
-          inactiveBlend = "166,173,200";
-          inactiveForeground = "166,173,200";
-        };
-      };
+  #     "kdeglobals" = {
+  #       "General" = {
+  #         AccentColor = "202,165,246";
+  #         LastUsedCustomAccentColor = "202,165,246";
+  #         TerminalApplication = "kitty";
+  #         TerminalService = "kitty.desktop";
+  #         XftHintStyle = "hintslight";
+  #         XftSubPixel = "none";
+  #       };
+  #       "KDE" = {
+  #         AnimationDurationFactor = 0.5;
+  #         LookAndFeelPackage = "org.kde.breezedark.desktop";
+  #         ShowDeleteCommand = false;
+  #         widgetStyle = "Klassy";
+  #       };
+  #       "KFileDialog Settings" = {
+  #         "Allow Expansion" = false;
+  #         "Automatically select filename extension" = true;
+  #         "Breadcrumb Navigation" = false;
+  #         "Decoration position" = 2;
+  #         "Show Full Path" = false;
+  #         "Show Inline Previews" = true;
+  #         "Show Preview" = false;
+  #         "Show Speedbar" = true;
+  #         "Show hidden files" = false;
+  #         "Sort by" = "Date";
+  #         "Sort directories first" = true;
+  #         "Sort hidden files last" = false;
+  #         "Sort reversed" = false;
+  #         "Speedbar Width" = 140;
+  #         "View Style" = "DetailTree";
+  #       };
+  #       "KScreen" = {
+  #         ScaleFactor = 1.5;
+  #         ScreenScaleFactors = "DP-2=1.5;";
+  #       };
+  #       "KShortcutsDialog Settings"."Dialog Size" = "600,480";
+  #       "PreviewSettings" = {
+  #         EnableRemoteFolderThumbnail = false;
+  #         MaximumRemoteSize = 0;
+  #       };
+  #       "WM" = {
+  #         activeBackground = "30,30,46";
+  #         activeBlend = "205,214,244";
+  #         activeForeground = "205,214,244";
+  #         inactiveBackground = "17,17,27";
+  #         inactiveBlend = "166,173,200";
+  #         inactiveForeground = "166,173,200";
+  #       };
+  #     };
 
-      "kwinrc" = {
-        "Desktops" = {
-          Id_1 = "769c77b7-3750-4f4b-bcba-40aca91ef951";
-          Id_2 = "3fd9b9ce-3310-4039-9d94-7f88523de5d7";
-          Number = 2;
-          Rows = 1;
-        };
-        "Effect-blur".BlurStrength = 13;
-        "Effect-blurplus" = {
-          BlurStrength = 10;
-          BottomCornerRadius = 5;
-          DockCornerRadius = 6;
-          MenuCornerRadius = 6;
-          NoiseStrength = 1;
-          TopCornerRadius = 6;
-          WindowClasses = "firefox";
-        };
-        "Effect-login".FadeToBlack = true;
-        "Effect-magiclamp".AnimationDuration = 300;
-        "Effect-overview".BorderActivate = 9;
-        "Effect-trackmouse".Meta = false;
-        "Effect-translucency" = {
-          Inactive = 100;
-          MoveResize = 100;
-        };
-        "Effect-windowview".BorderActivateAll = 5;
-        "ElectricBorders".BottomRight = "ShowDesktop";
-        "IncludeExclude".Exclusions = "cs2";
-        "Plugins" = {
-          blurEnabled = true;
-          contrastEnabled = true;
-          dimscreenEnabled = true;
-          "fcitx-auto-switchEnabled" = false;
-          eyeonscreenEnabled = true;
-          fadeEnabled = null;
-          glideEnabled = true;
-          kwin4_effect_lightlyshadersEnabled = true;
-          kwin_effect_lightlyshadersEnabled = false;
-          lightlyshaders_blurEnabled = false;
-          magiclampEnabled = null;
-          minecraft_keyrepeatEnabled = true;
-          morphingpopupsEnabled = false;
-          scaleEnabled = false;
-          screenedgeEnabled = false;
-          sheetEnabled = true;
-          shakecursorEnabled = false;
-          squashEnabled = null;
-          tileseditorEnabled = false;
-          translucencyEnabled = false;
-          windowapertureEnabled = false;
-          windowviewEnabled = false;
-          kwin4_effect_shapecornersEnabled = true;
-        };
-        "PrimaryOutline" = {
-          ActiveOutlinePalette = 7;
-          InactiveOutlineColor = "55,55,69";
-          InactiveOutlinePalette = 7;
-          InactiveOutlineThickness = 0.8;
-          OutlineColor = "55,55,69";
-          OutlinePalette = null;
-          OutlineThickness = 0.8;
-        };
-        "Round-Corners" = {
-          ActiveOutlineAlpha = 255;
-          ActiveOutlinePalette = 10;
-          ActiveOutlineUseCustom = false;
-          ActiveOutlineUsePalette = true;
-          Exclusions = "com.usebottles.bottles,com.github.neithern.g4music,com.github.wwmm.easyeffects,eu.ithz.umftpd,Galaxy Flasher,tsukimi";
-          InactiveCornerRadius = 8;
-          InactiveOutlineAlpha = 255;
-          InactiveOutlineColor = "46,46,46";
-          InactiveOutlinePalette = 10;
-          InactiveOutlineThickness = 0.75;
-          InactiveOutlineUseCustom = false;
-          InactiveOutlineUsePalette = true;
-          InactiveSecondOutlineColor = "46,46,46";
-          InactiveSecondOutlineThickness = 1.48;
-          OutlineColor = "46,46,46";
-          OutlineThickness = 0.75;
-          SecondOutlineColor = "46,46,46";
-          SecondOutlineThickness = 1.48;
-          Size = 8;
-        };
-        "SecondOutline" = {
-          ActiveSecondOutlinePalette = 7;
-          InactiveSecondOutlineColor = "55,55,69";
-          InactiveSecondOutlinePalette = 7;
-          InactiveSecondOutlineThickness = 1.01;
-          SecondOutlineColor = "55,55,69";
-          SecondOutlineThickness = 1.01;
-        };
-        "Shadow" = {
-          ActiveShadowAlpha = 43;
-          InactiveShadowAlpha = 43;
-        };
-        "Tiling/769c77b7-3750-4f4b-bcba-40aca91ef951".tiles = null;
-        "Tiling/Desktop_1/8abe6616-42d6-43cf-928e-0c45a06e15a4" = {
-          padding = null;
-          tiles = null;
-        };
-        "Tiling/Desktop_2/8abe6616-42d6-43cf-928e-0c45a06e15a4" = {
-          padding = null;
-          tiles = null;
-        };
-        "Wayland" = {
-          InputMethod = {
-            value = "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
-            shellExpand = true;
-          };
-          "InputMethod[$e]" = null;
-          VirtualKeyboardEnabled = true;
-        };
-        "Windows_HDR" = {
-          MaxFrameAverage = 0;
-          MaxLuminance = 440;
-          Reference = 180;
-        };
-        "Xwayland" = {
-          Scale = 1.5;
-          XwaylandEavesdrops = "None";
-        };
-        "org.kde.kdecoration2" = {
-          BorderSize = "Normal";
-          BorderSizeAuto = false;
-          library = "org.kde.klassy";
-          theme = "Klassy";
-        };
-        "ًRound-Corners" = {
-          AnimationEnabled = false;
-          InactiveCornerRadius = 8;
-          InactiveShadowColor = "255,255,255";
-          InactiveShadowSize = 38;
-          ShadowColor = "255,255,255";
-          ShadowSize = 38;
-          Size = 8;
-        };
-      };
+  #     "kwinrc" = {
+  #       "Desktops" = {
+  #         Id_1 = "769c77b7-3750-4f4b-bcba-40aca91ef951";
+  #         Id_2 = "3fd9b9ce-3310-4039-9d94-7f88523de5d7";
+  #         Number = 2;
+  #         Rows = 1;
+  #       };
+  #       "Effect-blur".BlurStrength = 13;
+  #       "Effect-blurplus" = {
+  #         BlurStrength = 10;
+  #         BottomCornerRadius = 5;
+  #         DockCornerRadius = 6;
+  #         MenuCornerRadius = 6;
+  #         NoiseStrength = 1;
+  #         TopCornerRadius = 6;
+  #         WindowClasses = "firefox";
+  #       };
+  #       "Effect-login".FadeToBlack = true;
+  #       "Effect-magiclamp".AnimationDuration = 300;
+  #       "Effect-overview".BorderActivate = 9;
+  #       "Effect-trackmouse".Meta = false;
+  #       "Effect-translucency" = {
+  #         Inactive = 100;
+  #         MoveResize = 100;
+  #       };
+  #       "Effect-windowview".BorderActivateAll = 5;
+  #       "ElectricBorders".BottomRight = "ShowDesktop";
+  #       "IncludeExclude".Exclusions = "cs2";
+  #       "Plugins" = {
+  #         blurEnabled = true;
+  #         contrastEnabled = true;
+  #         dimscreenEnabled = true;
+  #         "fcitx-auto-switchEnabled" = false;
+  #         eyeonscreenEnabled = true;
+  #         fadeEnabled = null;
+  #         glideEnabled = true;
+  #         kwin4_effect_lightlyshadersEnabled = true;
+  #         kwin_effect_lightlyshadersEnabled = false;
+  #         lightlyshaders_blurEnabled = false;
+  #         magiclampEnabled = null;
+  #         minecraft_keyrepeatEnabled = true;
+  #         morphingpopupsEnabled = false;
+  #         scaleEnabled = false;
+  #         screenedgeEnabled = false;
+  #         sheetEnabled = true;
+  #         shakecursorEnabled = false;
+  #         squashEnabled = null;
+  #         tileseditorEnabled = false;
+  #         translucencyEnabled = false;
+  #         windowapertureEnabled = false;
+  #         windowviewEnabled = false;
+  #         kwin4_effect_shapecornersEnabled = true;
+  #       };
+  #       "PrimaryOutline" = {
+  #         ActiveOutlinePalette = 7;
+  #         InactiveOutlineColor = "55,55,69";
+  #         InactiveOutlinePalette = 7;
+  #         InactiveOutlineThickness = 0.8;
+  #         OutlineColor = "55,55,69";
+  #         OutlinePalette = null;
+  #         OutlineThickness = 0.8;
+  #       };
+  #       "Round-Corners" = {
+  #         ActiveOutlineAlpha = 255;
+  #         ActiveOutlinePalette = 10;
+  #         ActiveOutlineUseCustom = false;
+  #         ActiveOutlineUsePalette = true;
+  #         Exclusions = "com.usebottles.bottles,com.github.neithern.g4music,com.github.wwmm.easyeffects,eu.ithz.umftpd,Galaxy Flasher,tsukimi";
+  #         InactiveCornerRadius = 8;
+  #         InactiveOutlineAlpha = 255;
+  #         InactiveOutlineColor = "46,46,46";
+  #         InactiveOutlinePalette = 10;
+  #         InactiveOutlineThickness = 0.75;
+  #         InactiveOutlineUseCustom = false;
+  #         InactiveOutlineUsePalette = true;
+  #         InactiveSecondOutlineColor = "46,46,46";
+  #         InactiveSecondOutlineThickness = 1.48;
+  #         OutlineColor = "46,46,46";
+  #         OutlineThickness = 0.75;
+  #         SecondOutlineColor = "46,46,46";
+  #         SecondOutlineThickness = 1.48;
+  #         Size = 8;
+  #       };
+  #       "SecondOutline" = {
+  #         ActiveSecondOutlinePalette = 7;
+  #         InactiveSecondOutlineColor = "55,55,69";
+  #         InactiveSecondOutlinePalette = 7;
+  #         InactiveSecondOutlineThickness = 1.01;
+  #         SecondOutlineColor = "55,55,69";
+  #         SecondOutlineThickness = 1.01;
+  #       };
+  #       "Shadow" = {
+  #         ActiveShadowAlpha = 43;
+  #         InactiveShadowAlpha = 43;
+  #       };
+  #       "Tiling/769c77b7-3750-4f4b-bcba-40aca91ef951".tiles = null;
+  #       "Tiling/Desktop_1/8abe6616-42d6-43cf-928e-0c45a06e15a4" = {
+  #         padding = null;
+  #         tiles = null;
+  #       };
+  #       "Tiling/Desktop_2/8abe6616-42d6-43cf-928e-0c45a06e15a4" = {
+  #         padding = null;
+  #         tiles = null;
+  #       };
+  #       "Wayland" = {
+  #         InputMethod = {
+  #           value = "/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop";
+  #           shellExpand = true;
+  #         };
+  #         "InputMethod[$e]" = null;
+  #         VirtualKeyboardEnabled = true;
+  #       };
+  #       "Windows_HDR" = {
+  #         MaxFrameAverage = 0;
+  #         MaxLuminance = 440;
+  #         Reference = 180;
+  #       };
+  #       "Xwayland" = {
+  #         Scale = 1.5;
+  #         XwaylandEavesdrops = "None";
+  #       };
+  #       "org.kde.kdecoration2" = {
+  #         BorderSize = "Normal";
+  #         BorderSizeAuto = false;
+  #         library = "org.kde.klassy";
+  #         theme = "Klassy";
+  #       };
+  #       "ًRound-Corners" = {
+  #         AnimationEnabled = false;
+  #         InactiveCornerRadius = 8;
+  #         InactiveShadowColor = "255,255,255";
+  #         InactiveShadowSize = 38;
+  #         ShadowColor = "255,255,255";
+  #         ShadowSize = 38;
+  #         Size = 8;
+  #       };
+  #     };
 
-      "kcminputrc" = {
-        "Keyboard".Repeat = false;
-        "Mouse".X11LibInputXAccelProfileFlat = true;
-      };
+  #     "kcminputrc" = {
+  #       "Keyboard".Repeat = false;
+  #       "Mouse".X11LibInputXAccelProfileFlat = true;
+  #     };
 
-      "kscreenlockerrc"."Greeter/Wallpaper/org.kde.image/General".PreviewImage = toString lockWallpaper;
+  #     "kscreenlockerrc"."Greeter/Wallpaper/org.kde.image/General".PreviewImage = toString lockWallpaper;
 
-      "plasma-localerc"."Formats".LANG = "en_US.UTF-8";
+  #     "plasma-localerc"."Formats".LANG = "en_US.UTF-8";
 
-      "plasmarc"."Wallpapers".usersWallpapers = lib.concatStringsSep "," [
-        "${assets}/wallpapers/泉此方.jpg"
-        "${assets}/wallpapers/泉此方 brightness.kra"
-        "${assets}/wallpapers/泉此方 brightness.avif"
-        "${lockWallpaper}"
-      ];
+  #     "plasmarc"."Wallpapers".usersWallpapers = lib.concatStringsSep "," [
+  #       "${assets}/wallpapers/泉此方.jpg"
+  #       "${assets}/wallpapers/泉此方 brightness.kra"
+  #       "${assets}/wallpapers/泉此方 brightness.avif"
+  #       "${lockWallpaper}"
+  #     ];
 
-      "kactivitymanagerdrc"."activities"."470c04e6-c8d0-4263-a634-8b92fc2f317a" = "Default";
+  #     "kactivitymanagerdrc"."activities"."470c04e6-c8d0-4263-a634-8b92fc2f317a" = "Default";
 
-      "katerc" = {
-        "General" = {
-          "Days Meta Infos" = 30;
-          PinnedDocuments = "";
-          "Save Meta Infos" = true;
-          "Show Full Path in Title" = false;
-          "Show Menu Bar" = true;
-          "Show Status Bar" = true;
-          "Show Tab Bar" = true;
-          "Show Url Nav Bar" = true;
-        };
-        "KTextEditor Renderer" = {
-          "Auto Color Theme Selection" = true;
-          "Color Theme" = "Catppuccin Mocha";
-          "Line Height Multiplier" = 1;
-          "Show Whole Bracket Expression" = false;
-          "Text Font Features" = "";
-          "Word Wrap Marker" = false;
-        };
-        "Konsole" = {
-          AutoSyncronizeMode = 0;
-          KonsoleEscKeyBehaviour = true;
-          KonsoleEscKeyExceptions = "vi,vim,nvim,git";
-          RemoveExtension = false;
-          RunPrefix = "";
-          SetEditor = false;
-        };
-        "filetree" = {
-          editShade = "31,81,106";
-          listMode = false;
-          middleClickToClose = false;
-          shadingEnabled = true;
-          showCloseButton = false;
-          showFullPathOnRoots = false;
-          showToolbar = true;
-          sortRole = 0;
-          viewShade = "81,49,95";
-        };
-        "lspclient" = {
-          AllowedServerCommandLines = "";
-          AutoHover = true;
-          AutoImport = true;
-          BlockedServerCommandLines = "";
-          CompletionDocumentation = true;
-          CompletionParens = true;
-          Diagnostics = true;
-          FormatOnSave = false;
-          HighlightGoto = true;
-          IncrementalSync = false;
-          InlayHints = false;
-          Messages = true;
-          ReferencesDeclaration = true;
-          SemanticHighlighting = true;
-          ServerConfiguration = "";
-          SignatureHelp = true;
-          SymbolDetails = false;
-          SymbolExpand = true;
-          SymbolSort = false;
-          SymbolTree = true;
-          TypeFormatting = false;
-        };
-      };
-    };
-  };
+  #     "katerc" = {
+  #       "General" = {
+  #         "Days Meta Infos" = 30;
+  #         PinnedDocuments = "";
+  #         "Save Meta Infos" = true;
+  #         "Show Full Path in Title" = false;
+  #         "Show Menu Bar" = true;
+  #         "Show Status Bar" = true;
+  #         "Show Tab Bar" = true;
+  #         "Show Url Nav Bar" = true;
+  #       };
+  #       "KTextEditor Renderer" = {
+  #         "Auto Color Theme Selection" = true;
+  #         "Color Theme" = "Catppuccin Mocha";
+  #         "Line Height Multiplier" = 1;
+  #         "Show Whole Bracket Expression" = false;
+  #         "Text Font Features" = "";
+  #         "Word Wrap Marker" = false;
+  #       };
+  #       "Konsole" = {
+  #         AutoSyncronizeMode = 0;
+  #         KonsoleEscKeyBehaviour = true;
+  #         KonsoleEscKeyExceptions = "vi,vim,nvim,git";
+  #         RemoveExtension = false;
+  #         RunPrefix = "";
+  #         SetEditor = false;
+  #       };
+  #       "filetree" = {
+  #         editShade = "31,81,106";
+  #         listMode = false;
+  #         middleClickToClose = false;
+  #         shadingEnabled = true;
+  #         showCloseButton = false;
+  #         showFullPathOnRoots = false;
+  #         showToolbar = true;
+  #         sortRole = 0;
+  #         viewShade = "81,49,95";
+  #       };
+  #       "lspclient" = {
+  #         AllowedServerCommandLines = "";
+  #         AutoHover = true;
+  #         AutoImport = true;
+  #         BlockedServerCommandLines = "";
+  #         CompletionDocumentation = true;
+  #         CompletionParens = true;
+  #         Diagnostics = true;
+  #         FormatOnSave = false;
+  #         HighlightGoto = true;
+  #         IncrementalSync = false;
+  #         InlayHints = false;
+  #         Messages = true;
+  #         ReferencesDeclaration = true;
+  #         SemanticHighlighting = true;
+  #         ServerConfiguration = "";
+  #         SignatureHelp = true;
+  #         SymbolDetails = false;
+  #         SymbolExpand = true;
+  #         SymbolSort = false;
+  #         SymbolTree = true;
+  #         TypeFormatting = false;
+  #       };
+  #     };
+  #   };
+  # };
 
-  home.activation.forceRoundedCorners = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Plugins \
-      --key kwin4_effect_shapecornersEnabled \
-      true
+  # home.activation.forceRoundedCorners = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Plugins \
+  #     --key kwin4_effect_shapecornersEnabled \
+  #     true
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Plugins \
-      --key kwin_effect_shapecornersEnabled \
-      true
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Plugins \
+  #     --key kwin_effect_shapecornersEnabled \
+  #     true
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Plugins \
-      --key shapecornersEnabled \
-      true
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Plugins \
+  #     --key shapecornersEnabled \
+  #     true
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key Size \
-      8
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key Size \
+  #     8
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key InactiveCornerRadius \
-      8
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key InactiveCornerRadius \
+  #     8
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key OutlineThickness \
-      0.75
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key OutlineThickness \
+  #     0.75
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key SecondOutlineThickness \
-      1.48
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key SecondOutlineThickness \
+  #     1.48
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key OutlineColor \
-      "46,46,46"
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key OutlineColor \
+  #     "46,46,46"
 
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kwinrc \
-      --group Round-Corners \
-      --key SecondOutlineColor \
-      "46,46,46"
+  #   ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+  #     --file kwinrc \
+  #     --group Round-Corners \
+  #     --key SecondOutlineColor \
+  #     "46,46,46"
 
-    if command -v qdbus6 >/dev/null; then
-      qdbus6 org.kde.KWin /KWin reconfigure || true
-      qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect kwin4_effect_shapecorners || true
-    fi
-  '';
+  #   if command -v qdbus6 >/dev/null; then
+  #     qdbus6 org.kde.KWin /KWin reconfigure || true
+  #     qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect kwin4_effect_shapecorners || true
+  #   fi
+  # '';
 
-  programs.kate = {
-    enable = true;
-    package = null;
-    editor = {
-      indent.showLines = false;
-      brackets.flashMatching = false;
-    };
-  };
+  # programs.kate = {
+  #   enable = true;
+  #   package = null;
+  #   editor = {
+  #     indent.showLines = false;
+  #     brackets.flashMatching = false;
+  #   };
+  # };
 }

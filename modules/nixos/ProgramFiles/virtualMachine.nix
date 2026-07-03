@@ -34,7 +34,7 @@
   # provide docker container
   environment.systemPackages = with pkgs; [
     docker-compose # provide docker-compose command
-    winboat # provide winboat for managing windows containers
+    # winboat # provide winboat for managing windows containers
   ];
   virtualisation.docker.enable = true;
   virtualisation.docker.rootless = {

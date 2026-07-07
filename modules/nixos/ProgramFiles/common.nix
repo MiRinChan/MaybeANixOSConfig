@@ -71,6 +71,7 @@
     adwaita-icon-theme
     iloader
     waypipe
+    tmux
   ];
 
   programs.zsh.enable = true;

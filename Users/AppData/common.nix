@@ -42,7 +42,7 @@
 
     # Firefox
     stable.firefox # for internet
-    stable.librewolf # for internet tool
+    librewolf # for internet tool
     #cHROMIUM
     ungoogled-chromium
 
@@ -61,6 +61,7 @@
     btop
     nnn # terminal file manager
     fastfetch
+    opencode # AI coding agent for the terminal
     texliveTeTeX
 
     # 杂项

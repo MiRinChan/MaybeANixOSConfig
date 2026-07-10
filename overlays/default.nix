@@ -15,6 +15,22 @@
     });
 
     lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;
+
+    # TODO: 临时修复，上游 llm-agents 下个版本修复后删掉此 override
+    # codex 0.144.0: include codex-code-mode-host binary
+    # https://github.com/numtide/llm-agents.nix/issues/6630
+    llm-agents = prev.llm-agents // {
+      codex = prev.llm-agents.codex.overrideAttrs (old: {
+        cargoBuildFlags = (old.cargoBuildFlags or []) ++ [
+          "--package"
+          "codex-code-mode-host"
+        ];
+        cargoCheckFlags = (old.cargoCheckFlags or []) ++ [
+          "--package"
+          "codex-code-mode-host"
+        ];
+      });
+    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
@@ -46,4 +62,5 @@
   cached-librewolf = final: _prev: {
     librewolf = inputs.nixpkgs-librewolf.legacyPackages.${final.stdenv.hostPlatform.system}.librewolf;
   };
+  
 }

@@ -44,7 +44,7 @@ in {
 
   programs.codex = {
     enable = true;
-    package = pkgs.codex;
+    package = pkgs.llm-agents.codex;
     enableMcpIntegration = false;
     skills.nixos = "${pkgs.fetchFromGitHub {
       owner = "marceloeatworld";

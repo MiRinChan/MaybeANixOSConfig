@@ -61,7 +61,7 @@
     btop
     nnn # terminal file manager
     fastfetch
-    opencode # AI coding agent for the terminal
+    llm-agents.opencode # AI coding agent for the terminal
     texliveTeTeX
 
     # 杂项

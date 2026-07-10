@@ -26,11 +26,11 @@
     overlays = [
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
+      outputs.overlays.llm-agents
       outputs.overlays.modifications
       outputs.overlays.master-packages
       outputs.overlays.unstable-packages
       outputs.overlays.stable-packages
-      outputs.overlays.llm-agents
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default

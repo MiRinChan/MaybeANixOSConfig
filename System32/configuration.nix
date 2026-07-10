@@ -211,7 +211,7 @@
   services.flatpak.remotes = [
     {
       name = "flathub-beta";
-      location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+      location = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
     }
     {
       name = "flathub";
@@ -241,8 +241,8 @@
     };
   };
 
-  systemd.services.flatpak-install = {
-    # restart flatpak install after network becomes online.
+  systemd.services.flatpak-managed-install = {
+    # Run managed Flatpak installs after DNS/network has settled.
     after = ["NetworkManager.service" "network-online.target"];
     wants = ["network-online.target"];
   };

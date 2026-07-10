@@ -9,6 +9,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-d209.url = "github:nixos/nixpkgs/d209d800b7df2d4b05ea1266b14a47cba5da129b";
+    nixpkgs-librewolf.url = "github:nixos/nixpkgs/9e92285f211dad236540fd617d7e30e0b99bc0e1";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
     ### Nixpkgs ###
 
@@ -47,6 +48,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +77,7 @@
     nixpkgs-unstable,
     nixpkgs-stable,
     nixpkgs-d209,
+    nixpkgs-librewolf,
     flatpak,
     alejandra,
     catppuccin,
@@ -79,6 +86,7 @@
     solaar,
     nur,
     lanzaboote,
+    llm-agents,
     fenix,
     ...
   } @ inputs: let

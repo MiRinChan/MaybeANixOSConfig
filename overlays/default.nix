@@ -6,6 +6,8 @@
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
+  llm-agents = inputs.llm-agents.overlays.default;
+
   modifications = final: prev: {
     # 禁用 ltrace 的 tests
     ltrace = prev.ltrace.overrideAttrs (_: {
@@ -40,5 +42,8 @@
       system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
+  };
+  cached-librewolf = final: _prev: {
+    librewolf = inputs.nixpkgs-librewolf.legacyPackages.${final.stdenv.hostPlatform.system}.librewolf;
   };
 }

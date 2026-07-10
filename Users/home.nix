@@ -31,6 +31,8 @@
       outputs.overlays.unstable-packages
       outputs.overlays.stable-packages
       outputs.overlays.d209-packages
+      outputs.overlays.cached-librewolf
+      outputs.overlays.llm-agents
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default

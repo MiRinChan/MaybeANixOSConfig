@@ -23,7 +23,7 @@
     furmark # 图形性能检测器
     d209.veracrypt # 磁盘加密
     rquickshare-the-legacy # 快速分享
-    qgis # 地理信息系统
+    stable.qgis # 地理信息系统
     scrcpy3 # Android 屏传
     tsukimi # emby
     graalvmPackages.graalvm-ce

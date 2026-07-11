@@ -1,6 +1,5 @@
 {
   bun,
-  lib,
   stdenvNoCC,
   src,
   version,

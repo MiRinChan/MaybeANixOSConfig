@@ -12,6 +12,7 @@
 stdenv.mkDerivation {
   pname = "openchamber";
   inherit src version;
+  patches = [./disable-self-update.patch];
 
   nativeBuildInputs = [
     autoPatchelfHook

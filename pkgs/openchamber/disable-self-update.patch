@@ -1,0 +1,26 @@
+--- a/packages/web/bin/lib/commands-update.js	2026-07-12 03:50:00.336166219 +0800
++++ b/packages/web/bin/lib/commands-update.js	2026-07-12 03:52:16.437214956 +0800
+@@ -18,6 +18,9 @@
+ 
+ function createUpdateCommand({ importFromFilePath, packageManagerPath, serveCommand }) {
+   return async function updateCommand(options = {}) {
++    console.error('OpenChamber is managed by Nix; update it through your flake or Home Manager configuration.');
++    process.exitCode = 1;
++    return;
+     const showOutput = shouldRenderHumanOutput(options);
+     const updateSpin = createSpinner(options);
+ 
+--- a/packages/electron/main.mjs	2026-07-12 03:50:00.336166219 +0800
++++ b/packages/electron/main.mjs	2026-07-12 03:52:16.438820995 +0800
+@@ -2800,9 +2800,8 @@
+ };
+ 
+ const setupAutoUpdater = () => {
+-  if (!app.isPackaged) {
+-    return;
+-  }
++  log.info('[electron] OpenChamber is managed by Nix; auto-updater disabled');
++  return;
+   autoUpdater.autoDownload = false;
+   autoUpdater.autoInstallOnAppQuit = false;
+   autoUpdater.allowPrerelease = false;

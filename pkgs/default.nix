@@ -1,6 +1,11 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
-pkgs: {
+pkgs: let
+  openchamberPackages = pkgs.callPackage ./openchamber {};
+in {
+  openchamber = openchamberPackages.cli;
+  openchamber-desktop = openchamberPackages.desktop;
+
   # example = pkgs.callPackage ./example { };
   lunar = pkgs.callPackage ./lunar.nix {};
   microsoft-emoji = pkgs.callPackage ./SegoeUIEmoji.nix {};

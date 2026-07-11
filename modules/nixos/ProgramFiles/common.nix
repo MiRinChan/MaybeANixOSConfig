@@ -72,6 +72,8 @@
     iloader
     waypipe
     tmux
+    bun
+    libnotify
   ];
 
   programs.zsh.enable = true;

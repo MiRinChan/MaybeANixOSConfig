@@ -64,18 +64,18 @@ def responses_input_to_messages(payload):
             messages.append({"role": role, "content": text_from_content(item.get("content"))})
         elif item_type == "function_call":
             call_id = item.get("call_id") or item.get("id") or f"call_{uuid.uuid4().hex}"
-            messages.append({
-                "role": "assistant",
-                "content": None,
-                "tool_calls": [{
-                    "id": call_id,
-                    "type": "function",
-                    "function": {
-                        "name": item.get("name", "tool"),
-                        "arguments": item.get("arguments", "{}"),
-                    },
-                }],
-            })
+            tool_call = {
+                "id": call_id,
+                "type": "function",
+                "function": {
+                    "name": item.get("name", "tool"),
+                    "arguments": item.get("arguments", "{}"),
+                },
+            }
+            if messages and messages[-1].get("role") == "assistant" and messages[-1].get("tool_calls"):
+                messages[-1]["tool_calls"].append(tool_call)
+            else:
+                messages.append({"role": "assistant", "content": None, "tool_calls": [tool_call]})
         elif item_type == "function_call_output":
             messages.append({
                 "role": "tool",

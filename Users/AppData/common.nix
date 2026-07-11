@@ -74,6 +74,7 @@
     zstd
     gnupg
     ffmpeg_7-full # provide ffmpeg
+    ripgrep
 
     # 网路工具
     mtr # A network diagnostic tool

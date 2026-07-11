@@ -1,0 +1,12 @@
+--- a/packages/electron/scripts/bundle-main.mjs	2026-07-12 04:28:02.500089608 +0800
++++ b/packages/electron/scripts/bundle-main.mjs	2026-07-12 04:28:02.507110723 +0800
+@@ -25,6 +25,9 @@
+   format: 'esm',
+   external: [
+     'electron',
++    'electron-context-menu',
++    'electron-log',
++    'electron-updater',
+     '@openchamber/web',
+     '@openchamber/web/*',
+     'bun-pty',

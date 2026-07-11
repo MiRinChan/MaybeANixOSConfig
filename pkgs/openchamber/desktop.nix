@@ -60,13 +60,14 @@ stdenv.mkDerivation {
 
     cp -a node_modules "$desktopDir/node_modules"
 
-    mkdir -p "$electronDir/dist-bundle" "$electronDir/resources"
+    mkdir -p "$electronDir/dist-bundle/resources"
     cp -a packages/electron/dist-bundle/main.mjs "$electronDir/dist-bundle/main.mjs"
+    cp -a packages/electron/preload.mjs "$electronDir/dist-bundle/preload.mjs"
     cp -a packages/electron/preload.mjs "$electronDir/preload.mjs"
     cp -a packages/electron/package.json "$electronDir/package.json"
     cp -a packages/electron/node_modules "$electronDir/node_modules"
-    cp -a packages/electron/resources/web-dist "$electronDir/resources/web-dist"
-    cp -a packages/electron/resources/icons "$electronDir/resources/icons"
+    cp -a packages/electron/resources/web-dist "$electronDir/dist-bundle/resources/web-dist"
+    cp -a packages/electron/resources/icons "$electronDir/dist-bundle/resources/icons"
 
     cp -a packages/web/server "$webDir/server"
     cp -a packages/web/bin "$webDir/bin"

@@ -11,6 +11,7 @@ stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = [bun];
   dontConfigure = true;
+  dontFixup = true;
 
   buildPhase = ''
     runHook preBuild
@@ -24,11 +25,17 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
     mkdir -p "$out"
-    cp -a "$BUN_INSTALL_CACHE_DIR/." "$out/"
+    cp -a node_modules "$out/node_modules"
+    for wsnm in packages/*/node_modules; do
+      [ -d "$wsnm" ] || continue
+      pkg="$(basename "$(dirname "$wsnm")")"
+      mkdir -p "$out/packages/$pkg/node_modules"
+      cp -a "$wsnm/." "$out/packages/$pkg/node_modules/"
+    done
     runHook postInstall
   '';
 
   outputHashMode = "recursive";
   outputHashAlgo = "sha256";
-  outputHash = lib.fakeHash;
+  outputHash = "sha256-mkfEn6o5FKldOkdrPwqR4HfHZJ09gzP6NPYbfvd+qss=";
 }

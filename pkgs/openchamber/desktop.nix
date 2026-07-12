@@ -13,7 +13,7 @@
 stdenv.mkDerivation {
   pname = "openchamber-desktop";
   inherit src version;
-  patches = [./disable-self-update.patch ./externalize-electron-deps.patch];
+  patches = [./disable-self-update.patch ./externalize-electron-deps.patch ./skip-hmr-probe-when-bundled.patch];
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -80,7 +80,8 @@ stdenv.mkDerivation {
     makeWrapper ${lib.getExe electron} "$out/bin/openchamber-desktop" \
       --add-flags "$electronDir" \
       --prefix PATH : ${lib.makeBinPath [bun nodejs_22]} \
-      --set ELECTRON_IS_DEV 0
+      --set ELECTRON_IS_DEV 0 \
+      --set OPENCHAMBER_ELECTRON_USE_BUNDLED_UI 1
 
     install -Dm644 ${./openchamber-desktop.desktop} \
       "$out/share/applications/openchamber-desktop.desktop"

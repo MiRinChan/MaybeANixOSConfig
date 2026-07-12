@@ -1,0 +1,13 @@
+--- a/packages/electron/main.mjs	2026-07-12 11:13:32.447272868 +0800
++++ b/packages/electron/main.mjs	2026-07-12 11:14:00.502941917 +0800
+@@ -2723,7 +2723,9 @@
+   const hmrUiPort = process.env.OPENCHAMBER_HMR_UI_PORT || '5173';
+   const hmrApiUrl = `http://127.0.0.1:${hmrApiPort}`;
+   const hmrUiUrl = `http://127.0.0.1:${hmrUiPort}`;
+-  const localUrl = isDev && await waitForHealth(hmrApiUrl, 5_000, 100)
++  const localUrl = shouldUsePackagedUi()
++    ? await spawnLocalServer()
++    : isDev && await waitForHealth(hmrApiUrl, 5_000, 100)
+     ? hmrApiUrl
+     : await spawnLocalServer();
+ 

@@ -74,6 +74,9 @@
     tmux
     bun
     libnotify
+    git # ComfyUI and custom node source updates
+    aria2 # Resumable model downloads
+    uv # Isolated Python environment management for ComfyUI
   ];
 
   programs.zsh.enable = true;

@@ -1,0 +1,123 @@
+diff --git a/internal/api/system.go b/internal/api/system.go
+index 00949eb..3f53fe8 100644
+--- a/internal/api/system.go
++++ b/internal/api/system.go
+@@ -3,12 +3,10 @@ package api
+ import (
+ 	"errors"
+ 	"net/http"
+ 	"os"
+-	"os/exec"
+ 	"time"
+ 
+ 	"github.com/gin-gonic/gin"
+-	"github.com/iniwex5/vohive/internal/config"
+ 	"github.com/iniwex5/vohive/internal/updater"
+ 	"github.com/iniwex5/vohive/pkg/logger"
+ )
+@@ -72,9 +72,8 @@ func (s *Server) handleApplyUpdate(c *gin.Context) {
+ 	c.JSON(http.StatusOK, gin.H{"message": "正在后台下载更新，系统稍后将自动重启..."})
+ }
+ 
+-// handleUninstall 自毁/卸载接口，用于用户拒绝免责声明时
+-// 必须登录后才能调用——这是真正会删数据、删配置、删自身可执行文件并
+-// os.Exit(0) 的破坏性操作，绝不能允许未鉴权请求触发。
++// handleUninstall is retained for API compatibility, but this deployment
++// deliberately disables destructive self-uninstall behavior.
+ func (s *Server) handleUninstall(c *gin.Context) {
+ 	if !s.isAuthenticatedRequest(c, time.Now()) {
+ 		c.JSON(http.StatusUnauthorized, gin.H{
+@@ -86,45 +85,12 @@ func (s *Server) handleUninstall(c *gin.Context) {
+ 		return
+ 	}
+ 
+-	logger.Warn("用户拒绝了免责声明，正在触发自毁/卸载逻辑")
+-	c.JSON(http.StatusOK, gin.H{"message": "正在卸载软件..."})
+-
+-	// 在后台异步执行自毁，以免请求无法返回
+-	go func() {
+-		time.Sleep(1 * time.Second)
+-
+-		// 先主动通知服务管理器停止 + 禁用自启，确保即使后面的文件删除
+-		// 失败（只读文件系统等），systemd Restart=always / procd respawn
+-		// 也不会把进程重新拉起来。命令异步触发(Start 不 Wait)，
+-		// 避免对"停止自己"这条命令的等待造成死锁。
+-		for _, args := range detectServiceStopCommands(exec.LookPath, fileExists) {
+-			cmd := exec.Command(args[0], args[1:]...)
+-			if err := cmd.Start(); err != nil {
+-				logger.Warn("通知服务管理器停止失败", "cmd", args, "err", err)
+-				continue
+-			}
+-			go cmd.Wait()
+-		}
+-
+-		dataDir, configFile := resolveUninstallTargets(config.GetConfigPath())
+-
+-		if err := os.RemoveAll(dataDir); err != nil {
+-			logger.Warn("清理数据目录失败", "dir", dataDir, "err", err)
+-		}
+-		if configFile != "" {
+-			if err := os.Remove(configFile); err != nil && !os.IsNotExist(err) {
+-				logger.Warn("清理配置文件失败", "file", configFile, "err", err)
+-			}
+-		}
+-		if executable, err := os.Executable(); err == nil {
+-			if err := os.Remove(executable); err != nil {
+-				logger.Warn("删除可执行文件失败", "file", executable, "err", err)
+-			}
+-		}
+-
+-		logger.Warn("自毁流程结束，退出进程")
+-		os.Exit(0)
+-	}()
++	c.JSON(http.StatusForbidden, gin.H{
++		"status":     "error",
++		"code":       "uninstall_disabled",
++		"message":    "此部署已禁用破坏性自卸载功能",
++		"request_id": requestID(c),
++	})
+ }
+ 
+ func fileExists(path string) bool {
+diff --git a/internal/api/system_test.go b/internal/api/system_test.go
+index 46b8f1c..7a3817e 100644
+--- a/internal/api/system_test.go
++++ b/internal/api/system_test.go
+@@ -3,6 +3,7 @@ package api
+ import (
+ 	"net/http"
+ 	"net/http/httptest"
++	"strings"
+ 	"testing"
+ 
+ 	"github.com/gin-gonic/gin"
+@@ -105,6 +106,29 @@ func TestHandleUninstallRejectsUnauthenticatedRequest(t *testing.T) {
+ 	}
+ }
+ 
++func TestHandleUninstallIsDisabledForAuthenticatedRequest(t *testing.T) {
++	gin.SetMode(gin.TestMode)
++	s := &Server{auth: config.WebConfig{Username: "admin", Password: "secret"}}
++	token, _, err := s.issueSessionToken()
++	if err != nil {
++		t.Fatalf("issueSessionToken: %v", err)
++	}
++
++	w := httptest.NewRecorder()
++	c, _ := gin.CreateTestContext(w)
++	c.Request = httptest.NewRequest(http.MethodPost, "/api/system/uninstall", nil)
++	c.Request.Header.Set("Authorization", "Bearer "+token)
++
++	s.handleUninstall(c)
++
++	if w.Code != http.StatusForbidden {
++		t.Fatalf("code=%d body=%s, want 403", w.Code, w.Body.String())
++	}
++	if !strings.Contains(w.Body.String(), "uninstall_disabled") {
++		t.Fatalf("body=%s, want uninstall_disabled", w.Body.String())
++	}
++}
++
+ func TestNewRouterRequiresAuthForUninstall(t *testing.T) {
+ 	gin.SetMode(gin.TestMode)
+ 	s := &Server{auth: config.WebConfig{Username: "admin", Password: "secret"}}

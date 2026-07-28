@@ -65,6 +65,7 @@
     openchamber
     openchamber-desktop
     texliveTeTeX
+    sqlitebrowser
 
     # 杂项
     file

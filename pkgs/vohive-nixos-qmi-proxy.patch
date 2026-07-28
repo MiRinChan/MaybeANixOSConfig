@@ -1,0 +1,102 @@
+diff --git a/internal/qmi/client_options.go b/internal/qmi/client_options.go
+index 0897a79..d7c698d 100644
+--- a/internal/qmi/client_options.go
++++ b/internal/qmi/client_options.go
+@@ -12,8 +12,14 @@ func ClientOptionsFromDeviceConfig(cfg config.DeviceConfig) qmiq.ClientOptions {
+ 	return opts
+ }
+ 
++func platformDefaultClientOptions() qmiq.ClientOptions {
++	opts := qmiq.DefaultClientOptions()
++	opts.ProxyExecutable = "@nixosQMIProxyExecutable@"
++	return opts
++}
++
+ func clientOptionsFromDeviceConfig(cfg config.DeviceConfig) (qmiq.ClientOptions, qmiTransportDecision) {
+-	opts := qmiq.DefaultClientOptions()
++	opts := platformDefaultClientOptions()
+ 	backend := strings.ToLower(strings.TrimSpace(cfg.DeviceBackend))
+ 	if proxyPath := strings.TrimSpace(cfg.QMIProxyPath); proxyPath != "" {
+ 		opts.ProxyPath = proxyPath
+@@ -27,7 +33,7 @@ func clientOptionsFromDeviceConfig(cfg config.DeviceConfig) (qmiq.ClientOptions,
+ }
+ 
+ func DiscoveryClientOptionsForControlDevice(controlDevice string) (qmiq.ClientOptions, bool) {
+-	opts := qmiq.DefaultClientOptions()
++	opts := platformDefaultClientOptions()
+ 	controlDevice = strings.TrimSpace(controlDevice)
+ 	if controlDevice == "" {
+ 		return opts, true
+diff --git a/internal/qmi/client_options_test.go b/internal/qmi/client_options_test.go
+index b087e65..6971c21 100644
+--- a/internal/qmi/client_options_test.go
++++ b/internal/qmi/client_options_test.go
+@@ -9,6 +9,20 @@ import (
+ 	"github.com/iniwex5/vohive/internal/config"
+ )
+ 
++func TestPlatformDefaultQMIProxyExecutableExists(t *testing.T) {
++	opts := platformDefaultClientOptions()
++	if opts.ProxyExecutable == "" {
++		t.Fatal("ProxyExecutable is empty")
++	}
++	info, err := os.Stat(opts.ProxyExecutable)
++	if err != nil {
++		t.Fatalf("stat ProxyExecutable %q: %v", opts.ProxyExecutable, err)
++	}
++	if info.Mode()&0o111 == 0 {
++		t.Fatalf("ProxyExecutable %q is not executable", opts.ProxyExecutable)
++	}
++}
++
+ func TestClientOptionsFromDeviceConfigKeepsRuntimeDefaultsAndProxy(t *testing.T) {
+ 	proxyExecutable := filepath.Join(t.TempDir(), "qmi-proxy")
+ 	writeExecutableForTest(t, proxyExecutable)
+diff --git a/internal/device/pool_bootstrap_test.go b/internal/device/pool_bootstrap_test.go
+index bf75cc7..10957ea 100644
+--- a/internal/device/pool_bootstrap_test.go
++++ b/internal/device/pool_bootstrap_test.go
+@@ -47,26 +47,21 @@ func TestAddWorkerQMIManagedRebindsByIMEIWhenControlDeviceGone(t *testing.T) {
+ 		NetworkEnabled: true, // hasManagedQMINetwork 的条件
+ 	}
+ 
+-	// 此时 /dev/nonexistent-control-old 不存在，controlDeviceStatErr != nil。
+-	// 但 shouldDiscoverQMIManagedBootstrapByIMEI 会返回 true。
+-	// 它会用 discovery 取回 /dev/cdc-wdm-new-qmi，并在 modem.New 中报错（因为此节点在系统中也不存在）。
+-	// 只要 error 中包含了新的控制路径或网络接口，就说明它成功 rebind 了。
+-	_, err := p.AddWorkerFromConfig(devCfg)
+-	require.Error(t, err)
+-
+-	// 断言错误信息包含新路径，证明它用新的参数去初始化 modem 了
+-	// modem.New 的时候如果不使用真实的端口会报什么样的错？
+-	// 无论报错什么，只要我们验证匹配逻辑成功覆盖了 devCfg 就可以。
+-	// 实际上，如果不去判断 error 字符串，我们可以 mock modem.New，但它是外部包。
+-	// 我们可以直接验证返回的 err 字符串是否包含 "cdc-wdm-new-qmi" 或者 "wwan-new"。
+-	// 可是如果 modem.New 里报错没有携带这个名字呢？
+-	
+-	// 在 AddWorkerFromConfig 里，如果它报错:
+-	// return nil, fmt.Errorf("初始化 Modem 失败: %w", err)
+-	// 我们打印出来看看。
+-	t.Logf("Error from AddWorkerFromConfig: %v", err)
+-	
+-	// 简单断言，或者如果实在不行可以跳过严格断言。
+-	// 但只要不是报 "设备控制口 ... 不存在，可能模块尚未重新枚举" 而是别的，就说明通过了早期验证。
+-	require.NotContains(t, err.Error(), "设备控制口 /dev/nonexistent-control-old 不存在，可能模块尚未重新枚举")
++	worker, err := p.AddWorkerFromConfig(devCfg)
++	if err != nil {
++		// Even if opening the synthetic device fails, reaching a later error proves
++		// bootstrap did not reject the stale configured control path.
++		require.NotContains(t, err.Error(), "设备控制口 /dev/nonexistent-control-old 不存在，可能模块尚未重新枚举")
++		return
++	}
++	t.Cleanup(func() {
++		_ = p.RemoveWorker(worker.ID)
++		p.cancel()
++	})
++
++	// A usable proxy can let startup proceed asynchronously. Assert the rebound
++	// attachment directly instead of requiring the synthetic device to fail.
++	require.Equal(t, "/dev/cdc-wdm-new-qmi", worker.Config.ControlDevice)
++	require.Equal(t, "wwan-new", worker.Config.Interface)
++	require.Equal(t, "1-2.3", worker.Config.USBPath)
+ }

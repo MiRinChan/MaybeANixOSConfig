@@ -123,5 +123,36 @@
     exit 0
   '';
 
+  # Tailscale traffic must bypass Throne/sing-box interception:
+  # - Mark 100.64.0.0/10 (incl. MagicDNS 100.100.100.100) and the tailnet ULA
+  #   fd7a:115c:a1e0::/48 with sing-box's own bypass mark 0x2024 before its
+  #   hooks (redirect/mark/queue) run, so Throne leaves them alone.
+  # - Pin the CGNAT range to tailscale0 as a fallback so a peer without a /32
+  #   in table 52 can never fall into Throne's catch-all table 2022.
+  systemd.services.tailscale-priority = {
+    description = "Route Tailscale traffic directly, bypassing Throne TUN";
+    after = ["tailscaled.service"];
+    requires = ["tailscaled.service"];
+    wantedBy = ["multi-user.target"];
+    path = [pkgs.nftables pkgs.iproute2];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      nft delete table inet ts-priority 2>/dev/null || true
+      nft -f - <<'NFT'
+      table inet ts-priority {
+        chain output_pre {
+          type filter hook output priority mangle - 2; policy accept;
+          meta nfproto ipv4 ip daddr 100.64.0.0/10 meta mark set 0x00002024 ct mark set 0x00002024
+          meta nfproto ipv6 ip6 daddr fd7a:115c:a1e0::/48 meta mark set 0x00002024 ct mark set 0x00002024
+        }
+      }
+      NFT
+      ip route replace 100.64.0.0/10 dev tailscale0 proto static metric 1000
+    '';
+  };
+
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos
 }

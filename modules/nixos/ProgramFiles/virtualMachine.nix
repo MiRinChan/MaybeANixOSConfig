@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -34,8 +35,13 @@
   # provide docker container
   environment.systemPackages = with pkgs; [
     docker-compose # provide docker-compose command
+    inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps
     # winboat # provide winboat for managing windows containers
   ];
+  nix.settings = {
+    substituters = ["https://winapps.cachix.org/"];
+    trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];
+  };
   virtualisation.docker.enable = true;
   virtualisation.docker.rootless = {
     enable = true;

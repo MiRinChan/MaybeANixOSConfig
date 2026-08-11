@@ -4,7 +4,7 @@
 
 **Goal:** Build OpenChamber 1.15.0 from source as independently installable `openchamber` CLI/Web/PWA and `openchamber-desktop` Electron packages.
 
-**Architecture:** A small package scope under `pkgs/openchamber/` owns one hash-pinned upstream source and one hash-pinned Bun dependency cache. The CLI and Desktop recipes consume those shared inputs but build separate runtime closures; Desktop launches through nixpkgs Electron 41 and discovers `opencode` from the user environment instead of embedding it.
+**Architecture:** A small package scope under `Program Files/Packages/openchamber/` owns one hash-pinned upstream source and one hash-pinned Bun dependency cache. The CLI and Desktop recipes consume those shared inputs but build separate runtime closures; Desktop launches through nixpkgs Electron 41 and discovers `opencode` from the user environment instead of embedding it.
 
 **Tech Stack:** Nix, `fetchFromGitHub`, Bun 1.3.x with `bun.lock`, Node.js 22+, Vite, Electron 41, native Node addons, Home Manager overlays.
 
@@ -16,7 +16,7 @@
 - Permit network access only in fixed-output fetch/dependency derivations.
 - Commit only Nix expressions and necessary text patches; never commit archives, dependency trees, or binaries.
 - Do not bundle Electron, OpenCode, AppImage, Deb, Pacman, or another distribution archive.
-- Export `openchamber` and `openchamber-desktop` through `pkgs/default.nix` and the existing additions overlay.
+- Export `openchamber` and `openchamber-desktop` through `Program Files/Packages/default.nix` and the existing additions overlay.
 - Do not add either package to the user's `home.packages` automatically.
 - Disable application self-update paths that would mutate a Nix installation.
 - Use the repository's declared flake environment and run `nix fmt` before completion.
@@ -25,19 +25,19 @@
 
 ## File Map
 
-- Create `pkgs/openchamber/default.nix`: shared version/source/dependency-cache scope and public `cli`/`desktop` members.
-- Create `pkgs/openchamber/bun-deps.nix`: fixed-output Bun package cache generated from `bun.lock`.
-- Create `pkgs/openchamber/cli.nix`: CLI/Web/PWA source build and immutable-update behavior.
-- Create `pkgs/openchamber/desktop.nix`: system-Electron build, native-addon rebuild, wrapper, icon, and desktop entry.
-- Create `pkgs/openchamber/disable-self-update.patch`: CLI and Electron updater changes with a Nix-specific diagnostic.
-- Modify `pkgs/default.nix`: expose `openchamber` and `openchamber-desktop` with `callPackage`.
+- Create `Program Files/Packages/openchamber/default.nix`: shared version/source/dependency-cache scope and public `cli`/`desktop` members.
+- Create `Program Files/Packages/openchamber/bun-deps.nix`: fixed-output Bun package cache generated from `bun.lock`.
+- Create `Program Files/Packages/openchamber/cli.nix`: CLI/Web/PWA source build and immutable-update behavior.
+- Create `Program Files/Packages/openchamber/desktop.nix`: system-Electron build, native-addon rebuild, wrapper, icon, and desktop entry.
+- Create `Program Files/Packages/openchamber/disable-self-update.patch`: CLI and Electron updater changes with a Nix-specific diagnostic.
+- Modify `Program Files/Packages/default.nix`: expose `openchamber` and `openchamber-desktop` with `callPackage`.
 
 ### Task 1: Establish the shared package scope and public attributes
 
 **Files:**
-- Create: `pkgs/openchamber/default.nix`
-- Create: `pkgs/openchamber/bun-deps.nix`
-- Modify: `pkgs/default.nix`
+- Create: `Program Files/Packages/openchamber/default.nix`
+- Create: `Program Files/Packages/openchamber/bun-deps.nix`
+- Modify: `Program Files/Packages/default.nix`
 
 **Interfaces:**
 - Produces: `pkgs.openchamber` and `pkgs.openchamber-desktop` derivations.
@@ -57,7 +57,7 @@ Expected: both commands fail because neither flake package attribute exists.
 
 - [ ] **Step 2: Add the shared package scope with deliberately failing hashes**
 
-Create `pkgs/openchamber/default.nix`:
+Create `Program Files/Packages/openchamber/default.nix`:
 
 ```nix
 {
@@ -86,7 +86,7 @@ in {
 }
 ```
 
-Create `pkgs/openchamber/bun-deps.nix` as a fixed-output cache derivation:
+Create `Program Files/Packages/openchamber/bun-deps.nix` as a fixed-output cache derivation:
 
 ```nix
 {
@@ -188,15 +188,15 @@ proving the two attributes are wired before their implementations diverge.
 - [ ] **Step 6: Commit the package scope**
 
 ```bash
-git add pkgs/default.nix pkgs/openchamber/default.nix pkgs/openchamber/bun-deps.nix pkgs/openchamber/cli.nix pkgs/openchamber/desktop.nix
+git add 'Program Files/Packages/default.nix' 'Program Files/Packages/openchamber/default.nix' 'Program Files/Packages/openchamber/bun-deps.nix' 'Program Files/Packages/openchamber/cli.nix' 'Program Files/Packages/openchamber/desktop.nix'
 git commit -m "package: scaffold OpenChamber source packages"
 ```
 
 ### Task 2: Build the reproducible CLI/Web/PWA package
 
 **Files:**
-- Modify: `pkgs/openchamber/bun-deps.nix`
-- Replace: `pkgs/openchamber/cli.nix`
+- Modify: `Program Files/Packages/openchamber/bun-deps.nix`
+- Replace: `Program Files/Packages/openchamber/cli.nix`
 
 **Interfaces:**
 - Consumes: `src`, `version`, and the fixed-output `bunDeps` cache.
@@ -234,7 +234,7 @@ attempt fails the build.
 
 - [ ] **Step 3: Replace the bootstrap CLI with the source build**
 
-Write `pkgs/openchamber/cli.nix` as a `stdenv.mkDerivation` with these exact
+Write `Program Files/Packages/openchamber/cli.nix` as a `stdenv.mkDerivation` with these exact
 phase responsibilities:
 
 ```nix
@@ -340,15 +340,15 @@ Expected: the root request succeeds and produces non-empty HTML.
 - [ ] **Step 6: Commit the CLI package**
 
 ```bash
-git add pkgs/openchamber/bun-deps.nix pkgs/openchamber/cli.nix
+git add 'Program Files/Packages/openchamber/bun-deps.nix' 'Program Files/Packages/openchamber/cli.nix'
 git commit -m "package: build OpenChamber CLI from source"
 ```
 
 ### Task 3: Disable store-mutating CLI updates
 
 **Files:**
-- Create: `pkgs/openchamber/disable-self-update.patch`
-- Modify: `pkgs/openchamber/cli.nix`
+- Create: `Program Files/Packages/openchamber/disable-self-update.patch`
+- Modify: `Program Files/Packages/openchamber/cli.nix`
 
 **Interfaces:**
 - Consumes: upstream CLI update command dispatch at v1.15.0.
@@ -404,15 +404,15 @@ write is attempted.
 - [ ] **Step 4: Commit the updater policy**
 
 ```bash
-git add pkgs/openchamber/cli.nix pkgs/openchamber/disable-self-update.patch
+git add 'Program Files/Packages/openchamber/cli.nix' 'Program Files/Packages/openchamber/disable-self-update.patch'
 git commit -m "package: disable OpenChamber self updates"
 ```
 
 ### Task 4: Build the Electron desktop package with system Electron
 
 **Files:**
-- Replace: `pkgs/openchamber/desktop.nix`
-- Modify if needed: `pkgs/openchamber/disable-self-update.patch`
+- Replace: `Program Files/Packages/openchamber/desktop.nix`
+- Modify if needed: `Program Files/Packages/openchamber/disable-self-update.patch`
 
 **Interfaces:**
 - Consumes: shared `src`, `version`, `bunDeps`, and updater patch.
@@ -523,15 +523,15 @@ build log.
 - [ ] **Step 7: Commit the Desktop package**
 
 ```bash
-git add pkgs/openchamber/desktop.nix pkgs/openchamber/disable-self-update.patch
+git add 'Program Files/Packages/openchamber/desktop.nix' 'Program Files/Packages/openchamber/disable-self-update.patch'
 git commit -m "package: build OpenChamber Desktop with system Electron"
 ```
 
 ### Task 5: Prove Desktop runtime and closure policy
 
 **Files:**
-- Modify if required by observed runtime failure: `pkgs/openchamber/desktop.nix`
-- Modify if required by observed updater behavior: `pkgs/openchamber/disable-self-update.patch`
+- Modify if required by observed runtime failure: `Program Files/Packages/openchamber/desktop.nix`
+- Modify if required by observed updater behavior: `Program Files/Packages/openchamber/disable-self-update.patch`
 
 **Interfaces:**
 - Consumes: the built Desktop package and the user's existing `opencode` on
@@ -611,14 +611,14 @@ contains a separately downloaded Electron release or OpenCode release asset.
 - [ ] **Step 5: Commit runtime corrections, if the smoke test required them**
 
 ```bash
-git add pkgs/openchamber/desktop.nix pkgs/openchamber/disable-self-update.patch
+git add 'Program Files/Packages/openchamber/desktop.nix' 'Program Files/Packages/openchamber/disable-self-update.patch'
 git diff --cached --quiet || git commit -m "fix: complete OpenChamber Desktop runtime wiring"
 ```
 
 ### Task 6: Final repository verification and Home Manager exposure
 
 **Files:**
-- Modify only if validation finds a package defect: files under `pkgs/openchamber/` or `pkgs/default.nix`
+- Modify only if validation finds a package defect: files under `Program Files/Packages/openchamber/` or `Program Files/Packages/default.nix`
 
 **Interfaces:**
 - Consumes: both completed derivations.
@@ -633,7 +633,7 @@ Run:
 nix fmt
 git diff --check
 git status --short
-git diff -- pkgs/default.nix pkgs/openchamber docs/superpowers
+git diff -- 'Program Files/Packages/default.nix' 'Program Files/Packages/openchamber' docs/superpowers
 ```
 
 Expected: formatting succeeds, there are no whitespace errors, and unrelated
@@ -692,7 +692,7 @@ If formatting or validation changed tracked package files, commit only those
 files:
 
 ```bash
-git add pkgs/default.nix pkgs/openchamber
+git add 'Program Files/Packages/default.nix' 'Program Files/Packages/openchamber'
 git diff --cached --quiet || git commit -m "package: finalize OpenChamber validation"
 ```
 

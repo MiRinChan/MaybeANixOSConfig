@@ -1,9 +1,13 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  repoRoot,
+  ...
+}: let
   deepseekResponsesProxy = pkgs.writeShellApplication {
     name = "codex-deepseek-responses-proxy";
     runtimeInputs = [pkgs.python3];
     text = ''
-      exec python3 ${./codex-deepseek-responses-proxy.py} "$@"
+      exec python3 ${repoRoot + "/Program Files/Scripts/codex-deepseek-responses-proxy/proxy.py"} "$@"
     '';
   };
   codexSettings = {

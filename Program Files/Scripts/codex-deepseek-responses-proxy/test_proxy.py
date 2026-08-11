@@ -3,7 +3,7 @@ import pathlib
 import unittest
 
 
-MODULE_PATH = pathlib.Path(__file__).with_name("codex-deepseek-responses-proxy.py")
+MODULE_PATH = pathlib.Path(__file__).with_name("proxy.py")
 SPEC = importlib.util.spec_from_file_location("codex_deepseek_responses_proxy", MODULE_PATH)
 PROXY = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(PROXY)

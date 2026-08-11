@@ -29,7 +29,7 @@ runtime downloads, but their Tauri binaries and sidecar layout are not copied.
 
 ## Package Layout
 
-The implementation lives under `pkgs/openchamber/`:
+The implementation lives under `Program Files/Packages/openchamber/`:
 
 - `default.nix` defines shared release metadata and dispatches the two package
   recipes.
@@ -38,13 +38,13 @@ The implementation lives under `pkgs/openchamber/`:
 - Text patches are kept beside the recipes only when source substitution is
   insufficient or would be fragile.
 
-`pkgs/default.nix` exports both packages with `callPackage`:
+`Program Files/Packages/default.nix` exports both packages with `callPackage`:
 
 - `openchamber`
 - `openchamber-desktop`
 
 The existing `outputs.overlays.additions` overlay already imports
-`pkgs/default.nix` into Home Manager, so no Home Manager module is required.
+`Program Files/Packages/default.nix` into Home Manager, so no Home Manager module is required.
 Neither package is added to the current user's `home.packages` automatically.
 
 ## Shared Source and Dependency Model

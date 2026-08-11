@@ -11,14 +11,14 @@
 
 QEMU/KVM 用 libvirt 做后端、virt-manager 做前端,和原有的 VirtualBox / Docker 并存。
 
-- [`modules/nixos/ProgramFiles/virtualMachine.nix`](modules/nixos/ProgramFiles/virtualMachine.nix)
+- [`Program Files/Applications/virtualization.nix`](<Program Files/Applications/virtualization.nix>)
   - `virtualisation.libvirtd.enable`,qemu 用 `pkgs.qemu_kvm`,`runAsRoot = true`
   - `swtpm.enable = true`(Windows 11 客户机要的软件 TPM)
   - `ovmf.packages = [pkgs.OVMFFull.fd]`(UEFI 固件 + 客户机 Secure Boot)
   - `programs.virt-manager.enable = true`
   - `virtualisation.spiceUSBRedirection.enable = true`(SPICE 查看器透传 USB)
-- [`System32/UsersConf.nix`](System32/UsersConf.nix#L12) — `mirin` 加入 `libvirtd` 组(免 sudo 管理 VM)
-- `programs.dconf.enable` 早已在 [`System32/configuration.nix`](System32/configuration.nix#L202) 开启,virt-manager 存设置需要它
+- [`Windows/System32/accounts.nix`](Windows/System32/accounts.nix#L12) — `mirin` 加入 `libvirtd` 组(免 sudo 管理 VM)
+- `programs.dconf.enable` 在 [`Windows/System32/desktop.nix`](Windows/System32/desktop.nix#L15) 开启,virt-manager 存设置需要它
 
 应用后**要重新登录或重启**,`libvirtd` 组才对当前会话生效,否则 virt-manager 连不上系统 libvirt socket。
 默认 NAT 网络若没起:`sudo virsh net-start default && sudo virsh net-autostart default`(一次性)。
@@ -28,7 +28,7 @@ QEMU/KVM 用 libvirt 做后端、virt-manager 做前端,和原有的 VirtualBox 
 ## 2. 硬件约束(决定 GPU 方案的关键)
 
 - 无集成显卡。
-- GPU:**单张独立 NVIDIA 卡**(见 [`modules/nixos/DRIVER/nvidia.nix`](modules/nixos/DRIVER/nvidia.nix),`open = true`,Turing+)。
+- GPU:**单张独立 NVIDIA 卡**(见 [`Windows/DRIVER/nvidia.nix`](Windows/DRIVER/nvidia.nix),`open = true`,Turing+)。
 - 所以宿主桌面(Plasma)始终占着唯一这块卡,**没有第二个显示输出兜底**。
 
 由此得出的硬结论:

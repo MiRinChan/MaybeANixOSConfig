@@ -6,7 +6,7 @@
   ...
 }: {
   # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
-  # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 System32/UsersConf.nix）。
+  # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
   virtualisation.libvirtd = {
     enable = true;
     qemu = {

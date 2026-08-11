@@ -10,7 +10,6 @@
     ./graphics.nix
     ./mediaPlayer.nix
     ./theme-packages.nix
-    ./plasma.nix
     ./tmux.nix
   ];
 }

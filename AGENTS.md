@@ -73,9 +73,9 @@ root `overlays` starter abstractions. Imports are explicit.
 - Preserve boot/kernel parameter order, Lanzaboote settings, filesystems, LUKS,
   firewall rules, the `throne-tun` reverse-path exception, and wait-online
   workarounds unless the task explicitly changes them.
-- Keep Plasma 6 and SDDM Wayland enabled. There is no `plasma-manager` input or
-  `programs.plasma` migration. Do not edit or reset KDE files under the user's
-  home directory.
+- Keep Plasma 6 and SDDM Wayland enabled. Do not restore declarative Plasma
+  migration inputs or Home Manager migration declarations. Do not edit or reset
+  KDE files under the user's home directory.
 - Preserve the Canokey FIDO2 initrd flow and the narrow KDE/sudo PAM U2F
   settings.
 - Preserve PipeWire/WirePlumber/JACK behavior and the USB DAC rule.
@@ -114,7 +114,7 @@ root `overlays` starter abstractions. Imports are explicit.
 | Package | output eval and `nix build .#<package> --no-link` |
 | Proxy script | `PYTHONDONTWRITEBYTECODE=1` unit tests in a pinned Python environment |
 | SOPS | option eval, `sops filestatus`, each-identity decrypt to `/dev/null`, and generated unit path review |
-| Plasma/desktop | search for forbidden plasma-manager declarations and eval Plasma 6/SDDM enablement |
+| Plasma/desktop | search for forbidden migration declarations and eval Plasma 6/SDDM enablement |
 | Path move | search old roots and `../` imports; verify every import, source, and patch exists |
 | Secret change | filename-only worktree/history scan; separate expected encrypted/public-recipient matches |
 

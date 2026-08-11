@@ -32,30 +32,17 @@
     exec /run/wrappers/bin/pkexec ${pkgs.bash}/bin/bash -lc "$run_script"
   '';
 in {
+  # Keep MCP server commands declarative so their Nix store paths follow
+  # package updates. Codex settings, authentication, and skills stay local.
   programs.mcp = {
     enable = true;
-    servers.nixos = {
-      command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-    };
-    servers.git = {
-      command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-    };
-  };
-
-  programs.codex = {
-    enable = true;
-    package = pkgs.llm-agents.codex;
-    enableMcpIntegration = false;
-    skills.nixos = "${pkgs.fetchFromGitHub {
-      owner = "marceloeatworld";
-      repo = "nixos-ai-skill";
-      rev = "922573e59bcd8eef7e9a7a5f9b40a28812d39357";
-      sha256 = "125agnm8kmvg3rr3a07lwp9dfdyxki2s2q4rm8y8v2qrc03iimb5";
-    }}";
+    servers.nixos.command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+    servers.git.command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
   };
 
   home.packages = [
     codexGuiSudo
+    pkgs.llm-agents.codex
     pkgs.mcp-nixos
     pkgs.mcp-server-git
   ];

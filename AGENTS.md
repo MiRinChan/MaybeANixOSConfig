@@ -47,7 +47,7 @@ For paths containing spaces, quote shell paths and compose Nix paths from
 | `Program Files/Scripts/` | Service implementation scripts and their tests |
 | `Program Files/Packages/` | Custom derivations, sources, and patches |
 | `Program Files/Overlays/` | The eight public overlays and package-channel overlays |
-| `ProgramData/SOPS/` | Encrypted SOPS documents only; never plaintext |
+| `ProgramData/SOPS/` | Future encrypted SOPS documents only; never plaintext or empty placeholder documents |
 | `Windows/System32/default.nix` | System module aggregation only |
 | `Windows/System32/configuration.nix` | Host glue, overlays, Catppuccin, and `system.stateVersion` |
 | `Windows/System32/boot.nix` | Kernel, initrd, Lanzaboote, EFI, Plymouth, and boot parameters |
@@ -59,7 +59,7 @@ For paths containing spaces, quote shell paths and compose Nix paths from
 | `Windows/System32/authentication.nix` | Canokey/FIDO2 initrd and PAM authentication |
 | `Windows/System32/audio.nix` | PipeWire, WirePlumber, JACK, and realtime audio |
 | `Windows/System32/localization.nix` | Locale, timezone, NTP, and input method |
-| `Windows/System32/secrets.nix` | System sops-nix key path, secret declarations, and runtime consumers |
+| `Windows/System32/secrets.nix` | System sops-nix key path and future secret declarations/runtime consumers |
 | `Windows/Fonts/default.nix` | Fonts, fontconfig, and console font |
 | `Windows/DRIVER/nvidia.nix` | NVIDIA and graphics configuration |
 | `Users/mirin/home.nix` | Standalone Home Manager entrypoint and user overlays |
@@ -88,9 +88,10 @@ root `overlays` starter abstractions. Imports are explicit.
 ## Secret safety
 
 - `.sops.yaml` may contain public age recipients only.
-- `ProgramData/SOPS/system.yaml` must remain encrypted. Never put decrypted
-  values, age identities, credentials, or environment-file contents in Nix
-  expressions, command arguments, logs, Git diffs, or the Nix store.
+- If `ProgramData/SOPS/system.yaml` exists, it must remain encrypted. Do not
+  create an empty secret document. Never put decrypted values, age identities,
+  credentials, or environment-file contents in Nix expressions, command
+  arguments, logs, Git diffs, or the Nix store.
 - The system identity is `/var/lib/sops-nix/key.txt` (root, directory `0700`,
   file `0600`). The Home Manager identity is
   `/home/mirin/.config/sops/age/keys.txt` (mirin, directory `0700`, file `0600`).
@@ -112,8 +113,7 @@ root `overlays` starter abstractions. Imports are explicit.
 | NixOS module | system drv eval and `nixos-rebuild build --flake .#rins` |
 | Home Manager module | activation drv eval and activation package build |
 | Package | output eval and `nix build .#<package> --no-link` |
-| Proxy script | `PYTHONDONTWRITEBYTECODE=1` unit tests in a pinned Python environment |
-| SOPS | option eval, `sops filestatus`, each-identity decrypt to `/dev/null`, and generated unit path review |
+| SOPS document | option eval, `sops filestatus`, each-identity decrypt to `/dev/null`, and generated unit path review |
 | Plasma/desktop | search for forbidden migration declarations and eval Plasma 6/SDDM enablement |
 | Path move | search old roots and `../` imports; verify every import, source, and patch exists |
 | Secret change | filename-only worktree/history scan; separate expected encrypted/public-recipient matches |

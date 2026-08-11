@@ -1,5 +1,0 @@
-[Event/exitkde]
-Action=Sound
-
-[Event/startkde]
-Action=Sound

@@ -46,8 +46,6 @@
     nnn # terminal file manager
     fastfetch
     llm-agents.opencode # AI coding agent for the terminal
-    openchamber
-    openchamber-desktop
     texliveTeTeX
     sqlitebrowser
 

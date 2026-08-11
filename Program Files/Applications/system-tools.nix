@@ -61,7 +61,6 @@
     gcc
     gdb
     nh # seem also programs.nh
-    nur.repos.linyinfeng.easylpac
     lpac
     android-tools
     papirus-icon-theme

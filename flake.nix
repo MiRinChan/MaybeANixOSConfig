@@ -19,6 +19,11 @@
 
     catppuccin.url = "github:catppuccin/nix/release-25.11";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # lanzaboote for Secure boot
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.1.0";

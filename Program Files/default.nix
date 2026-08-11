@@ -8,6 +8,5 @@
     ./Applications/virtualization.nix
     ./Services/device-integration.nix
     ./Services/network-routing.nix
-    ./Services/openchamber.nix
   ];
 }

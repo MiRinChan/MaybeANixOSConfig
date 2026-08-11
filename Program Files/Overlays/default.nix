@@ -18,6 +18,15 @@
       doCheck = false;
     });
 
+    kdePackages = prev.kdePackages.overrideScope (_kdeFinal: kdePrev: {
+      # Always build the wallpaper package on this machine. Do not download
+      # its outputs from any configured binary cache.
+      plasma-workspace-wallpapers = kdePrev.plasma-workspace-wallpapers.overrideAttrs (_: {
+        allowSubstitutes = false;
+        preferLocalBuild = true;
+      });
+    });
+
     lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;
 
     # TODO: 临时修复，上游 llm-agents 下个版本修复后删掉此 override

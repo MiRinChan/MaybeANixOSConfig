@@ -52,7 +52,6 @@ in {
     };
     serviceConfig = {
       ExecStart = "${deepseekResponsesProxy}/bin/codex-deepseek-responses-proxy";
-      EnvironmentFile = "-/home/mirin/.config/codex/deepseek-proxy.env";
       Restart = "on-failure";
       RestartSec = "5s";
       DynamicUser = true;

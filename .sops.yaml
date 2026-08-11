@@ -1,0 +1,14 @@
+keys:
+  - &system age1vv2zrpll2c4syfsxl49rq5j6j2jtuqnrx5lfgv8kl547jqrqyszsljqdte
+  - &mirin age1nefg2ere4t82wapfzzd8vladj98xrfravdxpa0q7vtxquwegsurqs29r26
+
+creation_rules:
+  - path_regex: ^ProgramData/SOPS/system\.yaml$
+    key_groups:
+      - age:
+          - *system
+          - *mirin
+  - path_regex: ^ProgramData/SOPS/mirin\.yaml$
+    key_groups:
+      - age:
+          - *mirin

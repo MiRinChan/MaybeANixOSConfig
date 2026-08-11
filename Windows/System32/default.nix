@@ -6,6 +6,7 @@
     ./nix.nix
     ./desktop.nix
     ./services.nix
+    ./secrets.nix
     ./accounts.nix
     ./authentication.nix
     ./audio.nix

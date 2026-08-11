@@ -11,6 +11,7 @@ in {
   imports = [
     ./AppData
     inputs.catppuccin.homeModules.catppuccin
+    inputs.sops-nix.homeManagerModules.sops
   ];
 
   nixpkgs = {

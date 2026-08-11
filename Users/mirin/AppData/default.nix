@@ -7,5 +7,6 @@
     ./Development
     ./Terminal
     ./Media
+    ./Secrets.nix
   ];
 }

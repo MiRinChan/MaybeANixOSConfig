@@ -78,9 +78,14 @@
     users = repoRoot + "/Users";
     systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
+    packagePkgs = forAllSystems (system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      });
     repoOverlays = import (programFiles + "/Overlays") {inherit inputs repoRoot;};
   in {
-    packages = forAllSystems (system: import (programFiles + "/Packages") nixpkgs.legacyPackages.${system});
+    packages = forAllSystems (system: import (programFiles + "/Packages") packagePkgs.${system});
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
     overlays = repoOverlays;
 
@@ -94,6 +99,7 @@
       specialArgs = {inherit inputs repoRoot;};
       modules = [
         flatpak.nixosModules.nix-flatpak
+        inputs.sops-nix.nixosModules.sops
         (windows + "/System32")
         catppuccin.nixosModules.catppuccin
         nur.modules.nixos.default

@@ -5,7 +5,6 @@
     ./canokey.nix
     ./codex.nix
     ./steam.nix
-    ./vohive.nix
     ./common.nix
     ./services.nix
     ./virtualMachine.nix

@@ -1,6 +1,7 @@
 {...}: {
   programs.tmux = {
     enable = true;
+    package = null;
     mouse = true;
     terminal = "tmux-256color";
     escapeTime = 0;

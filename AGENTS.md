@@ -79,7 +79,7 @@ root `overlays` starter abstractions. Imports are explicit.
 - Preserve the Canokey FIDO2 initrd flow and the narrow KDE/sudo PAM U2F
   settings.
 - Preserve PipeWire/WirePlumber/JACK behavior and the USB DAC rule.
-- The eight package outputs and eight overlay outputs are public flake
+- The seven package outputs and eight overlay outputs are public flake
   interfaces. Treat additions, removals, and renames as explicit interface
   changes.
 - `lunar.nix` has a known lazy `passthru.updateScript = ./update.sh` reference;

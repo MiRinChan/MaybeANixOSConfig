@@ -36,8 +36,6 @@
   };
 
   home.packages = with pkgs; [
-    waypipe
-
     (writeShellScriptBin "wff" ''
       if [ -z "$1" ]; then
         echo "usage: wff host [firefox-args...]" >&2

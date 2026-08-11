@@ -18,8 +18,6 @@
   home.packages = with pkgs; [
     # GUI 生产力
     kdePackages.kcolorchooser # 颜色选择器
-    kdePackages.kgpg # Gpg 加密
-    kdePackages.kleopatra # Gpg 加密
     furmark # 图形性能检测器
     d209.veracrypt # 磁盘加密
     rquickshare-the-legacy # 快速分享
@@ -30,28 +28,14 @@
     xleak
     csvkit
 
-    kdePackages.powerdevil
-
-    # Wallpaper Engine Plugin and dependence
-    kdePackages.qtwebsockets
-    kdePackages.qtwebchannel
-    kdePackages.qtmultimedia
-    kdePackages.qtwebengine
-
-    kdePackages.kconfig
-
     # Firefox
     stable.firefox # for internet
     librewolf # for internet tool
     #cHROMIUM
     ungoogled-chromium
 
-    # 源代码管理
-    git
-
     # 解压
     zip
-    xz
     unzip
     p7zip
     unrar
@@ -69,13 +53,7 @@
 
     # 杂项
     file
-    which
     tree
-    gnused
-    gnutar
-    gawk
-    zstd
-    gnupg
     ffmpeg_7-full # provide ffmpeg
     ripgrep
 
@@ -100,7 +78,6 @@
     iftop # 网络监视
 
     # system call monitoring
-    strace # system call monitoring
     ltrace # library call monitoring
     lsof # list open files
 

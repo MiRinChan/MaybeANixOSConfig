@@ -1,6 +1,7 @@
 {config, ...}: {
   programs.git = {
     enable = true;
+    package = null;
     settings = {
       init = {
         defaultBranch = "master";

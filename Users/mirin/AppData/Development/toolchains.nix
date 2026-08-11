@@ -39,14 +39,12 @@ in {
     # 编程环境
     devbox
     direnv
-    uv
     conda
     condaWrapper
     micromamba
     git-repo
     act
     ghidra
-    devenv
     rkdeveloptool
   ];
 }

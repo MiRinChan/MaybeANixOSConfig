@@ -24,10 +24,8 @@
 
       # FTP/FTPS/SFTP 2121
       # Sunshine 47984 47989 47990 48010
-      # Wallpaper Engine 7889
       # BT 9000 30042
-      allowedTCPPorts = [2121 7889 47984 47989 47990 48010 9000 30042];
-      # Wallpaper Engine 7884
+      allowedTCPPorts = [2121 47984 47989 47990 48010 9000 30042];
       allowedUDPPorts = [];
       # Sunshine 8000-8010 47998-48000
       # Mosh 60000-61000

@@ -1,7 +1,6 @@
 # Standalone Home Manager configuration for mirin.
 {
   inputs,
-  pkgs,
   repoRoot,
   ...
 }: let
@@ -49,8 +48,6 @@ in {
       TERMINAL = "kitty";
     };
   };
-
-  home.packages = with pkgs; [steam];
 
   systemd.user.startServices = "sd-switch";
   services.kdeconnect.enable = true;

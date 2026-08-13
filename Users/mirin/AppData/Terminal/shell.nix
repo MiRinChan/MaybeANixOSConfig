@@ -45,7 +45,7 @@
       host="$1"
       shift
 
-      exec ${waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
+      exec ${master.waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
         env MOZ_ENABLE_WAYLAND=1 \
             XDG_SESSION_TYPE=wayland \
             MOZ_GTK_TITLEBAR_DECORATION=client \

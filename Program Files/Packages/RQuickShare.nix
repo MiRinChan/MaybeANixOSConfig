@@ -9,7 +9,7 @@
     url = "https://github.com/Martichou/rquickshare/releases/download/v${version}/r-quick-share-legacy_v${version}_glibc-2.31_amd64.AppImage";
     hash = "sha256-qNHmNheycPcCuP3zXesoO5sb+/7DzBs88DcPWhQysss=";
   };
-  appimageContents = appimageTools.extractType2 {inherit pname version src;};
+  appimageContents = appimageTools.extract {inherit pname version src;};
 in
   appimageTools.wrapType2 {
     inherit pname version src;

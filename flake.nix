@@ -30,11 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    solaar = {
-      url = "github:Svenum/Solaar-Flake/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +54,6 @@
     lanzaboote,
     nixpkgs,
     nur,
-    solaar,
     ...
   }: let
     repoRoot = ./.;
@@ -94,7 +88,6 @@
         catppuccin.nixosModules.catppuccin
         nur.modules.nixos.default
         lanzaboote.nixosModules.lanzaboote
-        solaar.nixosModules.default
       ];
     };
   };

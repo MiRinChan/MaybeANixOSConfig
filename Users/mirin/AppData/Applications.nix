@@ -23,6 +23,7 @@
     rquickshare-the-legacy # 快速分享
     stable.qgis # 地理信息系统
     scrcpy3 # Android 屏传
+    tsuyaku # Wayland 实时音频翻译
     tsukimi # emby
     graalvmPackages.graalvm-ce
     xleak
@@ -86,4 +87,45 @@
     pciutils # provide lspci
     usbutils # provide lsusb
   ];
+
+  xdg.configFile."tsuyaku/config.toml" = {
+    force = true;
+    text = ''
+      [audio]
+      target_object = "@DEFAULT_AUDIO_SINK@"
+      sample_rate = 16000
+
+      [vad]
+      model_path = "silero_vad.onnx"
+      threshold = 0.35
+      min_silence_duration = 0.65
+      min_speech_duration = 0.10
+      max_speech_duration = 15.0
+      pre_speech_padding_ms = 350
+
+      [asr]
+      model_path = "model.int8.onnx"
+      tokens_path = "tokens.txt"
+      language = "ja"
+      num_threads = 2
+
+      [translate]
+      enabled = false
+      source_language = "ja"
+      target_language = "zh"
+      endpoint = ""
+      api_key = ""
+      model = ""
+      temperature = 0.2
+      max_tokens = 256
+      context_history_size = 3
+      disable_thinking = false
+
+      [ui]
+      font_size = 18
+      opacity = 0.85
+      width = 720
+      show_source_text = true
+    '';
+  };
 }

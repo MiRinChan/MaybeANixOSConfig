@@ -41,7 +41,8 @@ in {
     direnv
     conda
     condaWrapper
-    micromamba
+    # libmamba 2.6.2 currently fails to compile with the pinned GCC 15 toolchain.
+    stable.micromamba
     git-repo
     act
     ghidra

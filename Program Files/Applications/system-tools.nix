@@ -67,7 +67,8 @@
     kdePackages.breeze-icons
     adwaita-icon-theme
     iloader
-    waypipe
+    # 0.11.0 with FFmpeg 9 currently fails to compile against its changed Vulkan API.
+    master.waypipe
     tmux
     bun
     libnotify

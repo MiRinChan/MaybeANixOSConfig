@@ -8,4 +8,5 @@ pkgs: {
   tsuyaku = pkgs.callPackage ./tsuyaku.nix {};
   klassy-qt6 = pkgs.callPackage ./klassy-qt6 {};
   iloader = pkgs.callPackage ./iloader.nix {};
+  dsh = pkgs.callPackage ./dsh.nix {};
 }

@@ -15,6 +15,7 @@
 
   security.pam.services.kde.u2f.enable = true;
   security.pam.services.sudo.u2f.enable = true;
+  security.pam.services.login.u2f.enable = true;
 
   environment.systemPackages = with pkgs; [
     libfido2

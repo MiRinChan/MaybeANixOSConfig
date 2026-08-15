@@ -35,6 +35,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    deepseek-opencode-anchor = {
+      url = "github:MiRinChan/deepseek-opencode-yuanzu";
+      inputs.llm-agents.follows = "llm-agents";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";

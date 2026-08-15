@@ -67,6 +67,29 @@
         "type": "github"
       }
     },
+    "deepseek-opencode-anchor": {
+      "inputs": {
+        "llm-agents": [
+          "llm-agents"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786780225,
+        "narHash": "sha256-5sQDCGa188ouSQ0j37dNZ0qvJopTocbRdIczZQGOfqI=",
+        "owner": "MiRinChan",
+        "repo": "deepseek-opencode-yuanzu",
+        "rev": "46c578e0b7395bb6a15645cbe5ceb84e7a91dc6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MiRinChan",
+        "repo": "deepseek-opencode-yuanzu",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -452,6 +475,7 @@
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
+        "deepseek-opencode-anchor": "deepseek-opencode-anchor",
         "flatpak": "flatpak",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",

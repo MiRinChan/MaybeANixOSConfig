@@ -77,11 +77,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786780225,
-        "narHash": "sha256-5sQDCGa188ouSQ0j37dNZ0qvJopTocbRdIczZQGOfqI=",
+        "lastModified": 1786787959,
+        "narHash": "sha256-IacxPaeCjbpjIywID65VogFEBFResNPnW07SnyA2Eq8=",
         "owner": "MiRinChan",
         "repo": "deepseek-opencode-yuanzu",
-        "rev": "46c578e0b7395bb6a15645cbe5ceb84e7a91dc6c",
+        "rev": "4868982e34571225ee0e75767cb979f6def5a69f",
         "type": "github"
       },
       "original": {

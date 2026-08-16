@@ -95,8 +95,8 @@ in {
     enable = true;
     package = inputs.pi-flake.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent;
     agentFiles.settings.value = {
-      defaultProvider = "kylenqaq-openai";
-      defaultModel = "gpt-5.6-terra";
+      defaultProvider = "opencode-go";
+      defaultModel = "deepseek-v4-flash";
       theme = "catppuccin-mocha";
 
       # 从 pi 的资源列表里排除不用的 skill
@@ -151,7 +151,7 @@ in {
 
       # pi-workspace-history：保持默认 storageDir（~/.pi/agent/state/workspace-history），
       # 不要改到工作目录内，避免影子仓库膨胀
-      workspaceHistory = {};
+      workspaceHistory = { enabled = true; };
     };
   };
 

@@ -71,6 +71,9 @@
       unset HTTP_PROXY;
       unset HTTPS_PROXY
     '';
+
+    pi = "pi-sandbox";
+    pi-no-sandbox = "pi";
   };
 
   programs.kitty = {

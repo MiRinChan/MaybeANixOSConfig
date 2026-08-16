@@ -1,6 +1,8 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
-pkgs: {
+pkgs:
+(import ./pi {inherit pkgs;})
+// {
   # example = pkgs.callPackage ./example { };
   lunar = pkgs.callPackage ./lunar.nix {};
   rquickshare-the-legacy = pkgs.callPackage ./RQuickShare.nix {};

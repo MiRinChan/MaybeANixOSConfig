@@ -1,0 +1,71 @@
+{
+  "name": "@ericthered926/duckduckgo-mcp-server",
+  "version": "0.6.0",
+  "description": "A Model Context Protocol (MCP) server for DuckDuckGo web and news search",
+  "type": "module",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "bin": {
+    "duckduckgo-mcp-server": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc --watch",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "format": "prettier --write .",
+    "test": "node --test",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "duckduckgo",
+    "search",
+    "ai",
+    "llm",
+    "openwebui",
+    "mcpo"
+  ],
+  "author": "ericthered926",
+  "contributors": [
+    {
+      "name": "zhsama",
+      "url": "https://github.com/zhsama"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericthered926/duckduckgo-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ericthered926/duckduckgo-mcp-server/issues"
+  },
+  "homepage": "https://github.com/ericthered926/duckduckgo-mcp-server#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "duck-duck-scrape": "^2.2.7",
+    "zod": "^3.24.1"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

@@ -11,6 +11,7 @@ in {
     ./AppData
     inputs.catppuccin.homeModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
+    inputs.pi-flake.homeManagerModules.default
   ];
 
   nixpkgs = {
@@ -23,6 +24,7 @@ in {
       repoOverlays.d209-packages
       repoOverlays.cached-librewolf
       repoOverlays.llm-agents
+      inputs.prince213.overlays.default
 
       (final: prev: {
         kdePackages =

@@ -1,0 +1,37 @@
+{
+  "name": "pi-fff",
+  "version": "0.5.0",
+  "description": "Pi extension replacing built-in find/grep with FFF — frecency-ranked, git-aware, in-process C FFI search",
+  "author": "sanurb",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-coding-agent",
+    "fff",
+    "search",
+    "grep",
+    "find"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanurb/pi-fff.git"
+  },
+  "files": [
+    "src/",
+    "README.md"
+  ],
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "dependencies": {
+    "@ff-labs/fff-node": "^0.8.1"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test test/"
+  }
+}

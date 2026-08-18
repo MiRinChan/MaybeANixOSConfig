@@ -15,6 +15,7 @@ in {
       overlays.master-packages
       overlays.unstable-packages
       overlays.stable-packages
+      overlays.d209-packages
     ];
     config.allowUnfree = true;
   };

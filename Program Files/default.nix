@@ -8,5 +8,6 @@
     ./Applications/virtualization.nix
     ./Services/device-integration.nix
     ./Services/network-routing.nix
+    ./Services/veracrypt-hhd.nix
   ];
 }

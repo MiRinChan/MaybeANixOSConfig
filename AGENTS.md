@@ -88,10 +88,12 @@ root `overlays` starter abstractions. Imports are explicit.
 ## Secret safety
 
 - `.sops.yaml` may contain public age recipients only.
-- If `ProgramData/SOPS/system.yaml` exists, it must remain encrypted. Do not
+- If `ProgramData/SOPS/system.json` exists, it must remain encrypted. Do not
   create an empty secret document. Never put decrypted values, age identities,
   credentials, or environment-file contents in Nix expressions, command
-  arguments, logs, Git diffs, or the Nix store.
+  arguments, logs, Git diffs, or the Nix store. `system.json` is a binary-format
+  sops document (JSON with a `data` key); re-encrypt it with
+  `sops --input-type binary --output-type json -e -i ProgramData/SOPS/system.json`.
 - The system identity is `/var/lib/sops-nix/key.txt` (root, directory `0700`,
   file `0600`). The Home Manager identity is
   `/home/mirin/.config/sops/age/keys.txt` (mirin, directory `0700`, file `0600`).

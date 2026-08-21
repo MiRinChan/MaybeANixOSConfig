@@ -1,0 +1,14 @@
+{
+  "name": "pi-background-tasks",
+  "version": "2.4.2",
+  "type": "module",
+  "pi": {
+    "extensions": [
+      "./extensions/anthropic-attribution.ts",
+      "./extensions/background-tasks.ts"
+    ]
+  },
+  "dependencies": {
+    "turndown": "7.2.4"
+  }
+}

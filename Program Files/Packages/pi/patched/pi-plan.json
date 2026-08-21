@@ -1,0 +1,18 @@
+{
+  "name": "@ifi/pi-plan",
+  "version": "0.5.1",
+  "description": "Planning mode extension for pi with persistent plan files, branch-aware planning, and delegated research tasks.",
+  "type": "module",
+  "dependencies": {
+    "@ifi/pi-extension-subagents": "0.5.1",
+    "@ifi/pi-shared-qna": "0.5.1",
+    "@mariozechner/pi-tui": "0.73.1"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-agent-core": ">=0.56.1",
+    "@mariozechner/pi-ai": ">=0.56.1",
+    "@mariozechner/pi-coding-agent": ">=0.56.1",
+    "@sinclair/typebox": "*"
+  },
+  "pi": { "extensions": ["./index.ts"] }
+}

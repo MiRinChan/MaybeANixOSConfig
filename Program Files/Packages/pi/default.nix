@@ -51,6 +51,18 @@ in {
     src = npmTgz "pi-rtk-optimizer" "0.9.0" "sha256-T3xtmO2QqZne7ntaT4MVvQ/Rf5nSECKw0LZPd7wR08g=";
   };
 
+  pi-effort = copyExt {
+    pname = "pi-effort";
+    version = "0.0.8";
+    src = npmTgz "pi-effort" "0.0.8" "sha256-ByXtDJ42T3t6A0kp6IhdD6jdI3zK4Q65H10OSuElB2s=";
+  };
+
+  pi-oh-pi-skills = copyExt {
+    pname = "pi-oh-pi-skills";
+    version = "0.5.1";
+    src = npmTgz "@ifi/oh-pi-skills" "0.5.1" "sha256-56eElx0pSUyew5n3qb17yNAyeiL9KB3esJ5871QOTyQ=";
+  };
+
   pi-observational-memory = copyExt {
     pname = "pi-observational-memory";
     version = "3.0.4";
@@ -86,6 +98,103 @@ in {
   };
 
   # --- extensions with runtime dependencies (npm build) ---
+  pi-hashline-edit-pro = buildNpmPackage {
+    pname = "pi-hashline-edit-pro";
+    version = "2.6.1";
+    src = npmTgz "pi-hashline-edit-pro" "2.6.1" "sha256-Jc6RpcLxdYkrdLmzNcSx1WzIodY+PNNFgorZMq4XWks=";
+    postPatch = ''
+      cp ${./patched/pi-hashline-edit-pro.json} ./package.json
+      cp ${./locks/pi-hashline-edit-pro.lock} ./package-lock.json
+      sed -i '/const db = new DatabaseSync(storePath, {/,+2c\\  const db = new DatabaseSync(storePath);' src/hash-store.ts
+      substituteInPlace src/hash-store.ts \
+        --replace-fail 'import { DatabaseSync } from "node:sqlite";' 'import { Database as DatabaseSync } from "bun:sqlite";' \
+        --replace-fail 'cachedDb.db.isOpen' '(cachedDb.db.isOpen ?? true)'
+    '';
+    npmDepsHash = "sha256-MpVG71Vxg4PQ50WVzUJ43TeJmJzk03yOvYlYlIubWIs=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  pi-lens = buildNpmPackage {
+    pname = "pi-lens";
+    version = "4.1.0";
+    src = npmTgz "pi-lens" "4.1.0" "sha256-AebgyImomtLgNwqt9Frb3lcqoKdhJ+rRDl4jkrw6M6U=";
+    postPatch = ''
+      cp ${./patched/pi-lens.json} ./package.json
+      cp ${./locks/pi-lens.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-I5rs6gSk4gvZ7LXPObvvSQRvVyDeTqzi0PecVbIez70=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  pi-memory = copyExt {
+    pname = "pi-memory";
+    version = "0.4.2";
+    src = npmTgz "pi-memory" "0.4.2" "sha256-rEgmpLFrt16BhxqkzKzLdwH9CcvX7Wv3ha2ZvTymDj8=";
+  };
+
+  pi-lean-portal = buildNpmPackage {
+    pname = "pi-lean-portal";
+    version = "0.4.0";
+    src = npmTgz "pi-lean-portal" "0.4.0" "sha256-4aUubi0jrwLbY7ywGjWwrGeCXrQf+0/teH1sENtBTQw=";
+    postPatch = ''
+      cp ${./patched/pi-lean-portal.json} ./package.json
+      cp ${./locks/pi-lean-portal.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-KivCt0AUNp1G1WVLTs2n4h6OCJDWZT/Q6QPRjwY4VGI=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  pi-plan = buildNpmPackage {
+    pname = "pi-plan";
+    version = "0.5.1";
+    src = npmTgz "@ifi/pi-plan" "0.5.1" "sha256-3z+mMUF9VpVScSt7ukrqvvwbsuEIBoVQH+2fwBZd+KI=";
+    postPatch = ''
+      cp ${./patched/pi-plan.json} ./package.json
+      cp ${./locks/pi-plan.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-yfqTra5tBPesrUaryAeC+1LdrYm6H91iKL9y8rlZCpw=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+    postInstall = ''
+      substituteInPlace $out/node_modules/@ifi/pi-shared-qna/pi-tui-loader.ts \
+        --replace-fail 'const fallbackPaths = getPiTuiFallbackPaths(options);' 'const fallbackPaths = [process.env.PI_TUI_PATH, ...getPiTuiFallbackPaths(options)].filter((p): p is string => Boolean(p));'
+    '';
+  };
+
+  pi-background-tasks = buildNpmPackage {
+    pname = "pi-background-tasks";
+    version = "2.4.2";
+    src = npmTgz "pi-background-tasks" "2.4.2" "sha256-jVFZG0NDGH3DgSV228fGvqlkoLzGWkw3jz+zjcEdhXE=";
+    postPatch = ''
+      cp ${./patched/pi-background-tasks.json} ./package.json
+      cp ${./locks/pi-background-tasks.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-udsz8Romz6CL1pxmnWQns4xxkrK4V3la3qGv2dLRzbo=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  pi-oh-pi-ant-colony = buildNpmPackage {
+    pname = "pi-oh-pi-ant-colony";
+    version = "0.5.1";
+    src = npmTgz "@ifi/oh-pi-ant-colony" "0.5.1" "sha256-GxQTeGh1G7B7ZzggBSGx9q3WHKlgcIclTU7Ir7BcbWw=";
+    postPatch = ''
+      cp ${./locks/pi-oh-pi-ant-colony.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-W/ZLFmTXQ4RVJjFR5gzpDbb8fUhp69TXWTsnGg3GyLE=";
+    npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
   pi-mcp-adapter = buildNpmPackage {
     pname = "pi-mcp-adapter";
     version = "2.26.0";

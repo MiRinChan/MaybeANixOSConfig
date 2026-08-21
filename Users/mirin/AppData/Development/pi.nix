@@ -5,6 +5,7 @@
   ...
 }: let
   piPkg = config.programs.pi-coding-agent.package;
+  piPython = pkgs.python3.withPackages (ps: [ps.playwright]);
 
   # Catppuccin Mocha
   catppuccinMochaTheme = {
@@ -91,6 +92,15 @@
     };
   };
 in {
+  # Use the pinned nixpkgs Playwright browsers from the Nix store rather than
+  # downloading mutable browser copies into ~/.cache/ms-playwright.
+  home.sessionVariables = {
+    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+    PLAYWRIGHT_PYTHON_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    PI_TUI_PATH = "${pkgs.pi-plan}/node_modules/@mariozechner/pi-tui/dist/index.js";
+  };
+
   programs.pi-coding-agent = {
     enable = true;
     package = inputs.pi-flake.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent;
@@ -98,6 +108,36 @@ in {
       defaultProvider = "kylenqaq-openai";
       defaultModel = "gpt-5.6-sol";
       theme = "catppuccin-mocha";
+
+      # pi-lean-portal ships Python adapters as optional backends.  Keep the
+      # Use the Nix-provided Node/Playwright and Python/Playwright backends.
+      # The Python adapters point at the immutable interpreter closure below.
+      browser.plugins = [
+        {
+          name = "chromium";
+          dir = "chromium";
+          enabled = true;
+          config = {};
+        }
+        {
+          name = "firefox";
+          dir = "firefox";
+          enabled = true;
+          config = {};
+        }
+        {
+          name = "chromium-py";
+          dir = "chromium-py";
+          enabled = true;
+          config.pythonPath = "${piPython}/bin/python3";
+        }
+        {
+          name = "firefox-py";
+          dir = "firefox-py";
+          enabled = true;
+          config.pythonPath = "${piPython}/bin/python3";
+        }
+      ];
 
       # 从 pi 的资源列表里排除不用的 skill
       ignoredSkills = ["microsoft-foundry"];
@@ -107,6 +147,15 @@ in {
         "${pkgs.pi-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"
+        "${pkgs.pi-effort}/index.ts"
+        "${pkgs.pi-hashline-edit-pro}/index.ts"
+        "${pkgs.pi-lens}/dist/index.js"
+        "${pkgs.pi-memory}/index.ts"
+        "${pkgs.pi-lean-portal}/index.ts"
+        "${pkgs.pi-plan}/index.ts"
+        "${pkgs.pi-background-tasks}/extensions/background-tasks.ts"
+        "${pkgs.pi-background-tasks}/extensions/anthropic-attribution.ts"
+        "${pkgs.pi-oh-pi-ant-colony}/extensions/ant-colony/index.ts"
         "${pkgs.pi-fff}/src/index.ts"
         "${pkgs.pi-observational-memory}/src/index.ts"
         "${pkgs.pi-context-usage}/src/index.ts"
@@ -207,6 +256,10 @@ in {
   home.file.".pi/agent/themes/catppuccin-mocha.json" = {
     text = builtins.toJSON catppuccinMochaTheme;
   };
+
+  # oh-pi 的技能包只提供 skills/ 资源，放入全局 Pi skill 搜索路径。
+  home.file.".pi/agent/skills/oh-pi".source = "${pkgs.pi-oh-pi-skills}/skills";
+  home.file.".pi/agent/skills/pi-lens".source = "${pkgs.pi-lens}/skills";
 
   # pi-mcp-adapter 的全局 MCP 配置；命令路径固定到 Nix store，和 Codex 保持一致。
   home.file.".pi/agent/mcp.json" = {
@@ -493,6 +546,8 @@ in {
   # bwrap 沙盒包装  整个 pi 进程按 codex workspace-write 隔离
   # 全局只读 工作区 / pi 状态 / 声音与 ssh-agent 套接字可写
   home.packages = with pkgs; [
+    piPython
+    playwright-driver.browsers
     rtk # pi-rtk-optimizer 命令重写
     pulseaudio # paplay，供 pi-jingle 发声
     bubblewrap # bwrap 沙盒

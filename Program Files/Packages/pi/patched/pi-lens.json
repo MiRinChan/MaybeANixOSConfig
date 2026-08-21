@@ -1,0 +1,19 @@
+{
+  "name": "pi-lens",
+  "version": "4.1.0",
+  "type": "module",
+  "pi": {
+    "extensions": ["./dist/index.js"],
+    "skills": ["./skills"]
+  },
+  "dependencies": {
+    "@ast-grep/cli": "^0.45.0",
+    "@ast-grep/napi": "^0.45.0",
+    "@earendil-works/pi-tui": "^0.84.1",
+    "js-yaml": "^5.2.2",
+    "minimatch": "^10.2.6",
+    "pidusage": "^4.0.1",
+    "typebox": "^1.0.0",
+    "vscode-jsonrpc": "^9.0.0"
+  }
+}

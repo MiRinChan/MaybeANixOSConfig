@@ -40,6 +40,7 @@
     enable = true;
     libraries = with pkgs; [
       stdenv.cc.cc
+      icu
     ];
   };
 }

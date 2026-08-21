@@ -98,7 +98,6 @@ in {
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
     PLAYWRIGHT_PYTHON_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-    PI_TUI_PATH = "${pkgs.pi-plan}/node_modules/@mariozechner/pi-tui/dist/index.js";
   };
 
   programs.pi-coding-agent = {

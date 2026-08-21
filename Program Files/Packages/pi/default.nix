@@ -164,7 +164,8 @@ in {
     installPhase = extInstallPhase;
     postInstall = ''
       substituteInPlace $out/node_modules/@ifi/pi-shared-qna/pi-tui-loader.ts \
-        --replace-fail 'const fallbackPaths = getPiTuiFallbackPaths(options);' 'const fallbackPaths = [process.env.PI_TUI_PATH, ...getPiTuiFallbackPaths(options)].filter((p): p is string => Boolean(p));'
+        --replace-fail 'import { createRequire } from "node:module";' "import * as nixPiTui from \"$out/node_modules/@mariozechner/pi-tui/dist/index.js\";" \
+        --replace-fail 'const requireFn = options.requireFn ?? createRequire(import.meta.url);' $'if (!options.requireFn) return nixPiTui;\n\tconst requireFn = options.requireFn;'
     '';
   };
 

@@ -560,15 +560,29 @@ in {
       set -euo pipefail
       pi="${piPkg}/bin/pi"
       runtime_dir="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+      config_home="''${XDG_CONFIG_HOME:-$HOME/.config}"
+      cache_home="''${XDG_CACHE_HOME:-$HOME/.cache}"
+      data_home="''${XDG_DATA_HOME:-$HOME/.local/share}"
+      agent_dir="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+
+      writable_dirs=(
+        "$HOME/.pi"
+        "$agent_dir"
+        "$data_home/pi"
+        "$cache_home"
+        "$HOME/.pi-lens"
+        "$config_home/pi"
+        "$config_home/pi-hashline-edit-pro"
+        "$runtime_dir"
+      )
+      mkdir -p "''${writable_dirs[@]}"
 
       bwrap_args=(
         --ro-bind / /
         --bind "$PWD" "$PWD"
       )
-      for d in "$HOME/.pi" "$HOME/.local/share/pi" "$HOME/.cache" "$runtime_dir"; do
-        if [ -d "$d" ]; then
-          bwrap_args+=(--bind "$d" "$d")
-        fi
+      for d in "''${writable_dirs[@]}"; do
+        bwrap_args+=(--bind "$d" "$d")
       done
       bwrap_args+=(
         --bind /dev/pts /dev/pts

@@ -95,8 +95,8 @@ in {
     enable = true;
     package = inputs.pi-flake.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent;
     agentFiles.settings.value = {
-      defaultProvider = "opencode-go";
-      defaultModel = "deepseek-v4-flash";
+      defaultProvider = "kylenqaq-openai";
+      defaultModel = "gpt-5.6-sol";
       theme = "catppuccin-mocha";
 
       # 从 pi 的资源列表里排除不用的 skill
@@ -118,7 +118,7 @@ in {
         "${pkgs.pi-permission-auto-review}/dist/index.js"
       ];
 
-      # pi-preferred-thinking：按模型固定思考强度
+      # pi-preferred-thinking 固定思考强度
       preferredThinking = {
         "opencode-go/deepseek-v4-pro" = "max";
         "opencode-go/glm-5.2" = "max";
@@ -129,29 +129,28 @@ in {
         "opencode-go/kimi-k3" = "max";
       };
 
-      # pi-observational-memory：后台记忆 worker 用便宜的 deepseek-v4-flash，
+      # pi-observational-memory
       # ratio 模式让压缩阈值跟随大上下文窗口
       observational-memory = {
         model = {
-          provider = "opencode-go";
-          id = "deepseek-v4-flash";
-          thinking = "max";
+          provider = "kylenqaq-openai";
+          id = "gpt-5.6-terra";
+          thinking = "high";
         };
         compactAfterTokensMode = "ratio";
         compactAfterTokensRatio = 0.5;
         showWorkerNotifications = false;
       };
 
-      # pi-jingle：默认用自带 done.mp3；想要 Navi 提示音时把文件放到
-      # ~/.pi/sounds/navi.mp3 并改这里的 path 即可
+      # pi-jingle
       sounds.agent_end = {
         path = "${pkgs.pi-jingle}/sounds/done.mp3";
         volume = 0.5;
       };
 
-      # pi-workspace-history：保持默认 storageDir（~/.pi/agent/state/workspace-history），
+      # pi-workspace-history
       # 不要改到工作目录内，避免影子仓库膨胀
-      workspaceHistory = { enabled = true; };
+      workspaceHistory = {enabled = true;};
     };
   };
 
@@ -169,9 +168,9 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "gpt-5.6-luna", "name": "GPT-5.6 Luna", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
                 { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
-                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 }
+                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
+                { "id": "gpt-5.5", "name": "GPT-5.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 }
               ]
             },
             "kylenqaq-claude": {
@@ -190,7 +189,8 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-grok-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "grok-4.5", "name": "Grok 4.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 }
+                { "id": "grok-4.5", "name": "Grok 4.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 },
+                { "id": "grok-4.6", "name": "Grok 4.6", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 }
               ]
             },
             "opencode-go": {

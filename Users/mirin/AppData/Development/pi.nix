@@ -161,7 +161,6 @@ in {
         "${pkgs.pi-jingle}/jingle.ts"
         "${pkgs.pi-btw}/extensions/btw.ts"
         "${pkgs.rpiv-ask-user-question}/index.ts"
-        "${pkgs.pi-workspace-history}/.pi/extensions/workspace-history.ts"
         "${pkgs.pi-mcp-adapter}/index.ts"
         "${pkgs.pi-permission-auto-review}/dist/index.js"
       ];
@@ -195,10 +194,6 @@ in {
         path = "${pkgs.pi-jingle}/sounds/done.mp3";
         volume = 0.5;
       };
-
-      # pi-workspace-history
-      # 不要改到工作目录内，避免影子仓库膨胀
-      workspaceHistory = {enabled = true;};
     };
   };
 

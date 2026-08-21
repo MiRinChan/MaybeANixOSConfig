@@ -204,6 +204,11 @@ in {
   };
 
   # provider 配置
+  # // The gateway accepts `max` as the value corresponding to
+  # // Pi's highest (`xhigh`) thinking level.  Without this map Pi
+  # // correctly marks the model as reasoning-capable, but does
+  # // not expose the highest level, so `/effort max` stops at
+  # // `high` and the selector cannot switch to max.
   sops.templates = {
     "pi-models.json" = {
       path = "/home/mirin/.pi/agent/models.json";
@@ -217,9 +222,9 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
-                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
-                { "id": "gpt-5.5", "name": "GPT-5.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 }
+                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
+                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
+                { "id": "gpt-5.5", "name": "GPT-5.5", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 }
               ]
             },
             "kylenqaq-claude": {

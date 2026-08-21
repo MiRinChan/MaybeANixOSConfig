@@ -454,7 +454,7 @@ in {
   # pi-permission-system 策略：OS 沙盒(bwrap)之上的审批层，映射 codex 的
   # approval_policy + 信任级别。路径保护 + bash 模式 + 工作区边界门。
   # authorizerChain 启用 "auto-review"（pi-permission-auto-review）：
-  # 模型按 Codex Guardian 策略评估，安全操作自动放行，潜在危险才问用户。
+  # 模型按 Codex Guardian 策略评估，潜在危险时询问。
   home.file.".pi/agent/extensions/pi-permission-system/config.json" = {
     text = builtins.toJSON {
       authorizerChain = ["auto-review"];

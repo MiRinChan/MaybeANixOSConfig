@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@ff-labs/fff-node": "^0.8.1"
+    "@ff-labs/fff-node": "^0.10.5"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

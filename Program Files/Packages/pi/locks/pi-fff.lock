@@ -9,13 +9,26 @@
       "version": "0.5.0",
       "license": "MIT",
       "dependencies": {
-        "@ff-labs/fff-node": "^0.8.1"
+        "@ff-labs/fff-node": "^0.10.5"
       }
     },
+    "node_modules/@ff-labs/fff-bin-android-arm64": {
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-android-arm64/-/fff-bin-android-arm64-0.10.5.tgz",
+      "integrity": "sha512-idn1m9ycwv0Dzz6ih4H8e/X1WpGF6kglUxqP78oYgoC2sgAdPtLxD6hIAZK13p8isK7H8EMwrMze/4lynEDcKQ==",
+      "cpu": [
+        "arm64"
+      ],
+      "license": "MIT",
+      "optional": true,
+      "os": [
+        "android"
+      ]
+    },
     "node_modules/@ff-labs/fff-bin-darwin-arm64": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-darwin-arm64/-/fff-bin-darwin-arm64-0.8.4.tgz",
-      "integrity": "sha512-B2l9Io2LEb++q96tvt2/wkx78wMnmWY6pTSi5HpIskSNlCQu0nEOGPSYjfDji7DvQs2IIFMboaamzLiHm6A7NA==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-darwin-arm64/-/fff-bin-darwin-arm64-0.10.5.tgz",
+      "integrity": "sha512-tG0VSt6fs3C2/Y6NDp57YJVXGEnrJ4F/e5gDrFCbNeuwJe9LmcCKh6oHWUEZOaaymYT90kQmwuXZTvORP3G6Vw==",
       "cpu": [
         "arm64"
       ],
@@ -26,9 +39,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-darwin-x64": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-darwin-x64/-/fff-bin-darwin-x64-0.8.4.tgz",
-      "integrity": "sha512-xwF9uCot/neZ0cXv4WtAKLDGLKoM+CU04OqSG8btH3jD2QmaBvGy10GRcQzuREI86BfbiQ4FJxK7TNZNACdfug==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-darwin-x64/-/fff-bin-darwin-x64-0.10.5.tgz",
+      "integrity": "sha512-pwdFJUB/oeO4S/SfmRDdE5ipbAMYoVtRMwTZ12Wn2H46PgNU5DWnSjHhUNTLuKmkQU/ZIJL5Sn9j/fzwuIzcoA==",
       "cpu": [
         "x64"
       ],
@@ -39,9 +52,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-linux-arm64-gnu": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-arm64-gnu/-/fff-bin-linux-arm64-gnu-0.8.4.tgz",
-      "integrity": "sha512-Dj1+093/FQyeV90zEwAePkCrVa2JysBP9YxcF2sakR1vd0Q+kze2HTowPHu4LuGUXIwKUVpiWzIXjmUDq75h2g==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-arm64-gnu/-/fff-bin-linux-arm64-gnu-0.10.5.tgz",
+      "integrity": "sha512-prbY72gR+VPoSxl1InglwSwVHM0kErYMjUOpdvjQhS8eRdXYL3hTuYQv9L7fiB0mqaDzcwFa339uMr3p8ujDrw==",
       "cpu": [
         "arm64"
       ],
@@ -55,9 +68,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-linux-arm64-musl": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-arm64-musl/-/fff-bin-linux-arm64-musl-0.8.4.tgz",
-      "integrity": "sha512-GWZFzwaUNDza94Dj7akcipg+PLevWgz4QiD3i4/xsD3v0YVMlwUW9xq8F0eRqut6oIyuAnYUxh3fGmCD4mMueg==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-arm64-musl/-/fff-bin-linux-arm64-musl-0.10.5.tgz",
+      "integrity": "sha512-MQN/CEKn4c4toooGCmZ6N8cP9mhgE4tnR6rr6a4k9JjH0xi05fYdG4+BabPkr+l/mDc01DsRpSKVNBmvoZ3IlQ==",
       "cpu": [
         "arm64"
       ],
@@ -71,9 +84,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-linux-x64-gnu": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-x64-gnu/-/fff-bin-linux-x64-gnu-0.8.4.tgz",
-      "integrity": "sha512-plfvMH1DQRJ2kdpqLkKg8qhtgCyhUltKFxF6dqf1XEaei2MT93LvxC8TnYEHfHWGDkX81ouLHkz6ipryWKJ4sQ==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-x64-gnu/-/fff-bin-linux-x64-gnu-0.10.5.tgz",
+      "integrity": "sha512-8NzFGGyqrFaCtb+SPTFd0xQGUlHCJMf0KYGwuca46IP37nN4OtDT1wnyZ9oaPDZ+2qqyxox10hCnqGlmj3PJzQ==",
       "cpu": [
         "x64"
       ],
@@ -87,9 +100,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-linux-x64-musl": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-x64-musl/-/fff-bin-linux-x64-musl-0.8.4.tgz",
-      "integrity": "sha512-W1PtXbaA4c4MxgomEtOmi9Q8gaGRcaXP6plQurqPd/cQUnFiBG5B2VV++J+rI9b/z9Ubpm3hyj0PCYNvn7qVnw==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-linux-x64-musl/-/fff-bin-linux-x64-musl-0.10.5.tgz",
+      "integrity": "sha512-mioRbn8aAW2Jmm4W0w3poePo65iSE+REfO+Jc0iqsjirImEy6pKt7dswj+7LSU6RPWwPsMb4POTMENwNLMlJww==",
       "cpu": [
         "x64"
       ],
@@ -103,9 +116,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-win32-arm64": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-win32-arm64/-/fff-bin-win32-arm64-0.8.4.tgz",
-      "integrity": "sha512-rcDyuGoLkyfQCYA1/S5EgeS1s7QwFPXR6UV5QuuNCmUPccosHhPKNpOAxc8u9ZsQemahjTIcbpG+U8X0LKLd4w==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-win32-arm64/-/fff-bin-win32-arm64-0.10.5.tgz",
+      "integrity": "sha512-GIZiea0AhuUDtJtXO2mGWs3wil1OR6lpLKOqXMW8EhHVHs8SB+xwzOgZ3Hg7YLEJm+Ui/2tFW/NLbqRuxpmtrQ==",
       "cpu": [
         "arm64"
       ],
@@ -116,9 +129,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-bin-win32-x64": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-win32-x64/-/fff-bin-win32-x64-0.8.4.tgz",
-      "integrity": "sha512-sQuJGaqgUB1R818WuanRoLh3wFAEGrKkP0ZeCYj8o5XJIfEcIkZ9X8/u3H2P6qCNe+1C2065//r3wjKYSDfTiQ==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-bin-win32-x64/-/fff-bin-win32-x64-0.10.5.tgz",
+      "integrity": "sha512-EvCWb7wLrtCvkziksAnTVxcGa0roaWNC978t4nG3ESKEty/Mvrj8kaLAzqWfuA2Xk+gTW+qisJYxa4FqFnqR0Q==",
       "cpu": [
         "x64"
       ],
@@ -129,9 +142,9 @@
       ]
     },
     "node_modules/@ff-labs/fff-node": {
-      "version": "0.8.4",
-      "resolved": "https://registry.npmjs.org/@ff-labs/fff-node/-/fff-node-0.8.4.tgz",
-      "integrity": "sha512-jWPtLjYqOcg2UNxP/SiDwXD688NdOU9A1wVgGTScjudhdtNUNkC8s225O1+FMDVxYT5uNPIRtPEndFa3pM6Zcg==",
+      "version": "0.10.5",
+      "resolved": "https://registry.npmjs.org/@ff-labs/fff-node/-/fff-node-0.10.5.tgz",
+      "integrity": "sha512-O4KZoO9lZluTqdHUYgd23xpEX/u7G87qQTgUIgtJ4BFTh1x/p243/M6AU2HdSHYWK+vrMRAdDXDzeUW/9rjk3Q==",
       "cpu": [
         "x64",
         "arm64"
@@ -140,7 +153,8 @@
       "os": [
         "darwin",
         "linux",
-        "win32"
+        "win32",
+        "android"
       ],
       "dependencies": {
         "ffi-rs": "^1.0.0"
@@ -149,14 +163,15 @@
         "node": ">=18.0.0"
       },
       "optionalDependencies": {
-        "@ff-labs/fff-bin-darwin-arm64": "0.8.4",
-        "@ff-labs/fff-bin-darwin-x64": "0.8.4",
-        "@ff-labs/fff-bin-linux-arm64-gnu": "0.8.4",
-        "@ff-labs/fff-bin-linux-arm64-musl": "0.8.4",
-        "@ff-labs/fff-bin-linux-x64-gnu": "0.8.4",
-        "@ff-labs/fff-bin-linux-x64-musl": "0.8.4",
-        "@ff-labs/fff-bin-win32-arm64": "0.8.4",
-        "@ff-labs/fff-bin-win32-x64": "0.8.4"
+        "@ff-labs/fff-bin-android-arm64": "0.10.5",
+        "@ff-labs/fff-bin-darwin-arm64": "0.10.5",
+        "@ff-labs/fff-bin-darwin-x64": "0.10.5",
+        "@ff-labs/fff-bin-linux-arm64-gnu": "0.10.5",
+        "@ff-labs/fff-bin-linux-arm64-musl": "0.10.5",
+        "@ff-labs/fff-bin-linux-x64-gnu": "0.10.5",
+        "@ff-labs/fff-bin-linux-x64-musl": "0.10.5",
+        "@ff-labs/fff-bin-win32-arm64": "0.10.5",
+        "@ff-labs/fff-bin-win32-x64": "0.10.5"
       }
     },
     "node_modules/@yuuang/ffi-rs-android-arm64": {

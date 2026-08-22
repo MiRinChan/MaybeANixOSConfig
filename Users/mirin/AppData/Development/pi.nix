@@ -179,11 +179,11 @@ in {
       # pi-observational-memory
       # ratio 模式让压缩阈值跟随大上下文窗口
       observational-memory = {
-        model = {
-          provider = "kylenqaq-openai";
-          id = "gpt-5.6-terra";
-          thinking = "high";
-        };
+        #         model = {
+        #           provider = "kylenqaq-openai";
+        #           id = "gpt-5.6-terra";
+        #           thinking = "high";
+        #         };
         compactAfterTokensMode = "ratio";
         compactAfterTokensRatio = 0.5;
         showWorkerNotifications = false;
@@ -508,6 +508,9 @@ in {
   # authorizerChain 启用 "auto-review"（pi-permission-auto-review）：
   # 模型按 Codex Guardian 策略评估，潜在危险时询问。
   home.file.".pi/agent/extensions/pi-permission-system/config.json" = {
+    # /permission-system 通过原子 rename 保存设置，会把 HM symlink 替换成普通文件。
+    # 后续 switch 强制恢复声明状态，避免每次手动删除冲突文件。
+    force = true;
     text = builtins.toJSON {
       authorizerChain = ["auto-review"];
       permission = {

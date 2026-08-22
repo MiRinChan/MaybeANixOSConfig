@@ -289,7 +289,7 @@ in {
       cp ${./patched/pi-fff.json} ./package.json
       cp ${./locks/pi-fff.lock} ./package-lock.json
     '';
-    npmDepsHash = "sha256-wQ+tS/cKEA0eAHrn4lYBWcbJc3oCh1HPHkDYBPoJKk4=";
+    npmDepsHash = "sha256-okY+1QAnAojysshi22emKIlrUu1+ghtYa9rdB3ikNy4=";
     npmInstallFlags = ["--ignore-scripts"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;

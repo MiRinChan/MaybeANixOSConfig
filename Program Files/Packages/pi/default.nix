@@ -51,6 +51,17 @@ in {
     src = npmTgz "pi-rtk-optimizer" "0.9.0" "sha256-T3xtmO2QqZne7ntaT4MVvQ/Rf5nSECKw0LZPd7wR08g=";
   };
 
+  pi-dcp = copyExt {
+    pname = "pi-dcp";
+    version = "1.0.0";
+    src = fetchFromGitHub {
+      owner = "PSU3D0";
+      repo = "pi-dcp";
+      rev = "8d15a3331c51f3551ccd20583ac0f5ba499a13c3";
+      hash = "sha256-JSBFFS62h4FklWErkaiT+Sh7JiekXzIt+0MfRMUayvw=";
+    };
+  };
+
   pi-effort = copyExt {
     pname = "pi-effort";
     version = "0.0.8";

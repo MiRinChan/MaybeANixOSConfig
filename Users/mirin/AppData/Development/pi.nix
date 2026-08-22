@@ -146,6 +146,7 @@ in {
         "${pkgs.pi-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"
+        "${pkgs.pi-dcp}/index.ts"
         "${pkgs.pi-effort}/index.ts"
         "${pkgs.pi-hashline-edit-pro}/index.ts"
         "${pkgs.pi-lens}/dist/index.js"
@@ -216,9 +217,11 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
-                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
-                { "id": "gpt-5.5", "name": "GPT-5.5", "reasoning": true, "thinkingLevelMap": { "xhigh": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 }
+                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 },
+                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol (1M)", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
+                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 },
+                { "id": "gpt-5.6-terra", "name": "GPT-5.6 Terra (1M)", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },
+                { "id": "gpt-5.5", "name": "GPT-5.5", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": null }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 }
               ]
             },
             "kylenqaq-claude": {
@@ -227,8 +230,8 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-claude-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "claude-opus-5", "name": "Claude Opus 5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 },
-                { "id": "claude-fable-5", "name": "Claude Fable 5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 }
+                { "id": "claude-opus-5", "name": "Claude Opus 5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000, "compat": {"forceAdaptiveThinking": true } },
+                { "id": "claude-fable-5", "name": "Claude Fable 5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000, "compat": {"forceAdaptiveThinking": true } }
               ]
             },
             "kylenqaq-grok": {
@@ -237,8 +240,19 @@ in {
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-grok-api-key.path}",
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
-                { "id": "grok-4.5", "name": "Grok 4.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 },
-                { "id": "grok-4.6", "name": "Grok 4.6", "reasoning": true, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 }
+                { "id": "grok-4.5", "name": "Grok 4.5", "reasoning": true, "input": ["text", "image"], "contextWindow": 500000, "maxTokens": 128000 },
+                { "id": "grok-4.6", "name": "Grok 4.6", "reasoning": true, "input": ["text", "image"], "contextWindow": 500000, "maxTokens": 128000 }
+              ]
+            },
+            "agentrouter": {
+              "baseUrl": "${config.sops.placeholder.pi-agentrouter-base-url}/v1",
+              "api": "openai-completions",
+              "apiKey": "!cat ${config.sops.secrets.pi-agentrouter-api-key.path}",
+              "compat": { "supportsEagerToolInputStreaming": false },
+              "models": [
+                { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 },
+                { "id": "claude-opus-4-8", "name": "Claude Opus 4.8", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 },
+                { "id": "claude-opus-5", "name": "Claude Opus 5", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 1000000, "maxTokens": 128000 }
               ]
             },
             "opencode-go": {

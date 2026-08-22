@@ -14,6 +14,12 @@
     secrets."pi-opencode-go-api-key" = {
       key = "pi/opencode-go-api-key";
     };
+    secrets."pi-agentrouter-api-key" = {
+      key = "pi/agentrouter-api-key";
+    };
+    secrets."pi-agentrouter-base-url" = {
+      key = "pi/agentrouter-base-url";
+    };
     secrets."pi-kylenqaq-base-url" = {
       key = "pi/kylenqaq-base-url";
     };

@@ -25,6 +25,17 @@
         allowSubstitutes = false;
         preferLocalBuild = true;
       });
+
+      # kwin-x11 6.7.4 uses ECM 6.26 but omits it from nativeBuildInputs.
+      kwin-x11 = kdePrev.kwin-x11.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or []) ++ [kdePrev.extra-cmake-modules];
+        cmakeFlags =
+          (old.cmakeFlags or [])
+          ++ ["-DECM_DIR=${kdePrev.extra-cmake-modules}/share/ECM/cmake"];
+        propagatedBuildInputs =
+          (old.propagatedBuildInputs or [])
+          ++ (kdePrev.kwin.propagatedBuildInputs or []);
+      });
     });
 
     lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;

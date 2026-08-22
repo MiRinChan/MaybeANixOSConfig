@@ -35,12 +35,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    deepseek-opencode-anchor = {
-      url = "github:MiRinChan/deepseek-opencode-yuanzu";
-      inputs.llm-agents.follows = "llm-agents";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     pi-flake = {
       url = "github:ChauDucToan/pi-flake";
       inputs.nixpkgs.follows = "nixpkgs";

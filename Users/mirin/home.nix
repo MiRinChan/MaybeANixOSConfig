@@ -48,6 +48,9 @@ in {
       EDITOR = "code";
       BROWSER = "firefox";
       TERMINAL = "kitty";
+      # Keep Firefox on XWayland: DP hotplug during display blanking can make
+      # its native Wayland connection fail with a broken pipe.
+      MOZ_ENABLE_WAYLAND = "0";
     };
   };
 

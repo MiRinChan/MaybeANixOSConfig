@@ -85,6 +85,8 @@
       enable_audio_bell = false;
       allow_remote_control = "socket-only";
       listen_on = "unix:$XDG_RUNTIME_DIR/kitty-remote-control.sock";
+      pixel_scroll = true;
+      momentum_scroll = 0.96;
       mouse_hide_wait = "-1.0";
       window_padding_width = 10;
       # background_opacity = "0.95";

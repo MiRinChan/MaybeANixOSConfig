@@ -248,6 +248,7 @@ in {
               "baseUrl": "${config.sops.placeholder.pi-agentrouter-base-url}/v1",
               "api": "openai-completions",
               "apiKey": "!cat ${config.sops.secrets.pi-agentrouter-api-key.path}",
+              "headers": { "User-Agent": "claude-cli/2.1.240 (external, cli)" },
               "compat": { "supportsEagerToolInputStreaming": false },
               "models": [
                 { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 },

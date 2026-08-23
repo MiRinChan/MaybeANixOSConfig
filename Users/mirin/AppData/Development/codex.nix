@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   codexGuiSudo = pkgs.writeShellScriptBin "codex-gui-sudo" ''
     set -euo pipefail
 
@@ -42,7 +46,7 @@ in {
 
   home.packages = [
     codexGuiSudo
-    pkgs.llm-agents.codex
+    inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin
     pkgs.mcp-nixos
     pkgs.mcp-server-git
   ];

@@ -35,6 +35,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mooling-nix-packages = {
+      url = "github:Mooling0602/nix-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     pi-flake = {
       url = "github:ChauDucToan/pi-flake";
       inputs.nixpkgs.follows = "nixpkgs";

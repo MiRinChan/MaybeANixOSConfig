@@ -140,9 +140,8 @@ in {
 
       # 从 pi 的资源列表里排除不用的 skill
       ignoredSkills = ["microsoft-foundry"];
-
       extensions = [
-        "${pkgs.pi-permission-system}/src/index.ts"
+        "${pkgs.gotgenes-pi-permission-system}/src/index.ts"
         "${pkgs.pi-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"

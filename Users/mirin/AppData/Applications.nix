@@ -32,7 +32,7 @@
     # Firefox
     (symlinkJoin {
       name = "firefox-client-titlebar";
-      paths = [stable.firefox];
+      paths = [firefox];
       nativeBuildInputs = [makeWrapper];
       postBuild = ''
         wrapProgram "$out/bin/firefox" \

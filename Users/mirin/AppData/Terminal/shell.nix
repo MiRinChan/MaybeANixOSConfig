@@ -50,7 +50,7 @@
       exec ${master.waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
         env MOZ_ENABLE_WAYLAND=1 \
             XDG_SESSION_TYPE=wayland \
-            MOZ_GTK_TITLEBAR_DECORATION=client \
+            MOZ_GTK_TITLEBAR_DECORATION=system \
             GTK_THEME=Breeze \
         firefox --new-instance "$@"
     '')
@@ -78,9 +78,52 @@
     pi-no-sandbox = "pi";
   };
 
+  programs.ghostty = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      font-family = "Maple Mono NF CN";
+      font-style = "Medium";
+      confirm-close-surface = false;
+      bell-features = "no-audio,no-system";
+      mouse-hide-while-typing = true;
+      window-padding-x = 10;
+      window-padding-y = 10;
+      theme = "kitty";
+      keybind = "shift+enter=csi:13;2u";
+    };
+    themes.kitty = {
+      foreground = "cdd6f4";
+      background = "1e1e2e";
+      selection-foreground = "1e1e2e";
+      selection-background = "f5e0dc";
+      cursor-color = "f5e0dc";
+      cursor-text = "1e1e2e";
+      palette = [
+        "0=#45475a"
+        "1=#f38ba8"
+        "2=#a6e3a1"
+        "3=#f9e2af"
+        "4=#89b4fa"
+        "5=#f5c2e7"
+        "6=#94e2d5"
+        "7=#bac2de"
+        "8=#585b70"
+        "9=#f38ba8"
+        "10=#a6e3a1"
+        "11=#f9e2af"
+        "12=#89b4fa"
+        "13=#f5c2e7"
+        "14=#94e2d5"
+        "15=#a6adc8"
+      ];
+    };
+  };
+
   programs.kitty = {
     enable = true;
     font.name = "Maple Mono NF CN Medium";
+    keybindings."shift+enter" = "send_text all \\x1b[13;2u";
     settings = {
       confirm_os_window_close = 0;
       dynamic_background_opacity = true;

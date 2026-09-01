@@ -25,7 +25,8 @@
       set -g status-right "#[fg=#5BCEFA,bg=#1e1e2e]#[fg=#1e1e2e,bg=#5BCEFA,bold] clients #{session_attached} #[fg=#F5A9B8,bg=#5BCEFA]#[fg=#1e1e2e,bg=#F5A9B8,bold] %Y-%m-%d %H:%M "
 
       set -g xterm-keys on
-      set -g extended-keys on
+      set -s extended-keys on
+      set -s extended-keys-format csi-u
 
       bind-key -n MouseDown1StatusLeft new-window
       bind-key c new-window

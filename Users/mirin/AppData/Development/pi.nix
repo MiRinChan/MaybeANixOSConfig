@@ -564,6 +564,10 @@ in {
       authorizerChain = ["auto-review"];
       permission = {
         "*" = "allow";
+        read = "allow";
+        grep = "allow";
+        find = "allow";
+        ls = "allow";
         path = {
           "*" = "allow";
           "*.env" = "deny";

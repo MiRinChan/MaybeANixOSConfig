@@ -50,7 +50,7 @@
       exec ${master.waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
         env MOZ_ENABLE_WAYLAND=1 \
             XDG_SESSION_TYPE=wayland \
-            MOZ_GTK_TITLEBAR_DECORATION=system \
+            MOZ_GTK_TITLEBAR_DECORATION=client \
             GTK_THEME=Breeze \
         firefox --new-instance "$@"
     '')

@@ -30,7 +30,15 @@
     csvkit
 
     # Firefox
-    stable.firefox # for internet
+    (symlinkJoin {
+      name = "firefox-client-titlebar";
+      paths = [stable.firefox];
+      nativeBuildInputs = [makeWrapper];
+      postBuild = ''
+        wrapProgram "$out/bin/firefox" \
+          --set MOZ_GTK_TITLEBAR_DECORATION client
+      '';
+    }) # for internet, force client-side titlebar decoration
     librewolf # for internet tool
     #cHROMIUM
     ungoogled-chromium

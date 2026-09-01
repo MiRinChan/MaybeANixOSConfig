@@ -108,7 +108,7 @@ in {
     enable = true;
     package = inputs.pi-flake.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent;
     agentFiles.settings.value = {
-      defaultProvider = "openai-codex";
+      defaultProvider = "kylenqaq-openai";
       defaultModel = "gpt-5.6-sol";
       theme = "catppuccin-mocha";
       steeringMode = "one-at-a-time";

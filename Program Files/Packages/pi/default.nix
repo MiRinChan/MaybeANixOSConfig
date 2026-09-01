@@ -177,6 +177,9 @@ in {
       substituteInPlace $out/node_modules/@ifi/pi-shared-qna/pi-tui-loader.ts \
         --replace-fail 'import { createRequire } from "node:module";' "import * as nixPiTui from \"$out/node_modules/@mariozechner/pi-tui/dist/index.js\";" \
         --replace-fail 'const requireFn = options.requireFn ?? createRequire(import.meta.url);' $'if (!options.requireFn) return nixPiTui;\n\tconst requireFn = options.requireFn;'
+      substituteInPlace $out/request-user-input.ts \
+        --replace-fail ' This tool is only available in Plan mode.' "" \
+        --replace-fail 'if (!dependencies.getState().active) {' 'if (false) {'
     '';
   };
 
@@ -284,6 +287,40 @@ in {
     npmDepsHash = "sha256-0vR2hdtw0l2mPC6g4x2ptR9ZJ8bxeog5bY2vLyDgejo=";
     dontNpmBuild = true;
     installPhase = extInstallPhase;
+  };
+
+  # Codex Responses transport, native compaction, command tools, and apply_patch.
+  pi-openai-codex-compat = buildNpmPackage {
+    pname = "pi-openai-codex-compat";
+    version = "0.0.10-alpha.6";
+    src = fetchFromGitHub {
+      owner = "2h2d-co";
+      repo = "pi-openai-codex-compat";
+      rev = "15b4222ab0e0b8128fadb8168c53ee853b9c871f";
+      hash = "sha256-U327+WTfWD0LIcXPbGnClKvxaj9eWp9Q9X2ez+hQWkE=";
+    };
+    postPatch = ''
+      ${pkgs.jq}/bin/jq 'del(.devDependencies, .peerDependencies)' package.json > package.json.new
+      mv package.json.new package.json
+      ${pkgs.jq}/bin/jq 'del(.packages[""].devDependencies, .packages[] | select(.dev == true))' package-lock.json > package-lock.json.new
+      mv package-lock.json.new package-lock.json
+    '';
+    npmDepsHash = "sha256-35tVMa7LwoXMvewTmN5W2p3KkCeDFqhGmfdzM4HcYbo=";
+    npmInstallFlags = ["--ignore-scripts" "--omit=dev"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  pi-codex-workflow = copyExt {
+    pname = "pi-codex-workflow";
+    version = "2b7c279";
+    src = ./codex-workflow;
+  };
+
+  pi-codex-parity = pkgs.writeShellApplication {
+    name = "pi-codex-parity";
+    runtimeInputs = [pkgs.ripgrep pkgs.gnused];
+    text = builtins.readFile ./codex-parity.sh;
   };
 
   # FFF-powered find/grep (ships a native C FFI addon via @ff-labs/fff-node).

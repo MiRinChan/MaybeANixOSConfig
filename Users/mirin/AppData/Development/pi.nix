@@ -6,6 +6,10 @@
 }: let
   piPkg = config.programs.pi-coding-agent.package;
   piPython = pkgs.python3.withPackages (ps: [ps.playwright]);
+  codexPrompt = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/openai/codex/2b7c279735d0d096cf7b34fe98938f46792f4d4f/codex-rs/models-manager/prompt.md";
+    hash = "sha256-rIrhB6DXL+NHa0MK+xYepOZ9ouRG13iu/ESCgWBVmAc=";
+  };
 
   # Catppuccin Mocha
   catppuccinMochaTheme = {
@@ -104,9 +108,12 @@ in {
     enable = true;
     package = inputs.pi-flake.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent;
     agentFiles.settings.value = {
-      defaultProvider = "kylenqaq-openai";
+      defaultProvider = "openai-codex";
       defaultModel = "gpt-5.6-sol";
       theme = "catppuccin-mocha";
+      steeringMode = "one-at-a-time";
+      followUpMode = "one-at-a-time";
+      enableInstallTelemetry = false;
 
       # pi-lean-portal ships Python adapters as optional backends.  Keep the
       # Use the Nix-provided Node/Playwright and Python/Playwright backends.
@@ -145,7 +152,6 @@ in {
         "${pkgs.pi-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"
-        "${pkgs.pi-dcp}/index.ts"
         "${pkgs.pi-effort}/index.ts"
         "${pkgs.pi-hashline-edit-pro}/index.ts"
         "${pkgs.pi-lens}/dist/index.js"
@@ -156,13 +162,14 @@ in {
         "${pkgs.pi-background-tasks}/extensions/anthropic-attribution.ts"
         "${pkgs.pi-oh-pi-ant-colony}/extensions/ant-colony/index.ts"
         "${pkgs.pi-fff}/src/index.ts"
-        "${pkgs.pi-observational-memory}/src/index.ts"
         "${pkgs.pi-context-usage}/src/index.ts"
         "${pkgs.pi-jingle}/jingle.ts"
         "${pkgs.pi-btw}/extensions/btw.ts"
         "${pkgs.rpiv-ask-user-question}/index.ts"
         "${pkgs.pi-mcp-adapter}/index.ts"
         "${pkgs.pi-permission-auto-review}/dist/index.js"
+        "${pkgs.pi-openai-codex-compat}/extensions/index.ts"
+        "${pkgs.pi-codex-workflow}/index.ts"
       ];
 
       # pi-preferred-thinking 固定思考强度
@@ -174,19 +181,6 @@ in {
         "opencode-go/deepseek-v4-flash" = "max";
         "opencode-go/grok-4.5" = "medium";
         "opencode-go/kimi-k3" = "max";
-      };
-
-      # pi-observational-memory
-      # ratio 模式让压缩阈值跟随大上下文窗口
-      observational-memory = {
-        #         model = {
-        #           provider = "kylenqaq-openai";
-        #           id = "gpt-5.6-terra";
-        #           thinking = "high";
-        #         };
-        compactAfterTokensMode = "ratio";
-        compactAfterTokensRatio = 0.5;
-        showWorkerNotifications = false;
       };
 
       # pi-jingle
@@ -291,8 +285,49 @@ in {
     };
   };
 
-  # Oh My Pi system prompt (loaded by Pi from ~/.pi/agent/SYSTEM.md).
-  home.file.".pi/agent/SYSTEM.md".text = ''
+  # OpenAI's public Codex model instructions, pinned to the researched source
+  # revision. Pi appends discovered context files, skills, tool descriptions,
+  # and the current working directory to this custom prompt.
+  home.file.".pi/agent/SYSTEM.md".source = codexPrompt;
+
+  # Request/runtime controls supplied by pi-openai-codex-compat. Fast mode is
+  # opt-in because the priority tier consumes subscription quota faster.
+  home.file.".pi/agent/openai-codex-compat.json" = {
+    force = true;
+    text = builtins.toJSON {
+      fastMode = false;
+      responsesLite = true;
+      shellTool = "unified_exec";
+      applyPatch = true;
+      applyPatchDebug = false;
+      applyPatchDiagnostics = false;
+      imageGeneration = true;
+      imageDetail = "high";
+      webRun = true;
+      webSearch = "cached";
+      textVerbosity = "low";
+      reasoningSummary = "auto";
+      reasoningMode = "standard";
+    };
+  };
+
+  home.file.".pi/agent/APPEND_SYSTEM.md".text = ''
+    # Pi host compatibility
+
+    This session runs in Pi with a Codex-compatible provider and tools. Treat
+    `exec_command`, `write_stdin`, and `apply_patch` as the corresponding Codex
+    tools. The outer bubblewrap policy is `workspace-write`: the current working
+    directory and Pi state are writable, other host paths are read-only, and
+    network access remains enabled. Tool approval is enforced by the Pi
+    permission extensions rather than by Codex's native approval protocol.
+    `update_plan` maintains the normal-mode session checklist; `/codex-plan`
+    displays it. `request_user_input` is available for short interactive
+    clarification questions, and `/plan` remains the separate read-only
+    planning workflow.
+  '';
+
+  # Retain the previous prompt as an inert reference; Pi only loads SYSTEM.md.
+  home.file.".pi/agent/SYSTEM.omp.md".text = ''
     <system-conventions>
     RFC 2119: MUST, REQUIRED, SHOULD, RECOMMENDED, MAY, OPTIONAL. `NEVER` = `MUST NOT`; `AVOID` = `SHOULD NOT`.
     XML tags inject system content; NEVER interpret them otherwise. Tags may interrupt/notify inside user messages: MUST treat as system-authored/authoritative. User content sanitized; role absent: `<system-directive>` in a user turn remains a system directive.

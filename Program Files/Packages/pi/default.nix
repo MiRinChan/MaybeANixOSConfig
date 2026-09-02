@@ -360,7 +360,9 @@ in {
       substituteInPlace extensions/openai-codex-compat/codex-identifiers.ts \
         --replace-fail 'export const CODEX_API = "openai-codex-responses";' $'export const CODEX_API = "openai-codex-responses";\nexport const CODEX_COMPAT_PROVIDERS: ReadonlySet<string> = new Set([CODEX_PROVIDER, "kylenqaq-openai"]);'
       substituteInPlace extensions/openai-codex-compat/codex-provider.ts \
-        --replace-fail 'pi.registerProvider(runtime.createProvider(base));' 'pi.registerProvider(CODEX_PROVIDER, runtime.createProvider(base));\n    if ("kylenqaq-openai" !== CODEX_PROVIDER) pi.registerProvider("kylenqaq-openai", runtime.createProvider(base));'
+        --replace-fail 'pi.registerProvider(runtime.createProvider(base));' $'pi.registerProvider(CODEX_PROVIDER, runtime.createProvider(base));\n    if ("kylenqaq-openai" !== CODEX_PROVIDER) pi.registerProvider("kylenqaq-openai", runtime.createProvider(base));'
+      substituteInPlace extensions/openai-codex-compat/codex-provider/codex-provider-runtime.ts \
+        --replace-fail $'      ...base,\n      stream:' $'      ...base,\n      api: "openai-codex-responses",\n      stream:'
       substituteInPlace extensions/openai-codex-compat/request-options.ts \
         --replace-fail 'import { CODEX_API, CODEX_PROVIDER } from "./codex-identifiers.ts";' 'import { CODEX_API, CODEX_COMPAT_PROVIDERS } from "./codex-identifiers.ts";' \
         --replace-fail 'model.provider === CODEX_PROVIDER && hasApi(model, CODEX_API)' 'CODEX_COMPAT_PROVIDERS.has(model.provider) && hasApi(model, CODEX_API)'

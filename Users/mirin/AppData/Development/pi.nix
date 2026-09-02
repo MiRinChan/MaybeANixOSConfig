@@ -192,6 +192,10 @@ in {
           "apply_patch"
           "update_plan"
           "request_user_input"
+
+          "goal_complete"
+          "goal_blocked"
+
           "tool_search"
           "exec"
           "web.run"
@@ -228,13 +232,13 @@ in {
     "pi-models.json" = {
       path = "/home/mirin/.pi/agent/models.json";
       mode = "0600";
+      # The kylenqaq-openai provider explicitly selects the Codex Responses
+      # transport; Claude and Grok remain Anthropic transports below.
       content = ''
         {
           "providers": {
             "kylenqaq-openai": {
               "baseUrl": "${config.sops.placeholder.pi-kylenqaq-base-url}",
-              # Explicitly select the Codex Responses transport for this
-              # provider. Claude and Grok remain Anthropic transports below.
               "api": "openai-codex-responses",
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
               "compat": {

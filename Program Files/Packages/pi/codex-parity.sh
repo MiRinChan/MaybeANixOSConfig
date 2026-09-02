@@ -20,7 +20,7 @@ check_absent() {
   contains "$1" "$2" && failures+=("unexpected: $2") || true
 }
 
-check_present "$pi_config" 'defaultProvider = "openai-codex";'
+check_present "$pi_config" 'defaultProvider = "kylenqaq-openai";'
 check_present "$pi_config" 'defaultModel = "gpt-5.6-sol";'
 check_present "$pi_config" 'pkgs.pi-openai-codex-compat'
 check_present "$pi_config" 'pkgs.pi-codex-workflow'

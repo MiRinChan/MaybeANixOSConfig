@@ -238,7 +238,7 @@ in {
         {
           "providers": {
             "kylenqaq-openai": {
-              "baseUrl": "${config.sops.placeholder.pi-kylenqaq-base-url}",
+              "baseUrl": "${config.sops.placeholder.pi-kylenqaq-base-url}/v1/responses",
               "api": "openai-codex-responses",
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
               "compat": {

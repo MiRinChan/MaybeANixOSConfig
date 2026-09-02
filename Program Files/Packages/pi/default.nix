@@ -379,7 +379,10 @@ in {
           'return model.provider === "kylenqaq-openai" ? "" : extractAccountId(apiKey);' \
         --replace-fail \
           'headers.set("chatgpt-account-id", accountId);' \
-          'if (accountId) headers.set("chatgpt-account-id", accountId); else headers.delete("chatgpt-account-id");'
+          'if (accountId) headers.set("chatgpt-account-id", accountId); else headers.delete("chatgpt-account-id");' \
+        --replace-fail \
+          'if (normalized.endsWith("/codex/responses")) return normalized;' \
+          'if (normalized.endsWith("/codex/responses") || normalized.endsWith("/v1/responses")) return normalized;'
     '';
     npmDepsHash = "sha256-35tVMa7LwoXMvewTmN5W2p3KkCeDFqhGmfdzM4HcYbo=";
     npmInstallFlags = ["--ignore-scripts" "--omit=dev"];

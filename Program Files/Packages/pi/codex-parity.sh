@@ -4,10 +4,14 @@ set -euo pipefail
 repo_root=${1:-.}
 pi_config="$repo_root/Users/mirin/AppData/Development/pi.nix"
 pi_package="$repo_root/Program Files/Packages/pi/default.nix"
+subagent_extension=$(nix path-info "$repo_root#pi-codex-subagents" 2>/dev/null || true)
+subagent_source="$subagent_extension/index.ts"
+subagent_core="$subagent_extension/core.ts"
+pi_bin=${PI_BIN:-pi}
 
 failures=()
 checks=0
-pi_help=$(pi --help 2>&1 || true)
+pi_help=$($pi_bin --help 2>&1 || true)
 codex_help=$(codex exec --help 2>&1 || true)
 contains() {
   local file=$1
@@ -30,7 +34,7 @@ check_present "$pi_config" '"api": "openai-codex-responses"'
 check_present "$pi_package" '@narumitw/pi-goal'
 check_present "$pi_config" 'pkgs.pi-codemode-extension'
 check_present "$pi_config" 'pkgs.pi-tool-search'
-check_present "$pi_config" 'pkgs.wj-pi-subagents'
+check_present "$pi_config" 'pkgs.pi-codex-subagents'
 check_present "$pi_config" 'pkgs.pi-openai-codex-compat'
 check_present "$pi_config" 'pkgs.pi-codex-workflow'
 check_present "$pi_config" 'models-manager/prompt.md'
@@ -49,10 +53,32 @@ check_present "$pi_package" 'pname = "pi-openai-codex-compat";'
 check_present "$pi_package" 'pname = "pi-goal";'
 check_present "$pi_package" 'pname = "pi-codemode-extension";'
 check_present "$pi_package" 'pname = "pi-tool-search";'
-check_present "$pi_package" 'pname = "wj-pi-subagents";'
+check_present "$pi_package" 'pname = "pi-codex-subagents";'
 check_present "$pi_package" 'npmDepsHash = "sha256-tqVVgzL+vsv+KCbKsm5tGTPKOwDb/bpAWQ6qWb1nx90=";'
-check_present "$pi_package" 'npmDepsHash = "sha256-QBGuMN6CwjBYLsCWvpy4EtxthckbNL5SNM7bBkFrfXE=";'
-check_absent "$pi_config" 'pkgs.pi-subagents'
+check_present "$pi_package" '451e49da38e117f11f4b8e622c2bc432444f8a3a'
+check_present "$pi_config" 'pi-codex-subagents/config.json'
+check_present "$pi_config" 'agents/default.md'
+check_present "$pi_config" 'agents/explorer.md'
+check_present "$pi_config" 'agents/worker.md'
+check_present "$pi_config" 'agents/specialist.md'
+check_present "$pi_config" 'pi-openai-codex-compat}/extensions/index.ts'
+check_present "$pi_config" 'pi-tool-search}/extensions/index.ts'
+check_absent "$pi_config" 'pkgs.wj-pi-subagents'
+check_absent "$pi_package" 'pname = "wj-pi-subagents";'
+check_absent "$pi_config" '"spawn_agent"'
+check_absent "$pi_config" '"wait_agent"'
+check_absent "$pi_config" '"send_message"'
+check_absent "$pi_config" '"interrupt_agent"'
+check_absent "$pi_config" '"list_agents"'
+[[ -f $subagent_source ]] || failures+=("pi-codex-subagents package was not built")
+if [[ -f $subagent_source ]]; then
+  check_present "$subagent_source" 'name: "spawn_agent"'
+  check_present "$subagent_source" 'name: "wait_agent"'
+  check_present "$subagent_source" 'name: "send_message"'
+  check_present "$subagent_source" 'name: "interrupt_agent"'
+  check_present "$subagent_source" 'name: "list_agents"'
+  check_present "$subagent_core" 'params.agent_type && !definition'
+fi
 check_absent "$pi_config" 'pkgs.pi-dcp'
 check_absent "$pi_config" 'pkgs.pi-observational-memory'
 check_absent "$pi_config" 'observational-memory = {'

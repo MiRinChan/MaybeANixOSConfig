@@ -1,9 +1,0 @@
-{
-  "name": "wj-pi-subagents",
-  "version": "0.3.2",
-  "type": "module",
-  "pi": { "extensions": ["./index.ts"] },
-  "engines": { "node": ">=22.19.0" },
-  "wjPiSubagents": { "requiresPi": ">=0.84.4" },
-  "dependencies": { "semver": "^7.8.0", "yaml": "^2.9.0" }
-}

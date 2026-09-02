@@ -234,20 +234,33 @@ in {
     src = npmTgz "pi-tool-search" "0.3.6" "sha256-WVwiPLoyjPI44y3xRLwPTCAnYuDU3Q/C3HoVqjmCNGI=";
   };
 
-  # Pi 0.84.4-native recursive agent tree with lineage, reuse, parallel wait,
-  # mailbox handoff, cancellation, and bounded depth.
-  wj-pi-subagents = buildNpmPackage {
-    pname = "wj-pi-subagents";
-    version = "0.3.2";
-    src = npmTgz "wj-pi-subagents" "0.3.2" "sha256-DPek25uwxQz9+q3T4ujtZZMczGKv1orj/uvYK1rIIcs=";
+  # Session-scoped isolated Pi children. The source pin and the peer-only npm
+  # lock make this fully declarative; Pi supplies the declared peer APIs.
+  pi-codex-subagents = buildNpmPackage {
+    pname = "pi-codex-subagents";
+    version = "0.3.4-451e49d";
+    src = fetchFromGitHub {
+      owner = "ogulcancelik";
+      repo = "pi-extensions";
+      rev = "451e49da38e117f11f4b8e622c2bc432444f8a3a";
+      hash = "sha256-i8oFJspGq5awdd6fCYXFllCmFyLNBnVlX8b0LVUJ8VM=";
+    };
+    sourceRoot = "source";
+    npmRoot = "packages/pi-codex-subagents";
     postPatch = ''
-      cp ${./patched/wj-pi-subagents.json} ./package.json
-      cp ${./locks/wj-pi-subagents.lock} ./package-lock.json
+      chmod -R u+w "$npmRoot"
+      cp ${./locks/pi-codex-subagents.lock} "$npmRoot/package-lock.json"
     '';
-    npmDepsHash = "sha256-QBGuMN6CwjBYLsCWvpy4EtxthckbNL5SNM7bBkFrfXE=";
-    npmInstallFlags = ["--ignore-scripts" "--omit=dev"];
+    npmDepsHash = "sha256-GHXPUMcJGRH//Fq/arg+y8/P66Y4n3oShZmvAmbO5YQ=";
+    forceEmptyCache = true;
+    makeCacheWritable = true;
+    npmFlags = ["--ignore-scripts" "--legacy-peer-deps" "--omit=dev" "--omit=peer"];
     dontNpmBuild = true;
-    installPhase = extInstallPhase;
+    installPhase = ''
+      cd "$npmRoot"
+      mkdir -p node_modules
+      ${extInstallPhase}
+    '';
   };
 
   pi-oh-pi-ant-colony = buildNpmPackage {
@@ -360,7 +373,9 @@ in {
       substituteInPlace extensions/openai-codex-compat/codex-identifiers.ts \
         --replace-fail 'export const CODEX_API = "openai-codex-responses";' $'export const CODEX_API = "openai-codex-responses";\nexport const CODEX_COMPAT_PROVIDERS: ReadonlySet<string> = new Set([CODEX_PROVIDER, "kylenqaq-openai"]);'
       substituteInPlace extensions/openai-codex-compat/codex-provider.ts \
-        --replace-fail 'pi.registerProvider(runtime.createProvider(base));' $'pi.registerProvider(CODEX_PROVIDER, runtime.createProvider(base));\n    if ("kylenqaq-openai" !== CODEX_PROVIDER) pi.registerProvider("kylenqaq-openai", runtime.createProvider(base));'
+        --replace-fail \
+          'pi.registerProvider(runtime.createProvider(base));' \
+          $'const kylenqaqBase = ctx.modelRegistry.getProvider("kylenqaq-openai");\n    pi.registerProvider(runtime.createProvider(base));\n    if (kylenqaqBase) pi.registerProvider(runtime.createProvider(kylenqaqBase));'
       substituteInPlace extensions/openai-codex-compat/codex-provider/codex-provider-runtime.ts \
         --replace-fail $'      ...base,\n      stream:' $'      ...base,\n      api: "openai-codex-responses",\n      stream:'
       substituteInPlace extensions/openai-codex-compat/request-options.ts \
@@ -398,7 +413,7 @@ in {
 
   pi-codex-parity = pkgs.writeShellApplication {
     name = "pi-codex-parity";
-    runtimeInputs = [pkgs.ripgrep pkgs.gnused];
+    runtimeInputs = [pkgs.nix pkgs.ripgrep pkgs.gnused];
     text = builtins.readFile ./codex-parity.sh;
   };
 

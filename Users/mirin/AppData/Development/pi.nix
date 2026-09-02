@@ -153,7 +153,7 @@ in {
         "${pkgs.pi-goal}/dist/index.ts"
         "${pkgs.pi-codemode-extension}/extensions/code-mode.ts"
         "${pkgs.pi-tool-search}/extensions/index.ts"
-        "${pkgs.wj-pi-subagents}/index.ts"
+        "${pkgs.pi-codex-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"
         "${pkgs.pi-effort}/index.ts"
@@ -326,6 +326,61 @@ in {
   # and the current working directory to this custom prompt.
   home.file.".pi/agent/SYSTEM.md".source = codexPrompt;
 
+  # Child discovery stays intentionally off. Load just the local Codex
+  # transport/provider and deferred-tool extension that an isolated child needs.
+  home.file.".pi/agent/pi-codex-subagents/config.json".text = builtins.toJSON {
+    defaults.extensions = [
+      "${pkgs.pi-openai-codex-compat}/extensions/index.ts"
+      "${pkgs.pi-tool-search}/extensions/index.ts"
+    ];
+  };
+  home.file.".pi/agent/pi-codex-subagents/SYSTEM.md" = {
+    force = true;
+    text = ''
+      You are a focused subagent. Complete only the assigned task, use the tools
+      explicitly available in this isolated session, and return concise evidence.
+      Do not delegate further unless the task explicitly requires it.
+    '';
+  };
+  # Codex's built-in Multi-Agent V2 roles, represented by the plugin's native
+  # Markdown templates.  Routing fields are deliberately omitted: each role
+  # inherits the parent provider/model/thinking unless a spawn call overrides
+  # them.  Only explorer narrows its tool surface to read-only exploration.
+  home.file.".pi/agent/pi-codex-subagents/agents/default.md".text = ''
+    ---
+    name: default
+    description: General-purpose Codex subagent
+    ---
+    Complete the assigned task with the same care as the parent agent. Keep the
+    scope narrow, report concrete evidence, and do not delegate by default.
+  '';
+  home.file.".pi/agent/pi-codex-subagents/agents/explorer.md".text = ''
+    ---
+    name: explorer
+    description: Read-only codebase and runtime investigator
+    tools: read,grep,find,ls
+    ---
+    Investigate the assigned scope without modifying files. Trace real paths,
+    return concise evidence with paths, and call out uncertainty explicitly.
+  '';
+  home.file.".pi/agent/pi-codex-subagents/agents/worker.md".text = ''
+    ---
+    name: worker
+    description: General implementation subagent
+    ---
+    Implement and verify the bounded task. Preserve unrelated work, use the
+    inherited environment, and return the result plus verification evidence.
+  '';
+  home.file.".pi/agent/pi-codex-subagents/agents/specialist.md".text = ''
+    ---
+    name: specialist
+    description: High-capability specialist for difficult scoped work
+    ---
+    Solve the assigned difficult or high-impact task carefully. Inspect the
+    relevant implementation first, make only justified changes, and report
+    risks and verification evidence.
+  '';
+
   # Request/runtime controls supplied by pi-openai-codex-compat. Fast mode is
   # opt-in because the priority tier consumes subscription quota faster.
   home.file.".pi/agent/openai-codex-compat.json" = {
@@ -360,6 +415,14 @@ in {
     displays it. `request_user_input` is available for short interactive
     clarification questions, and `/plan` remains the separate read-only
     planning workflow.
+
+    Multi-agent tools from pi-codex-subagents are deferred. Discover them with
+    `tool_search` only when delegation genuinely helps. Spawn ordinary agents
+    without a template by default; continue independent work after spawning
+    because completions are delivered automatically. Wait only when a required
+    result blocks the next step and no useful work remains. `send_message` and
+    `followup_task` resume a settled agent's persisted session; do not respawn
+    it just to send follow-up work.
   '';
 
   # Retain the previous prompt as an inert reference; Pi only loads SYSTEM.md.

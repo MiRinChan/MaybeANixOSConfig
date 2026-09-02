@@ -1,0 +1,22 @@
+{
+  "name": "@ogulcancelik/pi-codex-subagents",
+  "version": "0.3.4",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "@ogulcancelik/pi-codex-subagents",
+      "version": "0.3.4",
+      "license": "MIT",
+      "engines": {
+        "node": ">=22.19.0"
+      },
+      "peerDependencies": {
+        "@earendil-works/pi-ai": "*",
+        "@earendil-works/pi-coding-agent": ">=0.80.4",
+        "@earendil-works/pi-tui": "*",
+        "typebox": "*"
+      }
+    }
+  }
+}

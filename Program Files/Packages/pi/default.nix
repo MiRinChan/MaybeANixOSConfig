@@ -108,6 +108,12 @@ in {
     };
   };
 
+  pi-aliases = copyExt {
+    pname = "pi-aliases";
+    version = "1.0.7";
+    src = npmTgz "pi-aliases" "1.0.7" "sha256-lay2u5r2hmxarDaCzFQMSZTFsF5ibit8TAComSPIbJM=";
+  };
+
   # --- extensions with runtime dependencies (npm build) ---
   pi-hashline-edit-pro = buildNpmPackage {
     pname = "pi-hashline-edit-pro";
@@ -193,6 +199,53 @@ in {
     '';
     npmDepsHash = "sha256-udsz8Romz6CL1pxmnWQns4xxkrK4V3la3qGv2dLRzbo=";
     npmInstallFlags = ["--ignore-scripts"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  # Declarative Goal mode: persistent goal state, guarded completion/blocking,
+  # bounded automatic continuation, waits, and token/turn safety limits.
+  pi-goal = buildNpmPackage {
+    pname = "pi-goal";
+    version = "0.54.4";
+    src = npmTgz "@narumitw/pi-goal" "0.54.4" "sha256-s/qHmedg12sm+YBJ3g7DKLnaLDVb5Ra0hOp7CJLDihc=";
+    postPatch = ''
+      cp ${./patched/pi-goal.json} ./package.json
+      cp ${./locks/pi-goal.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-tqVVgzL+vsv+KCbKsm5tGTPKOwDb/bpAWQ6qWb1nx90=";
+    npmInstallFlags = ["--ignore-scripts" "--omit=dev"];
+    dontNpmBuild = true;
+    installPhase = extInstallPhase;
+  };
+
+  # JavaScript orchestration surface.  The extension itself provides the
+  # sandboxed VM guard; Pi permissions still govern the delegated tools.
+  pi-codemode-extension = copyExt {
+    pname = "pi-codemode-extension";
+    version = "0.3.0";
+    src = npmTgz "pi-codemode-extension" "0.3.0" "sha256-bQUt5qURcDnq72qIJap0ylQwsNr0fng35KA5HPpCvio=";
+  };
+
+  # Deferred discovery for low-frequency Pi and MCP/extension tools.
+  pi-tool-search = copyExt {
+    pname = "pi-tool-search";
+    version = "0.3.6";
+    src = npmTgz "pi-tool-search" "0.3.6" "sha256-WVwiPLoyjPI44y3xRLwPTCAnYuDU3Q/C3HoVqjmCNGI=";
+  };
+
+  # Pi 0.84.4-native recursive agent tree with lineage, reuse, parallel wait,
+  # mailbox handoff, cancellation, and bounded depth.
+  wj-pi-subagents = buildNpmPackage {
+    pname = "wj-pi-subagents";
+    version = "0.3.2";
+    src = npmTgz "wj-pi-subagents" "0.3.2" "sha256-DPek25uwxQz9+q3T4ujtZZMczGKv1orj/uvYK1rIIcs=";
+    postPatch = ''
+      cp ${./patched/wj-pi-subagents.json} ./package.json
+      cp ${./locks/wj-pi-subagents.lock} ./package-lock.json
+    '';
+    npmDepsHash = "sha256-QBGuMN6CwjBYLsCWvpy4EtxthckbNL5SNM7bBkFrfXE=";
+    npmInstallFlags = ["--ignore-scripts" "--omit=dev"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;
   };
@@ -304,6 +357,20 @@ in {
       mv package.json.new package.json
       ${pkgs.jq}/bin/jq 'del(.packages[""].devDependencies, .packages[] | select(.dev == true))' package-lock.json > package-lock.json.new
       mv package-lock.json.new package-lock.json
+      substituteInPlace extensions/openai-codex-compat/codex-identifiers.ts \
+        --replace-fail 'export const CODEX_API = "openai-codex-responses";' $'export const CODEX_API = "openai-codex-responses";\nexport const CODEX_COMPAT_PROVIDERS: ReadonlySet<string> = new Set([CODEX_PROVIDER, "kylenqaq-openai"]);'
+      substituteInPlace extensions/openai-codex-compat/codex-provider.ts \
+        --replace-fail 'pi.registerProvider(runtime.createProvider(base));' 'pi.registerProvider(CODEX_PROVIDER, runtime.createProvider(base));\n    if ("kylenqaq-openai" !== CODEX_PROVIDER) pi.registerProvider("kylenqaq-openai", runtime.createProvider(base));'
+      substituteInPlace extensions/openai-codex-compat/request-options.ts \
+        --replace-fail 'import { CODEX_API, CODEX_PROVIDER } from "./codex-identifiers.ts";' 'import { CODEX_API, CODEX_COMPAT_PROVIDERS } from "./codex-identifiers.ts";' \
+        --replace-fail 'model.provider === CODEX_PROVIDER && hasApi(model, CODEX_API)' 'CODEX_COMPAT_PROVIDERS.has(model.provider) && hasApi(model, CODEX_API)'
+      substituteInPlace extensions/openai-codex-compat/remote-compaction.ts \
+        --replace-fail 'import { CODEX_API, CODEX_PROVIDER } from "./codex-identifiers.ts";' 'import { CODEX_API, CODEX_COMPAT_PROVIDERS } from "./codex-identifiers.ts";' \
+        --replace-fail 'model.provider === CODEX_PROVIDER && model.api === CODEX_API' 'CODEX_COMPAT_PROVIDERS.has(model.provider) && model.api === CODEX_API'
+      substituteInPlace extensions/openai-codex-compat/output-limit-continuation.ts \
+        --replace-fail 'import { CODEX_API, CODEX_PROVIDER } from "./codex-identifiers.ts";' 'import { CODEX_API, CODEX_COMPAT_PROVIDERS } from "./codex-identifiers.ts";' \
+        --replace-fail 'model?.provider === CODEX_PROVIDER && model.api === CODEX_API' 'model !== undefined && CODEX_COMPAT_PROVIDERS.has(model.provider) && model.api === CODEX_API' \
+        --replace-fail 'assistant?.provider === CODEX_PROVIDER &&' 'assistant?.provider !== undefined && CODEX_COMPAT_PROVIDERS.has(assistant.provider) &&'
     '';
     npmDepsHash = "sha256-35tVMa7LwoXMvewTmN5W2p3KkCeDFqhGmfdzM4HcYbo=";
     npmInstallFlags = ["--ignore-scripts" "--omit=dev"];

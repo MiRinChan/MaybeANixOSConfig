@@ -149,7 +149,11 @@ in {
       ignoredSkills = ["microsoft-foundry"];
       extensions = [
         "${pkgs.gotgenes-pi-permission-system}/src/index.ts"
-        "${pkgs.pi-subagents}/index.ts"
+        "${pkgs.pi-aliases}/src/index.ts"
+        "${pkgs.pi-goal}/dist/index.ts"
+        "${pkgs.pi-codemode-extension}/extensions/code-mode.ts"
+        "${pkgs.pi-tool-search}/extensions/index.ts"
+        "${pkgs.wj-pi-subagents}/index.ts"
         "${pkgs.pi-preferred-thinking}/src/index.ts"
         "${pkgs.pi-rtk-optimizer}/index.ts"
         "${pkgs.pi-effort}/index.ts"
@@ -171,6 +175,29 @@ in {
         "${pkgs.pi-openai-codex-compat}/extensions/index.ts"
         "${pkgs.pi-codex-workflow}/index.ts"
       ];
+
+      # Keep the high-cost/rare surface deferred while preserving the core
+      # coding tools and Codex-reserved names in the active tool set.
+      toolSearch = {
+        alwaysEnabled = [
+          "read"
+          "write"
+          "edit"
+          "bash"
+          "grep"
+          "find"
+          "ls"
+          "exec_command"
+          "write_stdin"
+          "apply_patch"
+          "update_plan"
+          "request_user_input"
+          "tool_search"
+          "exec"
+          "web.run"
+        ];
+        showToolSearchFooterStatus = true;
+      };
 
       # pi-preferred-thinking 固定思考强度
       preferredThinking = {
@@ -206,9 +233,14 @@ in {
           "providers": {
             "kylenqaq-openai": {
               "baseUrl": "${config.sops.placeholder.pi-kylenqaq-base-url}",
-              "api": "anthropic-messages",
+              # Explicitly select the Codex Responses transport for this
+              # provider. Claude and Grok remain Anthropic transports below.
+              "api": "openai-codex-responses",
               "apiKey": "!cat ${config.sops.secrets.pi-kylenqaq-openai-api-key.path}",
-              "compat": { "supportsEagerToolInputStreaming": false },
+              "compat": {
+                "supportsEagerToolInputStreaming": false,
+                "supportsToolSearch": true
+              },
               "models": [
                 { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 272000, "maxTokens": 128000 },
                 { "id": "gpt-5.6-sol", "name": "GPT-5.6 Sol (1M)", "reasoning": true, "thinkingLevelMap": { "xhigh": "xhigh", "max": "max" }, "input": ["text", "image"], "contextWindow": 1050000, "maxTokens": 128000 },

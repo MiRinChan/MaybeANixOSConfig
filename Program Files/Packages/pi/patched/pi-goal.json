@@ -1,0 +1,7 @@
+{
+  "name": "@narumitw/pi-goal",
+  "version": "0.54.4",
+  "type": "module",
+  "pi": { "extensions": ["./dist/index.ts"] },
+  "dependencies": { "@narumitw/pi-tui-kit": "^0.59.0" }
+}

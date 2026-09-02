@@ -373,6 +373,13 @@ in {
         --replace-fail 'import { CODEX_API, CODEX_PROVIDER } from "./codex-identifiers.ts";' 'import { CODEX_API, CODEX_COMPAT_PROVIDERS } from "./codex-identifiers.ts";' \
         --replace-fail 'model?.provider === CODEX_PROVIDER && model.api === CODEX_API' 'model !== undefined && CODEX_COMPAT_PROVIDERS.has(model.provider) && model.api === CODEX_API' \
         --replace-fail 'assistant?.provider === CODEX_PROVIDER &&' 'assistant?.provider !== undefined && CODEX_COMPAT_PROVIDERS.has(assistant.provider) &&'
+      substituteInPlace extensions/openai-codex-compat/codex-transport/codex-transport-request-headers.ts \
+        --replace-fail \
+          'return extractAccountId(apiKey);' \
+          'return model.provider === "kylenqaq-openai" ? "" : extractAccountId(apiKey);' \
+        --replace-fail \
+          'headers.set("chatgpt-account-id", accountId);' \
+          'if (accountId) headers.set("chatgpt-account-id", accountId); else headers.delete("chatgpt-account-id");'
     '';
     npmDepsHash = "sha256-35tVMa7LwoXMvewTmN5W2p3KkCeDFqhGmfdzM4HcYbo=";
     npmInstallFlags = ["--ignore-scripts" "--omit=dev"];

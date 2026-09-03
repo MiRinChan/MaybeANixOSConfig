@@ -138,7 +138,7 @@ in {
     version = "4.1.0";
     src = npmTgz "pi-lens" "4.1.0" "sha256-AebgyImomtLgNwqt9Frb3lcqoKdhJ+rRDl4jkrw6M6U=";
     postPatch = ''
-      cp ${./patched/pi-lens.json} ./package.json
+      cp ${./patched/pi-lens-package.json} ./package.json
       cp ${./locks/pi-lens.lock} ./package-lock.json
     '';
     npmDepsHash = "sha256-I5rs6gSk4gvZ7LXPObvvSQRvVyDeTqzi0PecVbIez70=";

@@ -71,6 +71,26 @@
     master.waypipe
     tmux
     bun
+    nodejs # Required by the local Data Analytics MCP server used by Codex.
+    # Keep the common agent/runtime CLI surface available outside user profiles.
+    python3
+    ripgrep
+    fd
+    yq-go
+    wget
+    git-lfs
+    just
+    shellcheck
+    shfmt
+    ast-grep # Syntax-aware search and rewrite for code agents.
+    actionlint # Validate GitHub Actions workflows.
+    yamllint
+    codespell
+    deadnix # Find unused Nix bindings.
+    statix # Lint Nix expressions.
+    gnumake
+    pkg-config
+    sqlite
     libnotify
     git # ComfyUI and custom node source updates
     aria2 # Resumable model downloads

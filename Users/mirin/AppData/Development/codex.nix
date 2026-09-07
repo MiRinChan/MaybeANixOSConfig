@@ -49,6 +49,6 @@ in {
     inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin
     pkgs.mcp-nixos
     pkgs.mcp-server-git
-    pkgs.chatgpt
+    pkgs.llm-agents.chatgpt
   ];
 }

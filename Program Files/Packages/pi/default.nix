@@ -41,8 +41,8 @@ in {
   # --- extensions without runtime deps (source only) ---
   pi-preferred-thinking = copyExt {
     pname = "pi-preferred-thinking";
-    version = "0.3.0";
-    src = npmTgz "@tifan/pi-preferred-thinking" "0.3.0" "sha256-v6fJOXfK/rJYrJ7hBxeJ8PDLEHVpbb5MoB8Vpii7ZEI=";
+    version = "1.0.1";
+    src = npmTgz "@tifan/pi-preferred-thinking" "1.0.1" "sha256-0ARB19DG9LJePqXgo1Gpn9G2Rswuck84DrpTkZiuZ8k=";
   };
 
   pi-rtk-optimizer = copyExt {
@@ -135,13 +135,13 @@ in {
 
   pi-lens = buildNpmPackage {
     pname = "pi-lens";
-    version = "4.1.0";
-    src = npmTgz "pi-lens" "4.1.0" "sha256-AebgyImomtLgNwqt9Frb3lcqoKdhJ+rRDl4jkrw6M6U=";
+    version = "4.1.3";
+    src = npmTgz "pi-lens" "4.1.3" "sha256-3HNPLC3JbAuWu5mvinQrPcU461A69YR0fWjBYsUU6cI=";
     postPatch = ''
       cp ${./patched/pi-lens-package.json} ./package.json
       cp ${./locks/pi-lens.lock} ./package-lock.json
     '';
-    npmDepsHash = "sha256-I5rs6gSk4gvZ7LXPObvvSQRvVyDeTqzi0PecVbIez70=";
+    npmDepsHash = "sha256-tWg5DxEBqyc5V0Y1/6YN4XUGz2lDvs44DGbpWhawdF0=";
     npmInstallFlags = ["--ignore-scripts"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;
@@ -191,13 +191,13 @@ in {
 
   pi-background-tasks = buildNpmPackage {
     pname = "pi-background-tasks";
-    version = "2.4.2";
-    src = npmTgz "pi-background-tasks" "2.4.2" "sha256-jVFZG0NDGH3DgSV228fGvqlkoLzGWkw3jz+zjcEdhXE=";
+    version = "2.5.0";
+    src = npmTgz "pi-background-tasks" "2.5.0" "sha256-hjda7cJXjMb9Jy5Z8vpcOr2ohyCE3PPyzBGKI5o5GFM=";
     postPatch = ''
       cp ${./patched/pi-background-tasks.json} ./package.json
       cp ${./locks/pi-background-tasks.lock} ./package-lock.json
     '';
-    npmDepsHash = "sha256-udsz8Romz6CL1pxmnWQns4xxkrK4V3la3qGv2dLRzbo=";
+    npmDepsHash = "sha256-VOVZ6ZBtp2ofKNizcaILa01+YEaKW7KtvETE50WHZ2Y=";
     npmInstallFlags = ["--ignore-scripts"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;
@@ -278,13 +278,13 @@ in {
 
   pi-mcp-adapter = buildNpmPackage {
     pname = "pi-mcp-adapter";
-    version = "2.26.0";
-    src = npmTgz "pi-mcp-adapter" "2.26.0" "sha256-1hfsccXd3a3vqUZzczw/wwYNYDgaoMk7HAArCNnRjAk=";
+    version = "2.32.1";
+    src = npmTgz "pi-mcp-adapter" "2.32.1" "sha256-X3t5/hGGmZZ7HFJNi7ku5ZOdEIrNk0Is7q5+sqOWMIc=";
     postPatch = ''
       cp ${./patched/pi-mcp-adapter.json} ./package.json
       cp ${./locks/pi-mcp-adapter.lock} ./package-lock.json
     '';
-    npmDepsHash = "sha256-KvOmPTLQzLYj+VLhHxghthejupiw5sR5dnseh98o9U8=";
+    npmDepsHash = "sha256-xckVPy3JqQGq0nmbNbSMiBw5IyL/URGxO1BOGbuoaNU=";
     npmInstallFlags = ["--ignore-scripts"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;
@@ -292,13 +292,13 @@ in {
 
   rpiv-ask-user-question = buildNpmPackage {
     pname = "rpiv-ask-user-question";
-    version = "2.6.0";
-    src = npmTgz "@juicesharp/rpiv-ask-user-question" "2.6.0" "sha256-tdzrkAqu9Bvpm6ZSW6kxdsgpu26AzdZY/Rr/iVJ4gJ0=";
+    version = "2.9.0";
+    src = npmTgz "@juicesharp/rpiv-ask-user-question" "2.9.0" "sha256-pUpjND7EIVW+HsfE0b2/icQcFp/xAtQ2s2D9s24GJuE=";
     postPatch = ''
       cp ${./patched/rpiv-ask-user-question.json} ./package.json
       cp ${./locks/rpiv-ask-user-question.lock} ./package-lock.json
     '';
-    npmDepsHash = "sha256-PNkAAFPfxnIeon6ho4bkGPO5zrgENxwAiUL0hkTQlCc=";
+    npmDepsHash = "sha256-h8jFL1YEp4aDS44O5Mql05VQFOs/riQ6o4M2jR4L5h0=";
     npmInstallFlags = ["--ignore-scripts"];
     dontNpmBuild = true;
     installPhase = extInstallPhase;
@@ -343,14 +343,14 @@ in {
   # Codex 式自动审批：模型按风险策略评估每个操作，安全自动放行，危险才问用户。
   pi-permission-auto-review = buildNpmPackage {
     pname = "pi-permission-auto-review";
-    version = "0.2.0";
-    src = npmTgz "@mzwing/pi-permission-auto-review" "0.2.0" "sha256-HSnuPgt61iphs+U6/1b/KhAo1KGdZFVrqYFan7kFe04=";
+    version = "0.3.2";
+    src = npmTgz "@mzwing/pi-permission-auto-review" "0.3.2" "sha256-/qxEeiIyleVW/CNW97lSyOeGweXw/9nzKc0LheE7gPE=";
     postPatch = ''
       cp ${./patched/pi-permission-auto-review.json} ./package.json
       cp ${./locks/pi-permission-auto-review.lock} ./package-lock.json
     '';
-    npmInstallFlags = ["--ignore-scripts"];
-    npmDepsHash = "sha256-0vR2hdtw0l2mPC6g4x2ptR9ZJ8bxeog5bY2vLyDgejo=";
+    npmInstallFlags = ["--ignore-scripts" "--legacy-peer-deps"];
+    npmDepsHash = "sha256-yjw+NG+6+nl/nLTdWyPJLqml9pjpxTMJJXZ76MnJycY=";
     dontNpmBuild = true;
     installPhase = extInstallPhase;
   };

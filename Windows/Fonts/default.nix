@@ -37,6 +37,7 @@ in {
       source-han-mono
       source-han-sans
       source-han-serif
+      openai-sans
       gallantFont
     ];
     fontconfig = {

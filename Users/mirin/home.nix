@@ -16,7 +16,6 @@ in {
 
   nixpkgs = {
     overlays = [
-      repoOverlays.additions
       repoOverlays.modifications
       repoOverlays.master-packages
       repoOverlays.unstable-packages
@@ -37,6 +36,7 @@ in {
             signon-ui = final.kdePackages.callPackage (programFiles + "/Packages/signon-ui") {};
           };
       })
+      repoOverlays.additions
     ];
     config.allowUnfree = true;
   };
@@ -52,8 +52,6 @@ in {
   };
 
   systemd.user.startServices = "sd-switch";
-  services.kdeconnect.enable = true;
-
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "24.05";
   programs.home-manager.enable = true;

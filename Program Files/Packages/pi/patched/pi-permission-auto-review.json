@@ -1,6 +1,6 @@
 {
   "name": "@mzwing/pi-permission-auto-review",
-  "version": "0.2.0",
+  "version": "0.3.2",
   "description": "Codex-style automatic approval reviews for @gotgenes/pi-permission-system",
   "keywords": [
     "authorizer",
@@ -48,9 +48,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@gotgenes/pi-permission-system": "25.4.0",
+    "@gotgenes/pi-permission-system": "27.1.3",
     "@mzwing/pi-polyfill": "^0.0.1",
-    "zod": "4.4.3"
+    "zod": "4.5.4"
   },
   "engines": {
     "node": ">=24"

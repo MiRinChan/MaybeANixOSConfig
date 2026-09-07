@@ -5,6 +5,7 @@ pkgs:
 // {
   # example = pkgs.callPackage ./example { };
   lunar = pkgs.callPackage ./lunar.nix {};
+  openai-sans = pkgs.callPackage ./openai-sans {};
   rquickshare-the-legacy = pkgs.callPackage ./RQuickShare.nix {};
   scrcpy3 = pkgs.callPackage ./scrcpy3.nix {};
   tsuyaku = pkgs.callPackage ./tsuyaku.nix {};

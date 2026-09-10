@@ -25,7 +25,9 @@
       set -g status-right "#[fg=#5BCEFA,bg=#1e1e2e]#[fg=#1e1e2e,bg=#5BCEFA,bold] clients #{session_attached} #[fg=#F5A9B8,bg=#5BCEFA]#[fg=#1e1e2e,bg=#F5A9B8,bold] %Y-%m-%d %H:%M "
 
       set -g xterm-keys on
-      set -s extended-keys on
+      # Always preserve modified keys for TUIs which do not request the
+      # extended-key protocol themselves, such as Codex.
+      set -s extended-keys always
       set -s extended-keys-format csi-u
 
       bind-key -n MouseDown1StatusLeft new-window

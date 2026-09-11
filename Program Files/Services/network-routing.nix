@@ -11,6 +11,7 @@
   };
 
   services.tailscale.enable = true;
+  services.tailscale.extraSetFlags = ["--operator=mirin"];
   networking.firewall = {
     enable = true;
     # Always allow traffic from your Tailscale network

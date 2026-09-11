@@ -5,10 +5,11 @@
   ...
 }: let
   codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin;
-  launcher = name: directory:
+  launcher = name: directory: workspaceId: home:
     pkgs.writeShellScriptBin name ''
-      export CODEX_HOME="/home/mirin/${directory}"
-      exec ${codexBin}/bin/codex "$@"
+      export HOME="${home}"
+      export CODEX_HOME="${home}/.codex"
+      exec ${codexBin}/bin/codex -c "forced_chatgpt_workspace_id = \"${workspaceId}\"" "$@"
     '';
   configSync = pkgs.writeShellScriptBin "codex-config-sync" ''
     exec ${pkgs.python3}/bin/python3 ${./codex-config-sync.py} "$@"
@@ -72,6 +73,16 @@
     exec /run/wrappers/bin/pkexec ${pkgs.bash}/bin/bash -lc "$run_script"
   '';
 in {
+  home.activation.linkBusinessCodexHome = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    business_home=/home/mirin/.codex-business-home
+    business_link="$business_home/.codex"
+    ${pkgs.coreutils}/bin/mkdir -p -m 0700 "$business_home"
+    if [ -e "$business_link" ] && [ ! -L "$business_link" ]; then
+      echo "refusing to replace non-symlink $business_link" >&2
+      exit 1
+    fi
+    ${pkgs.coreutils}/bin/ln -sfn /home/mirin/.codex-business "$business_link"
+  '';
   home.activation.retireLegacyCodexAgent = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if ${pkgs.systemd}/bin/systemctl --user is-enabled --quiet codex-usage-agent.service; then
       run ${pkgs.systemd}/bin/systemctl --user disable --now codex-usage-agent.service
@@ -90,8 +101,8 @@ in {
   home.packages = [
     codexGuiSudo
     codexBin
-    (lib.hiPrio (launcher "codex" ".codex"))
-    (launcher "codex-business" ".codex-business")
+    (lib.hiPrio (launcher "codex" ".codex" "6e207cf8-4441-4749-a966-3178e8023767" "/home/mirin"))
+    (launcher "codex-business" ".codex-business" "f062955d-0b4f-458a-96d3-b15366df2d49" "/home/mirin/.codex-business-home")
     configSync
     verifyBusiness
     pkgs.mcp-nixos

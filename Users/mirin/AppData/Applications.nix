@@ -25,6 +25,7 @@
     scrcpy3 # Android 屏传
     tsuyaku # Wayland 实时音频翻译
     tsukimi # emby
+    tail-tray # Tailscale 的 Plasma 托盘客户端
     graalvmPackages.graalvm-ce
     xleak
     csvkit

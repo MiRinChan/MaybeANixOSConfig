@@ -236,32 +236,35 @@ in {
 
   # Session-scoped isolated Pi children. The source pin and the peer-only npm
   # lock make this fully declarative; Pi supplies the declared peer APIs.
-  pi-codex-subagents = buildNpmPackage {
-    pname = "pi-codex-subagents";
-    version = "0.3.4-451e49d";
-    src = fetchFromGitHub {
-      owner = "ogulcancelik";
-      repo = "pi-extensions";
-      rev = "451e49da38e117f11f4b8e622c2bc432444f8a3a";
-      hash = "sha256-i8oFJspGq5awdd6fCYXFllCmFyLNBnVlX8b0LVUJ8VM=";
+  pi-codex-subagents = let
+    npmRootPath = "packages/pi-codex-subagents";
+  in
+    buildNpmPackage {
+      pname = "pi-codex-subagents";
+      version = "0.3.4-451e49d";
+      src = fetchFromGitHub {
+        owner = "ogulcancelik";
+        repo = "pi-extensions";
+        rev = "451e49da38e117f11f4b8e622c2bc432444f8a3a";
+        hash = "sha256-i8oFJspGq5awdd6fCYXFllCmFyLNBnVlX8b0LVUJ8VM=";
+      };
+      sourceRoot = "source";
+      npmRoot = npmRootPath;
+      postPatch = ''
+        chmod -R u+w "${npmRootPath}"
+        cp ${./locks/pi-codex-subagents.lock} "${npmRootPath}/package-lock.json"
+      '';
+      npmDepsHash = "sha256-GHXPUMcJGRH//Fq/arg+y8/P66Y4n3oShZmvAmbO5YQ=";
+      forceEmptyCache = true;
+      makeCacheWritable = true;
+      npmFlags = ["--ignore-scripts" "--legacy-peer-deps" "--omit=dev" "--omit=peer"];
+      dontNpmBuild = true;
+      installPhase = ''
+        cd "${npmRootPath}"
+        mkdir -p node_modules
+        ${extInstallPhase}
+      '';
     };
-    sourceRoot = "source";
-    npmRoot = "packages/pi-codex-subagents";
-    postPatch = ''
-      chmod -R u+w "$npmRoot"
-      cp ${./locks/pi-codex-subagents.lock} "$npmRoot/package-lock.json"
-    '';
-    npmDepsHash = "sha256-GHXPUMcJGRH//Fq/arg+y8/P66Y4n3oShZmvAmbO5YQ=";
-    forceEmptyCache = true;
-    makeCacheWritable = true;
-    npmFlags = ["--ignore-scripts" "--legacy-peer-deps" "--omit=dev" "--omit=peer"];
-    dontNpmBuild = true;
-    installPhase = ''
-      cd "$npmRoot"
-      mkdir -p node_modules
-      ${extInstallPhase}
-    '';
-  };
 
   pi-oh-pi-ant-colony = buildNpmPackage {
     pname = "pi-oh-pi-ant-colony";

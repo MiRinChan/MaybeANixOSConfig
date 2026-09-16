@@ -95,6 +95,7 @@
     git # ComfyUI and custom node source updates
     aria2 # Resumable model downloads
     uv # Isolated Python environment management for ComfyUI
+    fet-sh # Fetch written in posix shell without any external commands
   ];
 
   programs.zsh.enable = true;

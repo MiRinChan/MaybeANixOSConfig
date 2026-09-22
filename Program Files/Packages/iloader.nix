@@ -5,7 +5,7 @@ pkgs.appimageTools.wrapType2 rec {
 
   src = pkgs.fetchurl {
     url = "https://github.com/nab138/iloader/releases/download/v${version}/iloader-linux-amd64.AppImage";
-    hash = "sha256-D+N+6fnr42FrunRSFCSNwtP5/+3EqCQXBsyV2WOBNlI=";
+    hash = "sha256-qehBJZz+wFBl2tMUKN0bJ7bDMh8Q0xDLAxUIKDa4O34=";
   };
 
   extraInstallCommands = let

@@ -1,7 +1,7 @@
 {pkgs, ...}:
 pkgs.appimageTools.wrapType2 rec {
   pname = "iloader";
-  version = "2.3.1";
+  version = "2.3.3";
 
   src = pkgs.fetchurl {
     url = "https://github.com/nab138/iloader/releases/download/v${version}/iloader-linux-amd64.AppImage";

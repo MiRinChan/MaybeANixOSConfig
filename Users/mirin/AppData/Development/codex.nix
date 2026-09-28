@@ -6,10 +6,10 @@
 }: let
   # codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin;
   codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin.overrideAttrs (_old: {
-    version = "0.156.1";
+    version = "0.158.0";
 
     src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/@openai/codex/-/codex-0.156.1-linux-x64.tgz";
+      url = "https://registry.npmjs.org/@openai/codex/-/codex-0.158.0-linux-x64.tgz";
       hash = "sha256-3tmEC6vrUR55c4rnCARK5In7zlDbcAK5Q7MZXPWuaiU=";
     };
   });

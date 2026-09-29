@@ -6,13 +6,16 @@
 }: let
   # codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin;
   codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin.overrideAttrs (_old: {
-    version = "0.158.0";
+    version = "0.159.0";
 
     src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/@openai/codex/-/codex-0.158.0-linux-x64.tgz";
-      hash = "sha256-3tmEC6vrUR55c4rnCARK5In7zlDbcAK5Q7MZXPWuaiU=";
+      url = "https://registry.npmjs.org/@openai/codex/-/codex-0.159.0-linux-x64.tgz";
+      hash = "sha256-P+hBBqry+/wTKZBoUQ00s9AVfuua9LN76M9UFvSFprs=";
     };
   });
+
+  #nix store prefetch-file --json \
+  # 'https://registry.npmjs.org/@openai/codex/-/codex-[version]-linux-x64.tgz'
 
   launcher = name: directory: workspaceId: home:
     pkgs.writeShellScriptBin name ''

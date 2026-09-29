@@ -1,10 +1,10 @@
 {
-  config,
   inputs,
   lib,
   ...
 }: let
   flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  nixPath = lib.mapAttrsToList (name: _: "${name}=flake:${name}") flakeInputs;
 in {
   nix = {
     settings = {
@@ -13,7 +13,7 @@ in {
       # Opinionated: disable global registry
       flake-registry = "";
       # Workaround for https://github.com/NixOS/nix/issues/9574
-      nix-path = config.nix.nixPath;
+      nix-path = nixPath;
 
       # Allow mirin to specify additional substituters through flake config or
       # command-line options.
@@ -37,7 +37,6 @@ in {
 
     # Opinionated: make flake registry and nix path match flake inputs
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
-    nixPath = lib.mapAttrsToList (name: _: "${name}=flake:${name}") flakeInputs;
 
     # Auto GC is managed by programs.nh in Program Files/Applications/system-tools.nix.
     optimise.automatic = true;

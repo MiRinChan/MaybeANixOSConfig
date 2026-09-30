@@ -25,10 +25,28 @@
       set -g status-right "#[fg=#5BCEFA,bg=#1e1e2e]#[fg=#1e1e2e,bg=#5BCEFA,bold] clients #{session_attached} #[fg=#F5A9B8,bg=#5BCEFA]#[fg=#1e1e2e,bg=#F5A9B8,bold] %Y-%m-%d %H:%M "
 
       set -g xterm-keys on
+
+      # Allow applications inside tmux to set the terminal clipboard via OSC 52.
+      set -s set-clipboard on
+
       # Always preserve modified keys for TUIs which do not request the
       # extended-key protocol themselves, such as Codex.
       set -s extended-keys always
       set -s extended-keys-format csi-u
+
+      # 让 TUI 感知窗口焦点变化
+      set -g focus-events on
+
+      # 更大的历史缓冲
+      set -g history-limit 100000
+
+      # 让支持的终端使用同步更新，减少 TUI 重绘闪烁
+      set -as terminal-features ',*:sync'
+
+      # 真彩色
+      set -as terminal-features ',*:RGB'
+
+      set -g allow-passthrough on
 
       bind-key -n MouseDown1StatusLeft new-window
       bind-key c new-window

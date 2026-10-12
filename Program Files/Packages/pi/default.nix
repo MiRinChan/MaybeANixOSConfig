@@ -248,11 +248,12 @@ in {
         rev = "451e49da38e117f11f4b8e622c2bc432444f8a3a";
         hash = "sha256-i8oFJspGq5awdd6fCYXFllCmFyLNBnVlX8b0LVUJ8VM=";
       };
-      sourceRoot = "source";
-      npmRoot = npmRootPath;
+      sourceRoot = "source/${npmRootPath}";
       postPatch = ''
-        chmod -R u+w "${npmRootPath}"
-        cp ${./locks/pi-codex-subagents.lock} "${npmRootPath}/package-lock.json"
+        # Prevent npm from discovering the parent monorepo workspace.
+        chmod u+w ../..
+        rm ../../package.json
+        cp ${./locks/pi-codex-subagents.lock} package-lock.json
       '';
       npmDepsHash = "sha256-GHXPUMcJGRH//Fq/arg+y8/P66Y4n3oShZmvAmbO5YQ=";
       forceEmptyCache = true;
@@ -260,7 +261,6 @@ in {
       npmFlags = ["--ignore-scripts" "--legacy-peer-deps" "--omit=dev" "--omit=peer"];
       dontNpmBuild = true;
       installPhase = ''
-        cd "${npmRootPath}"
         mkdir -p node_modules
         ${extInstallPhase}
       '';

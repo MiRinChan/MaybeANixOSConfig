@@ -4,20 +4,23 @@
   pkgs,
   ...
 }: let
-  gcWithoutStoreVM = pkgs.writeShellScript "gc-without-store-vm" ''
-    # Skip automatic GC while a VM can use arbitrary paths from the host store.
+  maintenanceWithoutStoreVM = pkgs.writeShellScript "maintenance-without-store-vm" ''
+    # GC removes store paths. Optimisation replaces inodes used by guest overlays.
     if ${pkgs.procps}/bin/pgrep -f '^([^ ]*/)?virtiofsd .*--shared-dir(=| )/nix/store/?( |$)' >/dev/null \
       || ${pkgs.procps}/bin/pgrep -f '^[^ ]*qemu-system[^ ]* .*path=/nix/store([, ]|$)' >/dev/null; then
-      echo "Skip automatic GC: a VM shares the host /nix/store."
+      echo "Skip store maintenance: a VM shares the host /nix/store."
       exit 1
     fi
   '';
 in {
   systemd.services.nh-clean = lib.mkIf config.programs.nh.clean.enable {
-    serviceConfig.ExecCondition = gcWithoutStoreVM;
+    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
   };
   systemd.services.nix-gc = lib.mkIf config.nix.gc.automatic {
-    serviceConfig.ExecCondition = gcWithoutStoreVM;
+    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+  };
+  systemd.services.nix-optimise = lib.mkIf config.nix.optimise.automatic {
+    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
   };
 
   # Supply the hard limit used by the VM's transient user service after login.

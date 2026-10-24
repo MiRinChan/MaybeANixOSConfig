@@ -40,11 +40,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    pi-flake = {
-      url = "github:ChauDucToan/pi-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     prince213 = {
       url = "github:Prince213/nix-packages";
       inputs.nixpkgs.follows = "nixpkgs";

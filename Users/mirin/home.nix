@@ -11,7 +11,6 @@ in {
     ./AppData
     inputs.catppuccin.homeModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
-    inputs.pi-flake.homeManagerModules.default
   ];
 
   nixpkgs = {

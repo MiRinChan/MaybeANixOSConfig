@@ -8,6 +8,10 @@
 in {
   nix = {
     settings = {
+      # Limit total build concurrency and parallel work inside each build.
+      max-jobs = 1;
+      cores = 2;
+
       # 启用新 nix 命令行和 flakes
       experimental-features = ["nix-command" "flakes"];
       # Opinionated: disable global registry
@@ -41,5 +45,16 @@ in {
     # Auto GC is managed by programs.nh in Program Files/Applications/system-tools.nix.
     optimise.automatic = true;
     optimise.dates = ["20:50"];
+  };
+
+  # Keep build memory below desktop needs and prefer reclaiming build processes.
+  systemd.services.nix-daemon.serviceConfig = {
+    MemoryHigh = "12G";
+    MemoryMax = "16G";
+    MemorySwapMax = "4G";
+    OOMScoreAdjust = 500;
+    Nice = 10;
+    CPUWeight = 25;
+    IOWeight = 25;
   };
 }

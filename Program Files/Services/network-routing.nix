@@ -18,6 +18,18 @@
     trustedInterfaces = [config.services.tailscale.interfaceName];
     # Allow the Tailscale UDP port through the firewall
     allowedUDPPorts = [config.services.tailscale.port];
+    # Exit routing can send unmarked discovery replies through tailscale0.
+    # Keep strict reverse-path checks for other traffic.
+    extraCommands = ''
+      iptables -t mangle -C nixos-fw-rpfilter -p udp --dport ${toString config.services.tailscale.port} -j RETURN 2>/dev/null || \
+        iptables -t mangle -I nixos-fw-rpfilter 1 -p udp --dport ${toString config.services.tailscale.port} -j RETURN
+      ip6tables -t mangle -C nixos-fw-rpfilter -p udp --dport ${toString config.services.tailscale.port} -j RETURN 2>/dev/null || \
+        ip6tables -t mangle -I nixos-fw-rpfilter 1 -p udp --dport ${toString config.services.tailscale.port} -j RETURN
+    '';
+    extraStopCommands = ''
+      iptables -t mangle -D nixos-fw-rpfilter -p udp --dport ${toString config.services.tailscale.port} -j RETURN 2>/dev/null || true
+      ip6tables -t mangle -D nixos-fw-rpfilter -p udp --dport ${toString config.services.tailscale.port} -j RETURN 2>/dev/null || true
+    '';
   };
 
   systemd.services.tailscaled.postStart = ''

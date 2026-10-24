@@ -1,9 +1,8 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
-pkgs:
-(import ./pi {inherit pkgs;})
-// {
+pkgs: {
   # example = pkgs.callPackage ./example { };
+  gallant-terminal-nerd = pkgs.callPackage ./gallant-terminal-nerd {};
   lunar = pkgs.callPackage ./lunar.nix {};
   openai-sans = pkgs.callPackage ./openai-sans {};
   rquickshare-the-legacy = pkgs.callPackage ./RQuickShare.nix {};

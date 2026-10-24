@@ -1,0 +1,137 @@
+diff --git a/src/gallant_terminal/outlines.py b/src/gallant_terminal/outlines.py
+index 464d8c9..7809a8e 100644
+--- a/src/gallant_terminal/outlines.py
++++ b/src/gallant_terminal/outlines.py
+@@ -114,0 +115,59 @@ def pixel_rectangles(
++def _outline_contours(rectangles: tuple[tuple[int, int, int, int], ...]):
++    """Trace the union of the pixel rectangles, with the filled area on the right."""
++    unit = PIXEL_UNITS
++    cells = {
++        (x, y)
++        for x_min, y_min, x_max, y_max in rectangles
++        for x in range(x_min, x_max, unit)
++        for y in range(y_min, y_max, unit)
++    }
++    edges = set()
++    for x, y in cells:
++        if (x - unit, y) not in cells:
++            edges.add(((x, y), (x, y + unit)))
++        if (x, y + unit) not in cells:
++            edges.add(((x, y + unit), (x + unit, y + unit)))
++        if (x + unit, y) not in cells:
++            edges.add(((x + unit, y + unit), (x + unit, y)))
++        if (x, y - unit) not in cells:
++            edges.add(((x + unit, y), (x, y)))
++
++    successors = {}
++    for start, end in edges:
++        successors.setdefault(start, []).append(end)
++
++    directions = {(unit, 0): 0, (0, -unit): 1, (-unit, 0): 2, (0, unit): 3}
++    turn_order = {1: 0, 0: 1, 3: 2, 2: 3}
++    while edges:
++        first, current = min(edges)
++        previous = first
++        contour = [first]
++        edges.remove((first, current))
++        while current != first:
++            contour.append(current)
++            incoming = directions[(current[0] - previous[0], current[1] - previous[1])]
++
++            def turn_rank(point):
++                outgoing = directions[(point[0] - current[0], point[1] - current[1])]
++                return turn_order[(outgoing - incoming) % 4]
++
++            # A right turn keeps pixels that meet only at a corner in separate
++            # contours. Hole boundaries receive the opposite winding naturally.
++            following = min(
++                (point for point in successors[current] if (current, point) in edges),
++                key=turn_rank,
++            )
++            edges.remove((current, following))
++            previous, current = current, following
++
++        # Only corners are needed along each straight boundary.
++        yield [
++            point
++            for index, point in enumerate(contour)
++            if not (
++                contour[index - 1][0] == point[0] == contour[(index + 1) % len(contour)][0]
++                or contour[index - 1][1] == point[1] == contour[(index + 1) % len(contour)][1]
++            )
++        ]
++
++
+@@ -117,5 +176,4 @@ def ttf_glyph(glyph: BitmapGlyph):
+-    for x_min, y_min, x_max, y_max in pixel_rectangles(glyph):
+-        pen.moveTo((x_min, y_min))
+-        pen.lineTo((x_min, y_max))
+-        pen.lineTo((x_max, y_max))
+-        pen.lineTo((x_max, y_min))
++    for contour in _outline_contours(pixel_rectangles(glyph)):
++        pen.moveTo(contour[0])
++        for point in contour[1:]:
++            pen.lineTo(point)
+diff --git a/tests/test_outlines.py b/tests/test_outlines.py
+index c51f406..9fa6858 100644
+--- a/tests/test_outlines.py
++++ b/tests/test_outlines.py
+@@ -0,0 +1,2 @@
++from fontTools.pens.pointInsidePen import PointInsidePen
++
+@@ -73 +75 @@ def test_truetype_outline_uses_only_on_curve_axis_aligned_points():
+-    assert len(end_points) == 2
++    assert len(end_points) == 1
+@@ -81,0 +84,52 @@ def test_truetype_outline_uses_only_on_curve_axis_aligned_points():
++
++
++def test_vertical_stem_has_no_internal_horizontal_edges():
++    glyph = BitmapGlyph(0x4E00, "stem", 1, 4, 0, 0, 12, (1, 1, 1, 1))
++    outline = ttf_glyph(glyph)
++    coordinates, end_points, _ = outline.getCoordinates({})
++
++    assert len(end_points) == 1
++    assert set(coordinates) == {(0, 0), (0, 400), (100, 400), (100, 0)}
++
++
++def test_diagonal_pixels_keep_separate_contours():
++    glyph = BitmapGlyph(0x4E00, "diagonal", 2, 2, 0, 0, 12, (0b10, 0b01))
++    assert ttf_glyph(glyph).numberOfContours == 2
++
++
++def test_hole_winding_preserves_the_empty_center():
++    glyph = BitmapGlyph(0x4E00, "ring", 3, 3, 0, 0, 12, (0b111, 0b101, 0b111))
++    outline = ttf_glyph(glyph)
++    coordinates, end_points, _ = outline.getCoordinates({})
++    areas = []
++    start = 0
++    for end in end_points:
++        points = coordinates[start : end + 1]
++        areas.append(
++            sum(
++                x * points[(i + 1) % len(points)][1]
++                - y * points[(i + 1) % len(points)][0]
++                for i, (x, y) in enumerate(points)
++            ) / 2
++        )
++        start = end + 1
++
++    assert sorted(areas) == [-90000, 10000]
++
++
++def test_all_three_by_three_bitmaps_keep_their_filled_area():
++    for mask in range(1 << 9):
++        rows = tuple((mask >> (row * 3)) & 0b111 for row in range(3))
++        glyph = BitmapGlyph(0x4E00, "bitmap", 3, 3, 0, 0, 12, rows)
++        outline = ttf_glyph(glyph)
++        for row in range(-1, 4):
++            for column in range(-1, 4):
++                point = (column * 100 + 50, (2 - row) * 100 + 50)
++                pen = PointInsidePen({}, point, evenOdd=False)
++                outline.draw(pen, {})
++                expected = (
++                    0 <= row < 3
++                    and 0 <= column < 3
++                    and bool(rows[row] & (1 << (2 - column)))
++                )
++                assert pen.getResult() == expected, (mask, row, column)

@@ -13,6 +13,17 @@
     fi
   '';
 in {
+  # Bound the file indexer and its extractors without changing KDE settings.
+  systemd.user.services.kde-baloo = {
+    overrideStrategy = "asDropin";
+    serviceConfig = {
+      MemoryHigh = "1G";
+      MemoryMax = "2G";
+      MemorySwapMax = "1G";
+      OOMScoreAdjust = 500;
+    };
+  };
+
   systemd.services.nh-clean = lib.mkIf config.programs.nh.clean.enable {
     serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
   };

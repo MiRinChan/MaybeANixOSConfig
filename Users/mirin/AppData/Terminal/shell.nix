@@ -73,17 +73,14 @@
       unset HTTP_PROXY;
       unset HTTPS_PROXY
     '';
-
-    pi = "pi-sandbox";
-    pi-no-sandbox = "pi";
   };
 
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
     settings = {
-      font-family = "Maple Mono NF CN";
-      font-style = "Medium";
+      font-family = "gallant Terminal Nerd";
+      font-style = "Regular";
       confirm-close-surface = false;
       bell-features = "no-audio,no-system";
       mouse-hide-while-typing = true;
@@ -122,7 +119,11 @@
 
   programs.kitty = {
     enable = true;
-    font.name = "Maple Mono NF CN Medium";
+    font = {
+      name = "gallant Terminal Nerd";
+      package = pkgs.gallant-terminal-nerd;
+      size = 14;
+    };
     keybindings."shift+enter" = "send_text all \\x1b[13;2u";
     settings = {
       confirm_os_window_close = 0;

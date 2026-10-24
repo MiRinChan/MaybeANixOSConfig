@@ -38,6 +38,7 @@ in {
       source-han-sans
       source-han-serif
       openai-sans
+      gallant-terminal-nerd
       gallantFont
     ];
     fontconfig = {

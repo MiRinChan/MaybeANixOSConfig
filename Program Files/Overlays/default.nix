@@ -38,6 +38,16 @@
       });
     });
 
+    kde-rounded-corners = prev.kde-rounded-corners.overrideAttrs (_: {
+      version = "0.11.0";
+      src = prev.fetchFromGitHub {
+        owner = "matinlotfali";
+        repo = "KDE-Rounded-Corners";
+        tag = "v0.11.0";
+        hash = "sha256-rdVXukBh7doyuZaFGVQghwKqkWGtuLOXxJgvZbZG0hQ=";
+      };
+    });
+
     lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;
   };
 

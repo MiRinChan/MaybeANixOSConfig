@@ -3,7 +3,23 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  dsh =
+    pkgs.runCommand "dsh-${pkgs.llm-agents.dsh.version}" {
+      inherit (pkgs.llm-agents.dsh) version meta;
+    } ''
+      cp -r ${pkgs.llm-agents.dsh} $out
+      chmod -R u+w $out
+
+      # Use exposed Node internals before the native probe, which fails on Nix builds.
+      substituteInPlace \
+        $out/lib/node_modules/@deepseek-ai/dsh/node_modules/node-addon-require-builtin/lib/index.js \
+        --replace-fail 'return api.requireBuiltin(moduleId);' \
+        'try { return require(moduleId); } catch { return api.requireBuiltin(moduleId); }'
+      substituteInPlace $out/bin/dsh \
+        --replace-fail '${pkgs.llm-agents.dsh}/lib/' "$out/lib/"
+    '';
+in {
   services.udiskie = {
     enable = true;
     settings = {
@@ -55,6 +71,7 @@
     btop
     nnn # terminal file manager
     fastfetch
+    dsh
     llm-agents.opencode # AI coding agent for the terminal
     texliveTeTeX
     sqlitebrowser

@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "klassy";
-  version = "6.4.breeze6.4.0";
+  version = "6.7.3";
 
   src = fetchFromGitHub {
     owner = "paulmcauley";
     repo = pname;
-    rev = version;
-    sha256 = "sha256-+bYS2Upr84BS0IdA0HlCK0FF05yIMVbRvB8jlN5EOUM=";
+    tag = "v${version}";
+    hash = "sha256-Uk4uB1dzm4aA6pHeYTgvFBf5CVbAsxoWYJYGkCzxGfY=";
   };
 
   cmakeFlags = [
@@ -28,6 +28,13 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
+    kdePackages.qtbase
+    kdePackages.qtdeclarative
+    kdePackages.qttools
+    kdePackages.kcolorscheme
+    kdePackages.kconfig
+    kdePackages.ki18n
+    kdePackages.kwidgetsaddons
     kdePackages.kdecoration
     kdePackages.kcoreaddons
     kdePackages.kguiaddons

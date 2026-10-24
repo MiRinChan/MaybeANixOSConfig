@@ -40,7 +40,12 @@
     ];
 
     kernelModules = ["nvidia" "v4l2loopback"]; # v4l2loopback: webcam.
-    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+    extraModulePackages = [
+      (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: {
+        # NixOS generates depmod indexes after it combines all kernel modules.
+        makeFlags = (old.makeFlags or []) ++ ["DEPMOD=true"];
+      }))
+    ];
     extraModprobeConfig = ''
       options v4l2loopback exclusive_caps=1 max_buffers=2 video_nr=9 card_label="虚拟摄像头"
     '';

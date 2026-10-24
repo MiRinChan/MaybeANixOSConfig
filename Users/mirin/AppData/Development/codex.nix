@@ -119,6 +119,6 @@ in {
     verifyBusiness
     pkgs.mcp-nixos
     pkgs.mcp-server-git
-    pkgs.llm-agents.chatgpt
+    pkgs.chatgpt
   ];
 }

@@ -4,11 +4,28 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  win11WifiHook = pkgs.writeShellScript "win11-wifi-network-hook" ''
+    set -eu
+    [ "''${1:-}" = win11-wifi ] || exit 0
+    iptables=${pkgs.iptables}/bin/iptables
+    rule=(-i wlp0s20f3 -m conntrack --ctstate ESTABLISHED,RELATED --ctdir REPLY --ctorigsrc 192.168.123.0/24 -j RETURN)
+    case "''${2:-}" in
+      started|reconnect|updated|port-created)
+        "$iptables" -w -t mangle -C nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null ||
+          "$iptables" -w -t mangle -I nixos-fw-rpfilter 1 "''${rule[@]}"
+        ;;
+      stopped)
+        "$iptables" -w -t mangle -D nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null || true
+        ;;
+    esac
+  '';
+in {
   # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
   # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
   virtualisation.libvirtd = {
     enable = true;
+    hooks.network.win11-wifi = win11WifiHook;
     qemu = {
       package = pkgs.qemu_kvm;
       runAsRoot = true;
@@ -28,6 +45,10 @@
         ]
       '';
     };
+  };
+  networking.firewall = {
+    extraCommands = "${win11WifiHook} win11-wifi started begin";
+    extraStopCommands = "${win11WifiHook} win11-wifi stopped end";
   };
   programs.virt-manager.enable = true;
   virtualisation.spiceUSBRedirection.enable = true; # 从 SPICE 查看器透传 USB 设备

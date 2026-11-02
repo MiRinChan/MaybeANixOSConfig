@@ -26,7 +26,7 @@
     autoStart = true;
     capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
     openFirewall = true;
-    package = pkgs.sunshine.overrideAttrs (old: {
+    package = (pkgs.sunshine.override {stdenv = pkgs.ccacheStdenv;}).overrideAttrs (old: {
       buildInputs =
         (old.buildInputs or [])
         ++ [

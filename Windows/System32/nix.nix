@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   ...
@@ -8,9 +9,10 @@
 in {
   nix = {
     settings = {
-      # Limit total build concurrency and parallel work inside each build.
+      # Compile one package at a time with eight workers.
       max-jobs = 1;
-      cores = 2;
+      cores = 8;
+      extra-sandbox-paths = [config.programs.ccache.cacheDir];
 
       # 启用新 nix 命令行和 flakes
       experimental-features = ["nix-command" "flakes"];
@@ -46,6 +48,8 @@ in {
     optimise.automatic = true;
     optimise.dates = ["20:50"];
   };
+
+  programs.ccache.enable = true;
 
   # Keep build memory below desktop needs and prefer reclaiming build processes.
   systemd.services.nix-daemon.serviceConfig = {

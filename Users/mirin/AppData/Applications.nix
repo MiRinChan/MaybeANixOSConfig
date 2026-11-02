@@ -72,6 +72,7 @@ in {
     nnn # terminal file manager
     fastfetch
     dsh
+    pnpm
     llm-agents.opencode # AI coding agent for the terminal
     texliveTeTeX
     sqlitebrowser

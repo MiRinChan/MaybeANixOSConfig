@@ -59,7 +59,6 @@
     #kernelPackages = pkgs.linuxKernel.packages.linux_zen;
 
     plymouth.enable = true;
-    initrd.systemd.enable = true;
 
     supportedFilesystems = ["ntfs"];
   };

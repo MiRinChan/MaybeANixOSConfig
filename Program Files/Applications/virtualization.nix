@@ -5,18 +5,27 @@
   pkgs,
   ...
 }: let
+  win11WifiBypass = pkgs.writeText "win11-wifi-direct.nft" ''
+    add table inet win11_wifi_direct
+    add chain inet win11_wifi_direct prerouting { type filter hook prerouting priority -151; policy accept; }
+    flush chain inet win11_wifi_direct prerouting
+    add rule inet win11_wifi_direct prerouting iifname "virbr-win11" ip saddr 192.168.123.11 counter meta mark set 0x2024 ct mark set 0x2024 comment "Windows 11 Wi-Fi direct"
+  '';
   win11WifiHook = pkgs.writeShellScript "win11-wifi-network-hook" ''
     set -eu
     [ "''${1:-}" = win11-wifi ] || exit 0
     iptables=${pkgs.iptables}/bin/iptables
+    nft=${pkgs.nftables}/bin/nft
     rule=(-i wlp0s20f3 -m conntrack --ctstate ESTABLISHED,RELATED --ctdir REPLY --ctorigsrc 192.168.123.0/24 -j RETURN)
     case "''${2:-}" in
       started|reconnect|updated|port-created)
         "$iptables" -w -t mangle -C nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null ||
           "$iptables" -w -t mangle -I nixos-fw-rpfilter 1 "''${rule[@]}"
+        "$nft" -f ${win11WifiBypass}
         ;;
       stopped)
         "$iptables" -w -t mangle -D nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null || true
+        "$nft" delete table inet win11_wifi_direct 2>/dev/null || true
         ;;
     esac
   '';

@@ -12,7 +12,36 @@
   # https://nixos.wiki/wiki/Overlays
   llm-agents = inputs.llm-agents.overlays.shared-nixpkgs;
 
-  modifications = final: prev: {
+  modifications = final: prev: let
+    withCcache = package: package.override {stdenv = final.ccacheStdenv;};
+  in {
+    # Share the compiler cache between NixOS and standalone Home Manager.
+    ccacheWrapper = prev.ccacheWrapper.override {
+      extraConfig = ''
+        export CCACHE_DIR=/var/cache/ccache
+        export CCACHE_MAXSIZE=20GiB
+        export CCACHE_COMPRESS=1
+        export CCACHE_UMASK=007
+        export CCACHE_COMPILERCHECK=content
+        export CCACHE_SLOPPINESS=random_seed
+        export CCACHE_BASEDIR="''${NIX_BUILD_TOP:-/build}"
+        # The first system build can run before the cache directory exists.
+        if [ ! -d "$CCACHE_DIR" ] || [ ! -w "$CCACHE_DIR" ]; then
+          export CCACHE_DISABLE=1
+        fi
+      '';
+    };
+
+    digikam = withCcache prev.digikam;
+    # Use the upstream GPU-enabled binary unless local changes require compilation.
+    ffmpeg_7-full = let
+      package = prev.ffmpeg_7-full;
+      upstream = inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}.ffmpeg_7-full;
+    in
+      if package.drvPath == upstream.drvPath
+      then package
+      else withCcache package;
+
     # 禁用 ltrace 的 tests
     ltrace = prev.ltrace.overrideAttrs (_: {
       doCheck = false;
@@ -38,7 +67,7 @@
       });
     });
 
-    kde-rounded-corners = prev.kde-rounded-corners.overrideAttrs (_: {
+    kde-rounded-corners = (withCcache prev.kde-rounded-corners).overrideAttrs (_: {
       version = "0.11.0";
       src = prev.fetchFromGitHub {
         owner = "matinlotfali";

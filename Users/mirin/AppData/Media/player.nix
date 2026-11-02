@@ -26,14 +26,16 @@
 
     obs-studio = {
       enable = true;
-      package = pkgs.obs-studio.overrideAttrs (old: {
-        postFixup =
-          (old.postFixup or "")
-          + ''
-            wrapProgram $out/bin/obs \
-              --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
-          '';
-      });
+      package = pkgs.symlinkJoin {
+        name = "obs-studio-${pkgs.obs-studio.version}-gpu";
+        paths = [pkgs.obs-studio];
+        nativeBuildInputs = [pkgs.makeWrapper];
+        postBuild = ''
+          wrapProgram $out/bin/obs \
+            --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
+        '';
+        inherit (pkgs.obs-studio) meta passthru;
+      };
     };
   };
 

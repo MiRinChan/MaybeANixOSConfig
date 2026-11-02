@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     msedit # MS-DOS Editor
     screen # Screen
@@ -15,22 +11,8 @@
     kdePackages.kleopatra # kleopatra
     flatpak-builder # Flatpak builder
     appstream # Software metadata handling library, proride CLI
-    (easyeffects.overrideAttrs (oldAttrs: {
-      preFixup = let
-        lv2Plugins = [
-          calf
-          zam-plugins
-          lsp-plugins
-          x42-plugins
-        ];
-      in
-        (oldAttrs.preFixup or "")
-        + ''
-          gappsWrapperArgs+=(
-            --set LV2_PATH "${lib.makeSearchPath "lib/lv2" lv2Plugins}"
-          )
-        '';
-    }))
+    # Upstream already supplies the LV2 plugin paths.
+    easyeffects
     qpwgraph # Graphic PipeWire Configer
     alsa-utils # provide CLI
     devenv # provide code envireoment
@@ -50,7 +32,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    klassy-qt6 # KWin decoration/style plugin must be visible to the Plasma session.
+    (klassy-qt6.override {stdenv = pkgs.ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
     pkgs.kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg

@@ -10,14 +10,16 @@
   ];
   # 你永远都是中国人！
 
-  # NTP 服务器 (中国大陆服务器)
-  # To fix: Wating sync time for a long time. Thanks to Ryan Yin!
-  # Sep 14 20:42:51 rins systemd-timesyncd[1114]: Timed out waiting for reply from 193.182.111.12:123 (0.nixos.pool.ntp.org).
-  # Sep 14 20:44:11 rins systemd[1]: user@1000.service: Deactivated successfully.
+  # chrony 对时：中国大陆、香港、美国时间源
+  services.chrony = {
+    enable = true;
+    extraConfig = "bindacqdevice wlp0s20f3";
+  };
   networking.timeServers = [
     "ntp.tencent.com" # 腾讯 NTP 服务器
-    "ntp.tuna.tsinghua.edu.cn" # 清华大学 NTP 服务器
-    # "time.cloudflare.com" # Cloudflare NTP 服务器 uncomment this if network is OK.
+    "cn.pool.ntp.org" # 中国大陆 NTP 服务器池
+    "hk.pool.ntp.org" # 香港 NTP 服务器池
+    "us.pool.ntp.org" # 美国 NTP 服务器池
   ];
 
   # 输入法

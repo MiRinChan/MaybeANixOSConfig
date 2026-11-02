@@ -25,6 +25,8 @@ in {
     after = ["local-fs.target" "sops-install-secrets.service" deviceUnit];
     requires = ["sops-install-secrets.service" deviceUnit];
     wantedBy = ["multi-user.target"];
+    restartIfChanged = false;
+    stopIfChanged = false;
 
     # VeraCrypt shells out to dmsetup/mount/fusermount/modprobe at runtime;
     # the default unit PATH only has coreutils/findutils/grep/sed/systemd.
@@ -40,7 +42,12 @@ in {
       # the keyfile, so --password= supplies the empty password explicitly.
       ExecStart = [
         "${pkgs.coreutils}/bin/install -d -o mirin -g users -m 0755 ${mountPoint}"
-        "${veracrypt} --text --non-interactive --mount --keyfiles=${keyfile} --password= ${device} ${mountPoint}"
+        "${pkgs.writeShellScript "veracrypt-hhd-mount" ''
+          if ${pkgs.util-linux}/bin/mountpoint -q ${mountPoint}; then
+            exit 0
+          fi
+          exec ${veracrypt} --text --non-interactive --mount --keyfiles=${keyfile} --password= ${device} ${mountPoint}
+        ''}"
       ];
       # Best-effort dismount on stop/rebuild/shutdown. Leading '-' ignores
       # failure when the volume was already manually dismounted.

@@ -5,6 +5,29 @@
   pkgs,
   ...
 }: let
+  virtManagerScaledCommand = "${pkgs.coreutils}/bin/env GDK_BACKEND=x11 GDK_SCALE=1 GDK_DPI_SCALE=1 ${pkgs.virt-manager}/bin/virt-manager --connect qemu:///system";
+  virtManagerScaled = pkgs.makeDesktopItem {
+    name = "virt-manager-scaled";
+    desktopName = "Virtual Machine Manager (Scale Fix)";
+    comment = "Manage virtual machines with the corrected window scale";
+    icon = "virt-manager";
+    exec = virtManagerScaledCommand;
+    tryExec = "${pkgs.virt-manager}/bin/virt-manager";
+    terminal = false;
+    dbusActivatable = false;
+    startupNotify = false;
+    startupWMClass = ".virt-manager-wrapped";
+    categories = ["System" "Emulator" "GTK"];
+    keywords = ["virt-manager" "virtualization" "libvirt" "qemu" "Windows 11" "缩放"];
+    extraConfig = {
+      "Name[zh_CN]" = "虚拟系统管理器（缩放修正）";
+      "Comment[zh_CN]" = "使用已验证的窗口缩放设置管理虚拟机";
+    };
+    actions.Windows11 = {
+      name = "打开Windows 11控制台";
+      exec = "${virtManagerScaledCommand} --show-domain-console f43b44d6-6c21-4f3a-bb63-48da581b7994";
+    };
+  };
   win11WifiBypass = pkgs.writeText "win11-wifi-direct.nft" ''
     add table inet win11_wifi_direct
     add chain inet win11_wifi_direct prerouting { type filter hook prerouting priority -151; policy accept; }
@@ -64,6 +87,7 @@ in {
 
   # provide docker container
   environment.systemPackages = with pkgs; [
+    virtManagerScaled
     docker-compose # provide docker-compose command
     inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps
     # winboat # provide winboat for managing windows containers

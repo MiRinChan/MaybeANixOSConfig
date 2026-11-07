@@ -50,6 +50,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    b-launcher = {
+      url = "github:MiRinChan/b-launcher/nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # C:/Users/
     home-manager = {
       url = "github:nix-community/home-manager/master";

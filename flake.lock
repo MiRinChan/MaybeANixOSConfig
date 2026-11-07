@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "b-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794019623,
+        "narHash": "sha256-9bold1Y0slaO6cnzEUBsAK1n7MEJgGE5MfkHQzIhZN8=",
+        "owner": "MiRinChan",
+        "repo": "b-launcher",
+        "rev": "00488cdd70a6573ff5c33922bfbb93bf4961106b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MiRinChan",
+        "ref": "nixos",
+        "repo": "b-launcher",
+        "type": "github"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": [
@@ -551,6 +572,7 @@
     },
     "root": {
       "inputs": {
+        "b-launcher": "b-launcher",
         "catppuccin": "catppuccin",
         "flatpak": "flatpak",
         "home-manager": "home-manager",

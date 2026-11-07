@@ -134,5 +134,21 @@ config: changed [description]
 
 If software has no semantic version, use the seven-character revision from
 `flake.lock` or its source; extend only if it collides. Do not invent versions.
-If normal signing fails because the configured key is unavailable, use
-`--no-gpg-sign` and disclose that in the final report.
+Default Git signing uses the OpenPGP key
+`6CA74D44095DEBB5DA35444508A5B955EF921DC3` (`08A5B955EF921DC3`).
+The old signing subkey `2F31F8DA00E861F5C496FD993FEF51244D8595AF`
+(`3FEF51244D8595AF`) is revoked. The user approved its removal from this host's
+public keyring on 2026-11-02. The local keyring retains the current signing,
+encryption, and authentication keys. Do not restore the old subkey for routine
+signing. Check each key separately.
+Read the effective `user.signingkey`, `gpg.format`, and `gpg.program` before
+troubleshooting. The `sec>` and `ssb>` markers identify keys on a hardware card.
+
+For verification, check the signature fingerprint, its key status, `GOODSIG`,
+`VALIDSIG`, and the command exit status. A `KEYEXPIRED` notice about the old
+subkey can appear with a valid signature from the current key. Treat an
+applicable `REVKEYSIG` or `EXPKEYSIG` as a failure.
+
+Attempt normal signing first. If signing fails because the configured key is
+unavailable, use `--no-gpg-sign` and disclose the specific failure in the final
+report. A revoked or expired old subkey alone does not justify this fallback.

@@ -17,7 +17,7 @@
       user = {
         name = "MiRinChan";
         email = "148533509+MiRinChan@users.noreply.github.com";
-        signingKey = "08A5B955EF921DC3";
+        signingKey = "6CA74D44095DEBB5DA35444508A5B955EF921DC3";
       };
       commit = {
         gpgsign = true;

@@ -6,7 +6,6 @@
 }: {
   home.packages = with pkgs; [
     osu-lazer
-    lunar # Minecraft
     prismlauncher # Minecraft
     inputs.b-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];

@@ -15,7 +15,6 @@
     kdePackages.kcolorchooser # 颜色选择器
     furmark # 图形性能检测器
     d209.veracrypt # 磁盘加密
-    rquickshare-the-legacy # 快速分享
     stable.qgis # 地理信息系统
     scrcpy3 # Android 屏传
     tsuyaku # Wayland 实时音频翻译

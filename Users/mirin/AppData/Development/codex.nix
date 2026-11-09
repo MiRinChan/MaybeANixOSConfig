@@ -4,19 +4,7 @@
   pkgs,
   ...
 }: let
-  # codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin;
-  codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin.overrideAttrs (_old: {
-    version = "0.162.1";
-
-    src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/@openai/codex/-/codex-0.162.1-linux-x64.tgz";
-      hash = "sha256-dBdxFni0ZO7nBmQSbjnoi7PITCko2g5x8UtW4E/1wJ8=";
-    };
-  });
-
-  #nix store prefetch-file --json \
-  # 'https://registry.npmjs.org/@openai/codex/-/codex-[version]-linux-x64.tgz'
-
+  codexBin = inputs.mooling-nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.codex-bin;
   configSync = pkgs.writeShellScriptBin "codex-config-sync" ''
     exec ${pkgs.python3}/bin/python3 ${./codex-config-sync.py} "$@"
   '';

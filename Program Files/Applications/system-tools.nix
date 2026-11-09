@@ -32,7 +32,7 @@
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    (klassy-qt6.override {stdenv = ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
+    klassy # KWin decoration/style plugin must be visible to the Plasma session.
     kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg

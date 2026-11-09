@@ -45,10 +45,10 @@ stdenv.mkDerivation rec {
     ./fake-user-agent.patch
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Signond Qt UI";
     homepage = "https://gitlab.com/accounts-sso/signon-ui";
-    maintainers = with maintainers; [];
-    platforms = platforms.linux;
+    maintainers = [];
+    platforms = lib.platforms.linux;
   };
 }

@@ -24,25 +24,26 @@ in {
     };
   };
 
-  systemd.services.nh-clean = lib.mkIf config.programs.nh.clean.enable {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
-  systemd.services.nix-gc = lib.mkIf config.nix.gc.automatic {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
-  systemd.services.nix-optimise = lib.mkIf config.nix.optimise.automatic {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
+  systemd.services = {
+    nh-clean = lib.mkIf config.programs.nh.clean.enable {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
+    nix-gc = lib.mkIf config.nix.gc.automatic {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
+    nix-optimise = lib.mkIf config.nix.optimise.automatic {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
 
-  # Supply the hard limit used by the VM's transient user service after login.
-  # Apply to the current manager with prlimit, without restarting the session.
-  systemd.services."user@1000" = {
-    overrideStrategy = "asDropin";
-    restartIfChanged = false;
-    stopIfChanged = false;
-    serviceConfig.LimitNOFILE = 2097152;
+    # Supply the hard limit used by the VM's transient user service after login.
+    # Apply to the current manager with prlimit, without restarting the session.
+    "user@1000" = {
+      overrideStrategy = "asDropin";
+      restartIfChanged = false;
+      stopIfChanged = false;
+      serviceConfig.LimitNOFILE = 2097152;
+    };
   };
-
   # Flatpak
   services.flatpak = {
     enable = true;

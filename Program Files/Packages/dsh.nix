@@ -52,13 +52,13 @@ in
     nativeInstallCheckInputs = [versionCheckHook];
     versionCheckProgramArg = ["--version"];
 
-    meta = with lib; {
+    meta = {
       description = "Open-source agent harness developed by DeepSeek AI";
       homepage = "https://github.com/deepseek-ai/deepseek-harness";
       changelog = "https://github.com/deepseek-ai/deepseek-harness/releases";
-      license = licenses.mit;
-      sourceProvenance = with sourceTypes; [binaryBytecode];
+      license = lib.licenses.mit;
+      sourceProvenance = [lib.sourceTypes.binaryBytecode];
       mainProgram = "dsh";
-      platforms = platforms.unix;
+      platforms = lib.platforms.unix;
     };
   }

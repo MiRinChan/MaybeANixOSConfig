@@ -94,8 +94,10 @@ in {
     # package = pkgs.stable.throne;
   };
 
-  services.tailscale.enable = true;
-  services.tailscale.extraSetFlags = ["--operator=mirin"];
+  services.tailscale = {
+    enable = true;
+    extraSetFlags = ["--operator=mirin"];
+  };
   networking.firewall = {
     enable = true;
     # Always allow traffic from your Tailscale network

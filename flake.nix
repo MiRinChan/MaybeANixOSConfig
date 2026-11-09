@@ -69,6 +69,7 @@
     lanzaboote,
     nixpkgs,
     nur,
+    sops-nix,
     ...
   }: let
     repoRoot = ./.;
@@ -92,7 +93,7 @@
       specialArgs = {inherit inputs repoRoot;};
       modules = [
         flatpak.nixosModules.nix-flatpak
-        inputs.sops-nix.nixosModules.sops
+        sops-nix.nixosModules.sops
         ./Windows/System32
         catppuccin.nixosModules.catppuccin
         nur.modules.nixos.default

@@ -80,20 +80,21 @@
     fet-sh # Fetch written in posix shell without any external commands
   ];
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    ssh.startAgent = true;
 
-  programs.ssh.startAgent = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = false; # 关掉这里的 SSH 支持
+    };
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = false; # 关掉这里的 SSH 支持
-  };
-
-  programs.nh = {
-    enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 30d --keep 10";
-    flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
+    nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 30d --keep 10";
+      flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
+    };
   };
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos

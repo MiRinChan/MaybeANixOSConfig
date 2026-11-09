@@ -1,21 +1,14 @@
 # Host-specific glue shared by the system modules.
-{
-  inputs,
-  repoRoot,
-  ...
-}: let
-  programFiles = repoRoot + "/Program Files";
-  overlays = import (programFiles + "/Overlays") {inherit inputs repoRoot;};
-in {
+{inputs, ...}: {
   nixpkgs = {
-    overlays = [
-      overlays.additions
-      overlays.llm-agents
-      overlays.modifications
-      overlays.master-packages
-      overlays.unstable-packages
-      overlays.stable-packages
-      overlays.d209-packages
+    overlays = with inputs.self.overlays; [
+      additions
+      llm-agents
+      modifications
+      master-packages
+      unstable-packages
+      stable-packages
+      d209-packages
     ];
     config.allowUnfree = true;
   };

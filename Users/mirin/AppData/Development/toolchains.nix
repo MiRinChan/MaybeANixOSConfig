@@ -2,20 +2,7 @@
   lib,
   pkgs,
   ...
-}: let
-  condaWrapper = pkgs.writeShellScriptBin "conda" ''
-    if [ "''${1-}" = "activate" ] || [ "''${1-}" = "deactivate" ]; then
-      echo "conda $1 must be handled by the shell hook. Open a new zsh session and run it there." >&2
-      exit 1
-    fi
-
-    if [ -x "$HOME/.conda/bin/conda" ]; then
-      exec "$HOME/.conda/bin/conda" "$@"
-    fi
-
-    exec ${pkgs.conda}/bin/conda-shell -c 'conda "$@"' conda "$@"
-  '';
-in {
+}: {
   programs.vscode = {
     enable = true;
     # package = pkgs.vscode.override {commandLineArgs = "--locale=zh-CN --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime ";};
@@ -39,7 +26,18 @@ in {
     devbox
     direnv
     conda
-    condaWrapper
+    (pkgs.writeShellScriptBin "conda" ''
+      if [ "''${1-}" = "activate" ] || [ "''${1-}" = "deactivate" ]; then
+        echo "conda $1 must be handled by the shell hook. Open a new zsh session and run it there." >&2
+        exit 1
+      fi
+
+      if [ -x "$HOME/.conda/bin/conda" ]; then
+        exec "$HOME/.conda/bin/conda" "$@"
+      fi
+
+      exec ${pkgs.conda}/bin/conda-shell -c 'conda "$@"' conda "$@"
+    '')
     # libmamba 2.6.2 currently fails to compile with the pinned GCC 15 toolchain.
     stable.micromamba
     git-repo

@@ -3,10 +3,7 @@
   inputs,
   repoRoot,
   ...
-}: let
-  programFiles = repoRoot + "/Program Files";
-  repoOverlays = import (programFiles + "/Overlays") {inherit inputs repoRoot;};
-in {
+}: {
   imports = [
     ./AppData
     inputs.catppuccin.homeModules.catppuccin
@@ -14,28 +11,28 @@ in {
   ];
 
   nixpkgs = {
-    overlays = [
-      repoOverlays.modifications
-      repoOverlays.master-packages
-      repoOverlays.unstable-packages
-      repoOverlays.stable-packages
-      repoOverlays.d209-packages
-      repoOverlays.cached-librewolf
-      repoOverlays.llm-agents
+    overlays = with inputs.self.overlays; [
+      modifications
+      master-packages
+      unstable-packages
+      stable-packages
+      d209-packages
+      cached-librewolf
+      llm-agents
       inputs.prince213.overlays.default
 
       (final: prev: {
         kdePackages =
           prev.kdePackages
           // {
-            signon-plugin-oauth2 = final.kdePackages.callPackage (programFiles + "/Packages/signon-plugin-oauth2") {};
-            signond = final.kdePackages.callPackage (programFiles + "/Packages/signond") {
+            signon-plugin-oauth2 = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signon-plugin-oauth2") {};
+            signond = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signond") {
               inherit (final.kdePackages) signon-plugin-oauth2;
             };
-            signon-ui = final.kdePackages.callPackage (programFiles + "/Packages/signon-ui") {};
+            signon-ui = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signon-ui") {};
           };
       })
-      repoOverlays.additions
+      additions
     ];
     config.allowUnfree = true;
   };

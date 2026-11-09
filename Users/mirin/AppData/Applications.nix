@@ -45,6 +45,7 @@ in {
     graalvmPackages.graalvm-ce
     xleak
     csvkit
+    tailcat # Tailcat 临时共享
 
     # Firefox
     (symlinkJoin {

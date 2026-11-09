@@ -51,7 +51,7 @@
     };
 
     b-launcher = {
-      url = "github:MiRinChan/b-launcher/nixos";
+      url = "github:cubk1/b-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

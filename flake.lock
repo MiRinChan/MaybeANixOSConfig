@@ -7,16 +7,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1794019623,
-        "narHash": "sha256-9bold1Y0slaO6cnzEUBsAK1n7MEJgGE5MfkHQzIhZN8=",
-        "owner": "MiRinChan",
+        "lastModified": 1794151708,
+        "narHash": "sha256-ZndMgNN0ja0ZDKYBddCgHAzKLIf4xn22/2HO9blflNc=",
+        "owner": "cubk1",
         "repo": "b-launcher",
-        "rev": "00488cdd70a6573ff5c33922bfbb93bf4961106b",
+        "rev": "eab38c8833b709b4ceb1c449b93b7fb1ded74dd5",
         "type": "github"
       },
       "original": {
-        "owner": "MiRinChan",
-        "ref": "nixos",
+        "owner": "cubk1",
         "repo": "b-launcher",
         "type": "github"
       }

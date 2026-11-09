@@ -4,7 +4,6 @@ pkgs: {
   # example = pkgs.callPackage ./example { };
   gallant-terminal-nerd = pkgs.callPackage ./gallant-terminal-nerd {};
   openai-sans = pkgs.callPackage ./openai-sans {};
-  rquickshare-the-legacy = pkgs.callPackage ./RQuickShare.nix {};
   scrcpy3 = pkgs.callPackage ./scrcpy3.nix {};
   tsuyaku = pkgs.callPackage ./tsuyaku.nix {};
   klassy-qt6 = pkgs.callPackage ./klassy-qt6 {};

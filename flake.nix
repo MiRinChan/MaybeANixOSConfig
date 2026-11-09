@@ -63,6 +63,7 @@
   };
 
   outputs = inputs @ {
+    self,
     catppuccin,
     flatpak,
     home-manager,
@@ -81,6 +82,17 @@
         config.allowUnfree = true;
       }));
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    # `nix flake check` builds both configurations and checks the Nix style.
+    checks = forAllSystems (system: {
+      rins = self.nixosConfigurations.rins.config.system.build.toplevel;
+      mirin = self.homeConfigurations.mirin.activationPackage;
+      nix-style = with nixpkgs.legacyPackages.${system};
+        runCommand "nix-style" {} ''
+          ${alejandra}/bin/alejandra --check --quiet ${self}
+          ${deadnix}/bin/deadnix --fail --exclude ${self}/Windows/System32/hardware-configuration.nix -- ${self}
+          touch $out
+        '';
+    });
     overlays = import (repoRoot + "/Program Files/Overlays") {inherit inputs repoRoot;};
 
     homeConfigurations.mirin = home-manager.lib.homeManagerConfiguration {

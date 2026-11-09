@@ -1,0 +1,37 @@
+From a4972911afd113b381c52371abd907d445c32fd9 Mon Sep 17 00:00:00 2001
+From: Ake Rehnman <ake.rehnman@gmail.com>
+Date: Fri, 25 Sep 2026 09:41:32 +0200
+Subject: [PATCH] virtio-gpu: invalidate display state when resetting scanouts
+
+Resetting virtio-vga returns display updates to VGA, but leaves its cached
+mode unchanged even though the virtio scanout may have replaced the
+console surface.
+
+If the guest resumes the same VGA mode, VGA can reuse an incompatible
+surface. This can leave the display black or cause an out-of-bounds write
+when the VGA mode is larger than the surface.
+
+Invalidate each scanout's console after clearing the virtio state. With
+g->enable cleared, virtio-vga forwards the invalidation to VGA, forcing
+it to recreate the surface on the next display update.
+---
+ hw/display/virtio-gpu-base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 270fbaae102..3eef0f3f0c7 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -35,6 +35,12 @@ virtio_gpu_base_reset(VirtIOGPUBase *g)
+         g->scanout[i].x = 0;
+         g->scanout[i].y = 0;
+         g->scanout[i].ds = NULL;
++
++        /*
++         * virtio-vga now uses VGA again. Its mode can be unchanged while
++         * the virtio scanout has replaced the console's display surface.
++         */
++        qemu_console_hw_invalidate(g->scanout[i].con);
+     }
+ }
+ 

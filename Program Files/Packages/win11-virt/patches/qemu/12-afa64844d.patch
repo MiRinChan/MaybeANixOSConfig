@@ -1,0 +1,34 @@
+From afa64844d403fef0e4963098d3d83ff98c441b84 Mon Sep 17 00:00:00 2001
+From: Ake Rehnman <ake.rehnman@gmail.com>
+Date: Sat, 31 Oct 2026 20:47:09 +0100
+Subject: [PATCH] virtio-gpu: BUG FIX: separate global and context async fence
+ completions
+
+The async fence handler checks context and ring identity only for
+commands carrying VIRTIO_GPU_FLAG_INFO_RING_IDX. A context fence callback
+can therefore retire unrelated global commands with lower or equal
+fence IDs, reporting completion prematurely.
+
+Require global commands to be completed by the legacy callback,
+identified by context 0 and ring UINT32_MAX. This preserves the timeline
+separation already enforced by the synchronous fence callbacks.
+
+*** This is a general QEMU correctness fix, not specific to Yttrium. ***
+*** No observed Yttrium runtime failure has been traced to this bug. ***
+---
+ hw/display/virtio-gpu-virgl.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 6e298f997d6..2aa1a728b85 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -1261,6 +1261,8 @@ static void virtio_gpu_virgl_async_fence_bh(void *opaque)
+                 if (cmd->cmd_hdr.ctx_id != f->ctx_id) {
+                     continue;
+                 }
++            } else if (f->ctx_id != 0 || f->ring_idx != UINT32_MAX) {
++                continue;
+             }
+             virtio_gpu_ctrl_response_nodata(g, cmd, VIRTIO_GPU_RESP_OK_NODATA);
+             QTAILQ_REMOVE(&g->fenceq, cmd, next);

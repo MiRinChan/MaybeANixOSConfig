@@ -1,0 +1,365 @@
+From a9d187ddb4640d6efba6c61b421f327d1633ce79 Mon Sep 17 00:00:00 2001
+From: Ake Rehnman <ake.rehnman@gmail.com>
+Date: Tue, 13 Oct 2026 21:03:42 +0200
+Subject: [PATCH] ui/dmabuf: support external-only EGL texture imports
+
+Query modifier import requirements and track the texture target on each
+DMA-BUF. Import external-only buffers as GL_TEXTURE_EXTERNAL_OES when a
+consumer permits it, and report EGL or GL failures without caching an
+invalid texture.
+
+Update every import caller to handle failure and require a 2D texture
+until external sampling is enabled for that display backend.
+---
+ include/ui/dmabuf.h      |   2 +
+ include/ui/egl-helpers.h |   2 +-
+ ui/dbus-listener.c       |   4 +-
+ ui/dmabuf.c              |  14 ++++++
+ ui/egl-headless.c        |   8 ++-
+ ui/egl-helpers.c         | 102 +++++++++++++++++++++++++++++++++++----
+ ui/gtk-egl.c             |   8 ++-
+ ui/gtk-gl-area.c         |   4 +-
+ ui/sdl2-gl.c             |   3 +-
+ ui/spice-display.c       |   8 ++-
+ 10 files changed, 135 insertions(+), 20 deletions(-)
+
+diff --git a/include/ui/dmabuf.h b/include/ui/dmabuf.h
+index 3decdca4979..14a3f53b553 100644
+--- a/include/ui/dmabuf.h
++++ b/include/ui/dmabuf.h
+@@ -36,6 +36,7 @@ uint32_t qemu_dmabuf_get_num_planes(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_fourcc(QemuDmaBuf *dmabuf);
+ uint64_t qemu_dmabuf_get_modifier(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_texture(QemuDmaBuf *dmabuf);
++uint32_t qemu_dmabuf_get_texture_target(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_x(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_y(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_backing_width(QemuDmaBuf *dmabuf);
+@@ -46,6 +47,7 @@ int32_t qemu_dmabuf_get_fence_fd(QemuDmaBuf *dmabuf);
+ bool qemu_dmabuf_get_allow_fences(QemuDmaBuf *dmabuf);
+ bool qemu_dmabuf_get_draw_submitted(QemuDmaBuf *dmabuf);
+ void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture);
++void qemu_dmabuf_set_texture_target(QemuDmaBuf *dmabuf, uint32_t target);
+ void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd);
+ void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync);
+ void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted);
+diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
+index 405ddd91259..0a5a158edc7 100644
+--- a/include/ui/egl-helpers.h
++++ b/include/ui/egl-helpers.h
+@@ -52,7 +52,7 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
+                                EGLint *stride, EGLint *fourcc, int *num_planes,
+                                EGLuint64KHR *modifier);
+ 
+-void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf);
++bool egl_dmabuf_import_texture(QemuDmaBuf *dmabuf, bool allow_external);
+ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf);
+ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf);
+ void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf);
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 2e2f6ba4183..8ebd93eafc1 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -648,7 +648,9 @@ static void dbus_cursor_dmabuf(DisplayChangeListener *dcl,
+ 
+     ddl_discard_cursor_messages(ddl);
+ 
+-    egl_dmabuf_import_texture(dmabuf);
++    if (!egl_dmabuf_import_texture(dmabuf, false)) {
++        return;
++    }
+     texture = qemu_dmabuf_get_texture(dmabuf);
+     if (!texture) {
+         return;
+diff --git a/ui/dmabuf.c b/ui/dmabuf.c
+index 7433a268f0d..805838d82a8 100644
+--- a/ui/dmabuf.c
++++ b/ui/dmabuf.c
+@@ -20,6 +20,7 @@ struct QemuDmaBuf {
+     uint32_t  fourcc;
+     uint64_t  modifier;
+     uint32_t  texture;
++    uint32_t  texture_target;
+     uint32_t  x;
+     uint32_t  y;
+     uint32_t  backing_width;
+@@ -173,6 +174,13 @@ uint32_t qemu_dmabuf_get_texture(QemuDmaBuf *dmabuf)
+     return dmabuf->texture;
+ }
+ 
++uint32_t qemu_dmabuf_get_texture_target(QemuDmaBuf *dmabuf)
++{
++    assert(dmabuf != NULL);
++
++    return dmabuf->texture_target;
++}
++
+ uint32_t qemu_dmabuf_get_x(QemuDmaBuf *dmabuf)
+ {
+     assert(dmabuf != NULL);
+@@ -242,6 +250,12 @@ void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture)
+     dmabuf->texture = texture;
+ }
+ 
++void qemu_dmabuf_set_texture_target(QemuDmaBuf *dmabuf, uint32_t target)
++{
++    assert(dmabuf != NULL);
++    dmabuf->texture_target = target;
++}
++
+ void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd)
+ {
+     assert(dmabuf != NULL);
+diff --git a/ui/egl-headless.c b/ui/egl-headless.c
+index ba27efcf4c3..d0a51df66fe 100644
+--- a/ui/egl-headless.c
++++ b/ui/egl-headless.c
+@@ -88,7 +88,9 @@ static void egl_scanout_dmabuf(DisplayChangeListener *dcl,
+ {
+     uint32_t width, height, texture;
+ 
+-    egl_dmabuf_import_texture(dmabuf);
++    if (!egl_dmabuf_import_texture(dmabuf, false)) {
++        return;
++    }
+     texture = qemu_dmabuf_get_texture(dmabuf);
+     if (!texture) {
+         return;
+@@ -109,7 +111,9 @@ static void egl_cursor_dmabuf(DisplayChangeListener *dcl,
+     egl_dpy *edpy = container_of(dcl, egl_dpy, dcl);
+ 
+     if (dmabuf) {
+-        egl_dmabuf_import_texture(dmabuf);
++        if (!egl_dmabuf_import_texture(dmabuf, false)) {
++            return;
++        }
+         texture = qemu_dmabuf_get_texture(dmabuf);
+         if (!texture) {
+             return;
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 7a648b624c0..85175f2e700 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -321,7 +321,59 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
+     return true;
+ }
+ 
+-void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
++static bool egl_dmabuf_texture_target(QemuDmaBuf *dmabuf, bool allow_external,
++                                      GLenum *target)
++{
++    uint64_t modifier = qemu_dmabuf_get_modifier(dmabuf);
++    uint32_t fourcc = qemu_dmabuf_get_fourcc(dmabuf);
++    g_autofree EGLuint64KHR *modifiers = NULL;
++    g_autofree EGLBoolean *external_only = NULL;
++    EGLint count, i;
++
++    *target = GL_TEXTURE_2D;
++    /* INVALID is implementation-defined, not a synonym for linear. */
++    if (modifier == DRM_FORMAT_MOD_INVALID ||
++        !epoxy_has_egl_extension(qemu_egl_display,
++                                "EGL_EXT_image_dma_buf_import_modifiers")) {
++        return true;
++    }
++
++    if (!eglQueryDmaBufModifiersEXT(qemu_egl_display, fourcc, 0, NULL, NULL,
++                                    &count)) {
++        error_report("egl: querying DMA-BUF modifiers for fourcc 0x%x failed: "
++                     "%s", fourcc, qemu_egl_get_error_string());
++        return false;
++    }
++    modifiers = g_new(EGLuint64KHR, count);
++    external_only = g_new(EGLBoolean, count);
++    if (!eglQueryDmaBufModifiersEXT(qemu_egl_display, fourcc, count,
++                                    modifiers, external_only, &count)) {
++        error_report("egl: querying DMA-BUF modifier targets failed: %s",
++                     qemu_egl_get_error_string());
++        return false;
++    }
++    for (i = 0; i < count; i++) {
++        if (modifiers[i] != modifier) {
++            continue;
++        }
++        if (!external_only[i]) {
++            return true;
++        }
++        if (!allow_external) {
++            error_report("egl: DMA-BUF fourcc 0x%x modifier 0x%" PRIx64
++                         " requires an external texture; consumer requires "
++                         "a 2D framebuffer texture", fourcc, modifier);
++            return false;
++        }
++        *target = GL_TEXTURE_EXTERNAL_OES;
++        return true;
++    }
++    error_report("egl: unsupported DMA-BUF fourcc 0x%x modifier 0x%" PRIx64,
++                 fourcc, modifier);
++    return false;
++}
++
++bool egl_dmabuf_import_texture(QemuDmaBuf *dmabuf, bool allow_external)
+ {
+     EGLImageKHR image = EGL_NO_IMAGE_KHR;
+     EGLint attrs[64];
+@@ -333,6 +385,8 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     const uint32_t *offsets = qemu_dmabuf_get_offsets(dmabuf, &noffsets);
+     const uint32_t *strides = qemu_dmabuf_get_strides(dmabuf, &nstrides);
+     uint32_t num_planes = qemu_dmabuf_get_num_planes(dmabuf);
++    GLenum target, gl_error;
++    bool failed = false;
+ 
+     EGLint fd_attrs[] = {
+         EGL_DMA_BUF_PLANE0_FD_EXT,
+@@ -366,7 +420,20 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     };
+ 
+     if (texture != 0) {
+-        return;
++        if (!allow_external &&
++            qemu_dmabuf_get_texture_target(dmabuf) != GL_TEXTURE_2D) {
++            error_report("egl: consumer requires a 2D texture but cached "
++                         "DMA-BUF texture uses an external target");
++            return false;
++        }
++        return true;
++    }
++    if (!egl_dmabuf_texture_target(dmabuf, allow_external, &target)) {
++        return false;
++    }
++    while ((gl_error = glGetError()) != GL_NO_ERROR) {
++        error_report("egl: pre-existing GL error 0x%x before DMA-BUF "
++                     "texture import", gl_error);
+     }
+ 
+     assert(nfds >= num_planes);
+@@ -403,18 +470,34 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+                               EGL_LINUX_DMA_BUF_EXT,
+                               NULL, attrs);
+     if (image == EGL_NO_IMAGE_KHR) {
+-        error_report("eglCreateImageKHR failed");
+-        return;
++        error_report("egl: DMA-BUF eglCreateImageKHR failed: %s",
++                     qemu_egl_get_error_string());
++        return false;
+     }
+ 
+     glGenTextures(1, &texture);
+-    qemu_dmabuf_set_texture(dmabuf, texture);
+-    glBindTexture(GL_TEXTURE_2D, texture);
+-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
++    glBindTexture(target, texture);
++    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
++    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
++    if (target == GL_TEXTURE_EXTERNAL_OES) {
++        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
++        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
++    }
+ 
+-    glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, (GLeglImageOES)image);
++    glEGLImageTargetTexture2DOES(target, (GLeglImageOES)image);
+     eglDestroyImageKHR(qemu_egl_display, image);
++    while ((gl_error = glGetError()) != GL_NO_ERROR) {
++        error_report("egl: DMA-BUF texture import target 0x%x GL error 0x%x",
++                     target, gl_error);
++        failed = true;
++    }
++    if (failed) {
++        glDeleteTextures(1, &texture);
++        return false;
++    }
++    qemu_dmabuf_set_texture(dmabuf, texture);
++    qemu_dmabuf_set_texture_target(dmabuf, target);
++    return true;
+ }
+ 
+ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf)
+@@ -428,6 +511,7 @@ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf)
+ 
+     glDeleteTextures(1, &texture);
+     qemu_dmabuf_set_texture(dmabuf, 0);
++    qemu_dmabuf_set_texture_target(dmabuf, 0);
+ }
+ 
+ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index e2adf9fce99..d9da2a80caa 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -249,7 +249,9 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+                    vc->gfx.esurface, vc->gfx.ectx);
+ 
+-    egl_dmabuf_import_texture(dmabuf);
++    if (!egl_dmabuf_import_texture(dmabuf, false)) {
++        return;
++    }
+     texture = qemu_dmabuf_get_texture(dmabuf);
+     if (!texture) {
+         return;
+@@ -281,7 +283,9 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener *dcl,
+     uint32_t backing_width, backing_height, texture;
+ 
+     if (dmabuf) {
+-        egl_dmabuf_import_texture(dmabuf);
++        if (!egl_dmabuf_import_texture(dmabuf, false)) {
++            return;
++        }
+         texture = qemu_dmabuf_get_texture(dmabuf);
+         if (!texture) {
+             return;
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 848e229504d..d7bb9bcc42f 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -323,7 +323,9 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+     bool y0_top;
+ 
+     gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
+-    egl_dmabuf_import_texture(dmabuf);
++    if (!egl_dmabuf_import_texture(dmabuf, false)) {
++        return;
++    }
+     texture = qemu_dmabuf_get_texture(dmabuf);
+     if (!texture) {
+         return;
+diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+index 1547ad2f6f8..670b9fef0c0 100644
+--- a/ui/sdl2-gl.c
++++ b/ui/sdl2-gl.c
+@@ -263,8 +263,7 @@ void sdl2_gl_scanout_dmabuf(DisplayChangeListener *dcl,
+     assert(scon->opengl);
+     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+ 
+-    egl_dmabuf_import_texture(dmabuf);
+-    if (!qemu_dmabuf_get_texture(dmabuf)) {
++    if (!egl_dmabuf_import_texture(dmabuf, false)) {
+         fds = qemu_dmabuf_get_fds(dmabuf, NULL);
+         error_report("%s: failed fd=%d", __func__, fds ? fds[0] : -1);
+         return;
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index 18f7bef72a7..0c1038a091e 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -993,7 +993,9 @@ static void qemu_spice_gl_cursor_dmabuf(DisplayChangeListener *dcl,
+ 
+     trace_qemu_spice_gl_cursor(ssd->qxl.id, dmabuf != NULL, have_hot);
+     if (dmabuf) {
+-        egl_dmabuf_import_texture(dmabuf);
++        if (!egl_dmabuf_import_texture(dmabuf, false)) {
++            return;
++        }
+         texture = qemu_dmabuf_get_texture(dmabuf);
+         if (!texture) {
+             return;
+@@ -1283,7 +1285,9 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
+     }
+ 
+     if (ssd->guest_dmabuf_refresh) {
+-        egl_dmabuf_import_texture(dmabuf);
++        if (!egl_dmabuf_import_texture(dmabuf, false)) {
++            return;
++        }
+         texture = qemu_dmabuf_get_texture(dmabuf);
+         if (!texture) {
+             return;

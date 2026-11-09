@@ -1,0 +1,49 @@
+From 4954f0ef7b94a10c1741e496edec1eb739dba5e7 Mon Sep 17 00:00:00 2001
+From: Ake Rehnman <ake.rehnman@gmail.com>
+Date: Wed, 26 Aug 2026 07:36:24 +0200
+Subject: [PATCH] ui/spice: Wake local mailbox presentation on completion
+
+Local SPICE clients normally present mailbox frames immediately, but
+asynchronous copies leave mailbox_copy_pending set when the update
+callback returns. Both copy and draw completion only clear their state,
+so presentation falls back to the periodic display refresh. Incoming
+flushes can start another copy before that refresh and repeatedly hide
+the ready frame.
+
+Present completed local frames from the copy and draw completion paths.
+Publish before unblocking the renderer so queued flushes cannot replace
+the ready frame first. Keep remote-client pacing and disable handling
+unchanged.
+---
+ ui/spice-display.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index ef81f162c6..18f7bef72a 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -819,6 +819,8 @@ static void qemu_spice_gl_draw_done_bh(void *opaque)
+     ssd->mailbox_active = -1;
+     if (ssd->mailbox_disable_pending) {
+         spice_gl_disable(ssd);
++    } else if (!spice_remote_client && !ssd->mailbox_copy_pending) {
++        spice_gl_present(ssd);
+     }
+ }
+ 
+@@ -1178,6 +1180,15 @@ static void qemu_spice_gl_copy_done(void *opaque)
+     qemu_dmabuf_set_fence_fd(dmabuf, -1);
+     ssd->mailbox_copy_pending = false;
+     ssd->mailbox_dmabuf = NULL;
++
++    /*
++     * Local clients are event driven.  Publish the completed copy before
++     * unblocking the renderer, otherwise queued flushes can start another
++     * copy and make the periodic display refresh miss the ready frame.
++     */
++    if (!spice_remote_client && !ssd->mailbox_disable_pending) {
++        spice_gl_present(ssd);
++    }
+     qemu_console_hw_gl_block(ssd->dcl.con, false);
+ }
+ 

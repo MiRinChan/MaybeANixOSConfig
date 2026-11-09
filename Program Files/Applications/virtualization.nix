@@ -52,6 +52,17 @@
         ;;
     esac
   '';
+  # Keep the Windows 11 emulator and renderer behind generation-stable
+  # /run/current-system paths. The libvirt XML no longer stores /nix/store
+  # paths, so a rebuild or GC does not require redefining the domain.
+  win11Qemu = pkgs.callPackage ../Packages/win11-virt/qemu.nix {};
+  win11QemuPat = pkgs.callPackage ../Packages/win11-virt/qemu-pat.nix {
+    qemu = win11Qemu;
+  };
+  win11Virgl = pkgs.callPackage ../Packages/win11-virt/virglrenderer.nix {};
+  win11VirglGtk = pkgs.callPackage ../Packages/win11-virt/virglrenderer-gtk.nix {
+    virglrenderer = win11Virgl;
+  };
 in {
   # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
   # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
@@ -88,10 +99,15 @@ in {
   # provide docker container
   environment.systemPackages = with pkgs; [
     virtManagerScaled
+    win11QemuPat
     docker-compose # provide docker-compose command
     inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps
     # winboat # provide winboat for managing windows containers
   ];
+  environment.etc = {
+    "win11/libvirglrenderer.so.1".source = "${win11Virgl}/lib/libvirglrenderer.so.1";
+    "win11/libvirglrenderer-gtk.so.1".source = "${win11VirglGtk}/lib/libvirglrenderer.so.1";
+  };
   nix.settings = {
     substituters = ["https://winapps.cachix.org/"];
     trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];

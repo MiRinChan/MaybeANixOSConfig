@@ -1,0 +1,44 @@
+From 84b5a7928dd8773171f63d45116b6897d0309294 Mon Sep 17 00:00:00 2001
+From: Ake Rehnman <ake.rehnman@gmail.com>
+Date: Tue, 13 Oct 2026 21:03:29 +0200
+Subject: [PATCH] ui/opengl: remove obsolete texture enable calls
+
+Shader-based rendering does not use the fixed-function texture enable
+state. Remove the calls that generate GL errors in core and GLES contexts.
+---
+ ui/console-gl.c  | 1 -
+ ui/egl-helpers.c | 2 --
+ 2 files changed, 3 deletions(-)
+
+diff --git a/ui/console-gl.c b/ui/console-gl.c
+index d4b9017b53d..f2220608d0c 100644
+--- a/ui/console-gl.c
++++ b/ui/console-gl.c
+@@ -79,7 +79,6 @@ void surface_gl_create_texture(QemuGLShader *gls,
+ 
+     assert(map_format(surface_format(surface), &glformat, &gltype));
+     glGenTextures(1, &surface->texture);
+-    glEnable(GL_TEXTURE_2D);
+     glBindTexture(GL_TEXTURE_2D, surface->texture);
+     glPixelStorei(GL_UNPACK_ROW_LENGTH_EXT,
+                   surface_stride(surface) / surface_bytes_per_pixel(surface));
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index d689f187c4e..7a648b624c0 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -197,7 +197,6 @@ void egl_texture_blit(QemuGLShader *gls, egl_fb *dst, egl_fb *src, bool flip)
+ {
+     glBindFramebuffer(GL_FRAMEBUFFER_EXT, dst->framebuffer);
+     glViewport(0, 0, dst->width, dst->height);
+-    glEnable(GL_TEXTURE_2D);
+     glBindTexture(GL_TEXTURE_2D, src->texture);
+     qemu_gl_run_texture_blit(gls, flip);
+ }
+@@ -213,7 +212,6 @@ void egl_texture_blend(QemuGLShader *gls, egl_fb *dst, egl_fb *src, bool flip,
+     } else {
+         glViewport(x, dst->height - h - y, w, h);
+     }
+-    glEnable(GL_TEXTURE_2D);
+     glBindTexture(GL_TEXTURE_2D, src->texture);
+     glEnable(GL_BLEND);
+     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

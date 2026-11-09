@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     pulseaudio # 提供 `pactl` 在某些应用需要 (如 sonic-pi)
   ];
@@ -14,7 +10,6 @@
   #     https://nixos.wiki/wiki/PipeWire
   services.pipewire = {
     enable = true;
-    package = pkgs.pipewire;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;

@@ -2,19 +2,14 @@
   # FHS environment, flatpak, appImage, etc.
   environment.systemPackages = [
     # create a fhs environment by command `fhs`, so we can run non-nixos packages in nixos!
-    (
-      let
-        base = pkgs.appimageTools.defaultFhsEnvArgs;
-      in
-        pkgs.buildFHSEnv (base
-          // {
-            name = "fhs";
-            targetPkgs = pkgs: (base.targetPkgs pkgs) ++ [pkgs.pkg-config];
-            profile = "export FHS=1";
-            runScript = "bash";
-            extraOutputsToInstall = ["dev"];
-          })
-    )
+    (pkgs.buildFHSEnv (pkgs.appimageTools.defaultFhsEnvArgs
+      // {
+        name = "fhs";
+        targetPkgs = fhsPkgs: (pkgs.appimageTools.defaultFhsEnvArgs.targetPkgs fhsPkgs) ++ [fhsPkgs.pkg-config];
+        profile = "export FHS=1";
+        runScript = "bash";
+        extraOutputsToInstall = ["dev"];
+      }))
   ];
 
   # https://github.com/Mic92/nix-ld

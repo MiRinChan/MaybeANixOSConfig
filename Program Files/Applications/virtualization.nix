@@ -1,10 +1,10 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
+  repoRoot,
   ...
 }: let
+  win11Virt = repoRoot + "/Program Files/Packages/win11-virt";
   virtManagerScaledCommand = "${pkgs.coreutils}/bin/env GDK_BACKEND=x11 GDK_SCALE=1 GDK_DPI_SCALE=1 ${pkgs.virt-manager}/bin/virt-manager --connect qemu:///system";
   virtManagerScaled = pkgs.makeDesktopItem {
     name = "virt-manager-scaled";
@@ -55,38 +55,50 @@
   # Keep the Windows 11 emulator and renderer behind generation-stable
   # /run/current-system paths. The libvirt XML no longer stores /nix/store
   # paths, so a rebuild or GC does not require redefining the domain.
-  win11Qemu = pkgs.callPackage ../Packages/win11-virt/qemu.nix {};
-  win11QemuPat = pkgs.callPackage ../Packages/win11-virt/qemu-pat.nix {
+  win11Qemu = pkgs.callPackage (win11Virt + "/qemu.nix") {};
+  win11QemuPat = pkgs.callPackage (win11Virt + "/qemu-pat.nix") {
     qemu = win11Qemu;
   };
-  win11Virgl = pkgs.callPackage ../Packages/win11-virt/virglrenderer.nix {};
-  win11VirglGtk = pkgs.callPackage ../Packages/win11-virt/virglrenderer-gtk.nix {
+  win11Virgl = pkgs.callPackage (win11Virt + "/virglrenderer.nix") {};
+  win11VirglGtk = pkgs.callPackage (win11Virt + "/virglrenderer-gtk.nix") {
     virglrenderer = win11Virgl;
   };
 in {
-  # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
-  # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
-  virtualisation.libvirtd = {
-    enable = true;
-    hooks.network.win11-wifi = win11WifiHook;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-      swtpm.enable = true; # 软件 TPM，Windows 11 客户机需要
-      vhostUserPackages = [pkgs.virtiofsd];
-      verbatimConfig = ''
-        namespaces = []
+  virtualisation = {
+    # provide QEMU/KVM virtual machines with virt-manager as the GUI frontend.
+    # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
+    libvirtd = {
+      enable = true;
+      hooks.network.win11-wifi = win11WifiHook;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true; # 软件 TPM，Windows 11 客户机需要
+        vhostUserPackages = [pkgs.virtiofsd];
+        verbatimConfig = ''
+          namespaces = []
 
-        cgroup_device_acl = [
-          "/dev/null", "/dev/full", "/dev/zero",
-          "/dev/random", "/dev/urandom",
-          "/dev/ptmx", "/dev/userfaultfd",
-          "/dev/kvm", "/dev/net/tun",
-          "/dev/dri/card1", "/dev/dri/renderD128",
-          "/dev/nvidia0", "/dev/nvidiactl", "/dev/nvidia-modeset",
-          "/dev/nvidia-uvm", "/dev/nvidia-uvm-tools"
-        ]
-      '';
+          cgroup_device_acl = [
+            "/dev/null", "/dev/full", "/dev/zero",
+            "/dev/random", "/dev/urandom",
+            "/dev/ptmx", "/dev/userfaultfd",
+            "/dev/kvm", "/dev/net/tun",
+            "/dev/dri/card1", "/dev/dri/renderD128",
+            "/dev/nvidia0", "/dev/nvidiactl", "/dev/nvidia-modeset",
+            "/dev/nvidia-uvm", "/dev/nvidia-uvm-tools"
+          ]
+        '';
+      };
+    };
+    spiceUSBRedirection.enable = true; # 从 SPICE 查看器透传 USB 设备
+
+    docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+      storageDriver = "btrfs";
     };
   };
   networking.firewall = {
@@ -94,8 +106,6 @@ in {
     extraStopCommands = "${win11WifiHook} win11-wifi stopped end";
   };
   programs.virt-manager.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true; # 从 SPICE 查看器透传 USB 设备
-
   # provide docker container
   environment.systemPackages = with pkgs; [
     virtManagerScaled
@@ -108,14 +118,4 @@ in {
     "win11/libvirglrenderer.so.1".source = "${win11Virgl}/lib/libvirglrenderer.so.1";
     "win11/libvirglrenderer-gtk.so.1".source = "${win11VirglGtk}/lib/libvirglrenderer.so.1";
   };
-  nix.settings = {
-    substituters = ["https://winapps.cachix.org/"];
-    trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];
-  };
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-  };
-  virtualisation.docker.storageDriver = "btrfs";
 }

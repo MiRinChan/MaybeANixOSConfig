@@ -13,7 +13,7 @@
     # Also see the package channel overlays in Program Files/Overlays/default.nix.
     ### Nixpkgs ###
 
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
 
     flatpak.url = "github:gmodena/nix-flatpak?ref=v0.4.1";
 
@@ -69,37 +69,32 @@
     lanzaboote,
     nixpkgs,
     nur,
+    sops-nix,
     ...
   }: let
     repoRoot = ./.;
-    programFiles = repoRoot + "/Program Files";
-    windows = repoRoot + "/Windows";
-    users = repoRoot + "/Users";
-    systems = ["x86_64-linux"];
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-    packagePkgs = forAllSystems (system:
-      import nixpkgs {
+    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux"];
+  in {
+    packages = forAllSystems (system:
+      import (repoRoot + "/Program Files/Packages") (import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-      });
-    repoOverlays = import (programFiles + "/Overlays") {inherit inputs repoRoot;};
-  in {
-    packages = forAllSystems (system: import (programFiles + "/Packages") packagePkgs.${system});
+      }));
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-    overlays = repoOverlays;
+    overlays = import (repoRoot + "/Program Files/Overlays") {inherit inputs repoRoot;};
 
     homeConfigurations.mirin = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = {inherit inputs repoRoot;};
-      modules = [(users + "/mirin/home.nix")];
+      modules = [./Users/mirin/home.nix];
     };
 
     nixosConfigurations.rins = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs repoRoot;};
       modules = [
         flatpak.nixosModules.nix-flatpak
-        inputs.sops-nix.nixosModules.sops
-        (windows + "/System32")
+        sops-nix.nixosModules.sops
+        ./Windows/System32
         catppuccin.nixosModules.catppuccin
         nur.modules.nixos.default
         lanzaboote.nixosModules.lanzaboote

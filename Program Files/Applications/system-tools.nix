@@ -28,12 +28,12 @@
     kdePackages.kmousetool # Automatic mouse click helper
     kdePackages.kcharselect # Special character selector
     gparted # provide a gui for parted
-    pkgs.sbctl # For debugging and troubleshooting Secure Boot.
+    sbctl # For debugging and troubleshooting Secure Boot.
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    (klassy-qt6.override {stdenv = pkgs.ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
-    pkgs.kde-rounded-corners # Rounded
+    (klassy-qt6.override {stdenv = ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
+    kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg
     gphoto2
@@ -80,20 +80,21 @@
     fet-sh # Fetch written in posix shell without any external commands
   ];
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    ssh.startAgent = true;
 
-  programs.ssh.startAgent = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = false; # 关掉这里的 SSH 支持
+    };
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = false; # 关掉这里的 SSH 支持
-  };
-
-  programs.nh = {
-    enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 30d --keep 10";
-    flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
+    nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 30d --keep 10";
+      flake = "/home/mirin/nixos-config"; # sets NH_OS_FLAKE variable for you
+    };
   };
 
   # Note: https://www.tomoliver.net/posts/using-an-slr-as-a-webcam-nixos

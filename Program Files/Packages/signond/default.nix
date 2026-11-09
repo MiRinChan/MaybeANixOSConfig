@@ -43,11 +43,11 @@
         --replace "/etc" "@out@/etc"
     '';
 
-    meta = with lib; {
+    meta = {
       homepage = "https://gitlab.com/accounts-sso/signond";
       description = "Signon Daemon for Qt";
-      maintainers = with maintainers; [freezeboy];
-      platforms = platforms.linux;
+      maintainers = [];
+      platforms = lib.platforms.linux;
     };
   };
 in

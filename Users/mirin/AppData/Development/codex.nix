@@ -17,35 +17,9 @@
   #nix store prefetch-file --json \
   # 'https://registry.npmjs.org/@openai/codex/-/codex-[version]-linux-x64.tgz'
 
-  launcher = name: directory: workspaceId: home:
-    pkgs.writeShellScriptBin name ''
-      export HOME="${home}"
-      export CODEX_HOME="${home}/.codex"
-      exec ${codexBin}/bin/codex -c "forced_chatgpt_workspace_id = \"${workspaceId}\"" "$@"
-    '';
   configSync = pkgs.writeShellScriptBin "codex-config-sync" ''
     exec ${pkgs.python3}/bin/python3 ${./codex-config-sync.py} "$@"
   '';
-  agent = account: {
-    Unit = {
-      Description = "Codex usage telemetry (${account})";
-      After = ["network-online.target"];
-      Conflicts = lib.optional (account == "personal") "codex-usage-agent.service";
-    };
-    Service = {
-      Environment = "PYTHONPATH=/home/mirin/.local/share/codex-usage-monitor/src";
-      ExecStart = "${pkgs.python3}/bin/python3 -m codex_usage_monitor agent --config /home/mirin/.config/codex-usage-monitor/${account}/agent.toml";
-      Restart = "always";
-      RestartSec = 5;
-      UMask = "0077";
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      ProtectSystem = "strict";
-      ProtectHome = "read-only";
-      ReadWritePaths = ["/home/mirin/.local/state/codex-usage-monitor/${account}"];
-    };
-    Install.WantedBy = ["default.target"];
-  };
   codexGuiSudo = pkgs.writeShellScriptBin "codex-gui-sudo" ''
     set -euo pipefail
 
@@ -84,7 +58,26 @@ in {
       run ${pkgs.systemd}/bin/systemctl --user disable --now codex-usage-agent.service
     fi
   '';
-  systemd.user.services.codex-usage-personal = agent "personal";
+  systemd.user.services.codex-usage-personal = {
+    Unit = {
+      Description = "Codex usage telemetry (personal)";
+      After = ["network-online.target"];
+      Conflicts = ["codex-usage-agent.service"];
+    };
+    Service = {
+      Environment = "PYTHONPATH=/home/mirin/.local/share/codex-usage-monitor/src";
+      ExecStart = "${pkgs.python3}/bin/python3 -m codex_usage_monitor agent --config /home/mirin/.config/codex-usage-monitor/personal/agent.toml";
+      Restart = "always";
+      RestartSec = 5;
+      UMask = "0077";
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      ProtectSystem = "strict";
+      ProtectHome = "read-only";
+      ReadWritePaths = ["/home/mirin/.local/state/codex-usage-monitor/personal"];
+    };
+    Install.WantedBy = ["default.target"];
+  };
   # Keep MCP server commands declarative so their Nix store paths follow
   # package updates. Codex settings, authentication, and skills stay local.
   programs.mcp = {
@@ -96,7 +89,11 @@ in {
   home.packages = [
     codexGuiSudo
     codexBin
-    (lib.hiPrio (launcher "codex" ".codex" "6e207cf8-4441-4749-a966-3178e8023767" "/home/mirin"))
+    (lib.hiPrio (pkgs.writeShellScriptBin "codex" ''
+      export HOME="/home/mirin"
+      export CODEX_HOME="/home/mirin/.codex"
+      exec ${codexBin}/bin/codex -c "forced_chatgpt_workspace_id = \"6e207cf8-4441-4749-a966-3178e8023767\"" "$@"
+    ''))
     configSync
     pkgs.mcp-nixos
     pkgs.mcp-server-git

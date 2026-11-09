@@ -3,241 +3,244 @@
   pkgs,
   ...
 }: {
-  # zsh
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    initContent = ''
-      if [ "$TERM" = "linux" ]; then
-        export STARSHIP_CONFIG="${pkgs.writeText "starship-tty.toml" ''
-        [character]
-        success_symbol = '[\$](fg:#5BCEFA)'
-        error_symbol = '[Error \$](fg:red)'
-      ''}"
-      fi
-      echo "Hello."
-      eval "$(direnv hook zsh)"
-      if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
-        eval "$(ssh-agent -s)" >/dev/null 2>&1
-      fi
-    '';
-    shellAliases = {
-      XTERM = "export TERM=xterm";
-    };
-    history = {
-      size = 10000;
-      path = "${config.xdg.dataHome}/zsh/history";
-    };
-    oh-my-zsh = {
+  programs = {
+    # zsh
+    zsh = {
       enable = true;
-      plugins = ["git" "direnv"];
-      theme = "";
-    };
-  };
-
-  home.packages = with pkgs; [
-    (writeShellScriptBin "wff" ''
-      if [ -z "$1" ]; then
-        echo "usage: wff host [firefox-args...]" >&2
-        exit 2
-      fi
-
-      host="$1"
-      shift
-
-      exec ${master.waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
-        env MOZ_ENABLE_WAYLAND=1 \
-            XDG_SESSION_TYPE=wayland \
-            MOZ_GTK_TITLEBAR_DECORATION=client \
-            GTK_THEME=Breeze \
-        firefox --new-instance "$@"
-    '')
-
-    (writeShellScriptBin "rebuild" ''
-      ${nh}/bin/nh os switch ~/nixos-config --ask &&
-      ${systemd}/bin/systemctl --user restart plasma-plasmashell.service
-    '')
-  ];
-
-  home.shellAliases = {
-    proxy = ''
-      export ALL_PROXY=socks5://127.0.0.1:2080;
-      export HTTP_PROXY=http://127.0.0.1:2080;
-      export HTTPS_PROXY=http://127.0.0.1:2080
-    '';
-
-    deproxy = ''
-      unset ALL_PROXY;
-      unset HTTP_PROXY;
-      unset HTTPS_PROXY
-    '';
-  };
-
-  programs.ghostty = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      font-family = "gallant Terminal Nerd";
-      font-style = "Regular";
-      confirm-close-surface = false;
-      bell-features = "no-audio,no-system";
-      mouse-hide-while-typing = true;
-      window-padding-x = 10;
-      window-padding-y = 10;
-      theme = "kitty";
-      keybind = "shift+enter=csi:13;2u";
-    };
-    themes.kitty = {
-      foreground = "cdd6f4";
-      background = "1e1e2e";
-      selection-foreground = "1e1e2e";
-      selection-background = "f5e0dc";
-      cursor-color = "f5e0dc";
-      cursor-text = "1e1e2e";
-      palette = [
-        "0=#45475a"
-        "1=#f38ba8"
-        "2=#a6e3a1"
-        "3=#f9e2af"
-        "4=#89b4fa"
-        "5=#f5c2e7"
-        "6=#94e2d5"
-        "7=#bac2de"
-        "8=#585b70"
-        "9=#f38ba8"
-        "10=#a6e3a1"
-        "11=#f9e2af"
-        "12=#89b4fa"
-        "13=#f5c2e7"
-        "14=#94e2d5"
-        "15=#a6adc8"
-      ];
-    };
-  };
-
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "gallant Terminal Nerd";
-      package = pkgs.gallant-terminal-nerd;
-      size = 14;
-    };
-    keybindings."shift+enter" = "send_text all \\x1b[13;2u";
-    settings = {
-      confirm_os_window_close = 0;
-      dynamic_background_opacity = true;
-      enable_audio_bell = false;
-      allow_remote_control = "socket-only";
-      listen_on = "unix:$XDG_RUNTIME_DIR/kitty-remote-control.sock";
-      pixel_scroll = true;
-      momentum_scroll = 0.96;
-      mouse_hide_wait = "-1.0";
-      window_padding_width = 10;
-      # background_opacity = "0.95";
-      # background_blur = 20;
-    };
-    extraConfig = with config.stylix.base16Scheme; ''
-
-      # The basic colors
-      foreground              #cdd6f4
-      background              #1e1e2e
-      selection_foreground    #1e1e2e
-      selection_background    #f5e0dc
-
-      # Cursor colors
-      cursor                  #f5e0dc
-      cursor_text_color       #1e1e2e
-
-      # URL underline color when hovering with mouse
-      url_color               #f5e0dc
-
-      # Kitty window border colors
-      active_border_color     #b4befe
-      inactive_border_color   #6c7086
-      bell_border_color       #f9e2af
-
-      # OS Window titlebar colors
-      wayland_titlebar_color system
-      macos_titlebar_color system
-
-      # Tab bar colors
-      active_tab_foreground   #11111b
-      active_tab_background   #cba6f7
-      inactive_tab_foreground #cdd6f4
-      inactive_tab_background #181825
-      tab_bar_background      #11111b
-
-      # Colors for marks (marked text in the terminal)
-      mark1_foreground #1e1e2e
-      mark1_background #b4befe
-      mark2_foreground #1e1e2e
-      mark2_background #cba6f7
-      mark3_foreground #1e1e2e
-      mark3_background #74c7ec
-
-      # The 16 terminal colors
-
-      # black
-      color0 #45475a
-      color8 #585b70
-
-      # red
-      color1 #f38ba8
-      color9 #f38ba8
-
-      # green
-      color2  #a6e3a1
-      color10 #a6e3a1
-
-      # yellow
-      color3  #f9e2af
-      color11 #f9e2af
-
-      # blue
-      color4  #89b4fa
-      color12 #89b4fa
-
-      # magenta
-      color5  #f5c2e7
-      color13 #f5c2e7
-
-      # cyan
-      color6  #94e2d5
-      color14 #94e2d5
-
-      # white
-      color7  #bac2de
-      color15 #a6adc8
-    '';
-  };
-  programs.starship = {
-    enable = true;
-    settings.character = {
-      success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
-      error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
-    };
-    enableTransience = true;
-  };
-
-  programs.hyfetch = {
-    enable = true;
-    settings = {
-      preset = "transgender";
-      mode = "rgb";
-      light_dark = "dark";
-      lightness = 0.65;
-      color_align = {
-        mode = "horizontal";
-        # custom_colors = [];
-        # fore_back = null;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      initContent = ''
+        if [ "$TERM" = "linux" ]; then
+          export STARSHIP_CONFIG="${pkgs.writeText "starship-tty.toml" ''
+          [character]
+          success_symbol = '[\$](fg:#5BCEFA)'
+          error_symbol = '[Error \$](fg:red)'
+        ''}"
+        fi
+        echo "Hello."
+        if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
+          eval "$(ssh-agent -s)" >/dev/null 2>&1
+        fi
+      '';
+      shellAliases = {
+        XTERM = "export TERM=xterm";
       };
-      backend = "fastfetch";
-      # args = null;
-      # distro = null;
-      # pride_month_shown = [];
-      pride_month_disable = false;
+      history = {
+        size = 10000;
+        path = "${config.xdg.dataHome}/zsh/history";
+      };
+      oh-my-zsh = {
+        enable = true;
+        plugins = ["git"];
+        theme = "";
+      };
+    };
+
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        font-family = "gallant Terminal Nerd";
+        font-style = "Regular";
+        confirm-close-surface = false;
+        bell-features = "no-audio,no-system";
+        mouse-hide-while-typing = true;
+        window-padding-x = 10;
+        window-padding-y = 10;
+        theme = "kitty";
+        keybind = "shift+enter=csi:13;2u";
+      };
+      themes.kitty = {
+        foreground = "cdd6f4";
+        background = "1e1e2e";
+        selection-foreground = "1e1e2e";
+        selection-background = "f5e0dc";
+        cursor-color = "f5e0dc";
+        cursor-text = "1e1e2e";
+        palette = [
+          "0=#45475a"
+          "1=#f38ba8"
+          "2=#a6e3a1"
+          "3=#f9e2af"
+          "4=#89b4fa"
+          "5=#f5c2e7"
+          "6=#94e2d5"
+          "7=#bac2de"
+          "8=#585b70"
+          "9=#f38ba8"
+          "10=#a6e3a1"
+          "11=#f9e2af"
+          "12=#89b4fa"
+          "13=#f5c2e7"
+          "14=#94e2d5"
+          "15=#a6adc8"
+        ];
+      };
+    };
+
+    kitty = {
+      enable = true;
+      font = {
+        name = "gallant Terminal Nerd";
+        package = pkgs.gallant-terminal-nerd;
+        size = 14;
+      };
+      keybindings."shift+enter" = "send_text all \\x1b[13;2u";
+      settings = {
+        confirm_os_window_close = 0;
+        dynamic_background_opacity = true;
+        enable_audio_bell = false;
+        allow_remote_control = "socket-only";
+        listen_on = "unix:$XDG_RUNTIME_DIR/kitty-remote-control.sock";
+        pixel_scroll = true;
+        momentum_scroll = 0.96;
+        mouse_hide_wait = "-1.0";
+        window_padding_width = 10;
+        # background_opacity = "0.95";
+        # background_blur = 20;
+      };
+      extraConfig = ''
+
+        # The basic colors
+        foreground              #cdd6f4
+        background              #1e1e2e
+        selection_foreground    #1e1e2e
+        selection_background    #f5e0dc
+
+        # Cursor colors
+        cursor                  #f5e0dc
+        cursor_text_color       #1e1e2e
+
+        # URL underline color when hovering with mouse
+        url_color               #f5e0dc
+
+        # Kitty window border colors
+        active_border_color     #b4befe
+        inactive_border_color   #6c7086
+        bell_border_color       #f9e2af
+
+        # OS Window titlebar colors
+        wayland_titlebar_color system
+        macos_titlebar_color system
+
+        # Tab bar colors
+        active_tab_foreground   #11111b
+        active_tab_background   #cba6f7
+        inactive_tab_foreground #cdd6f4
+        inactive_tab_background #181825
+        tab_bar_background      #11111b
+
+        # Colors for marks (marked text in the terminal)
+        mark1_foreground #1e1e2e
+        mark1_background #b4befe
+        mark2_foreground #1e1e2e
+        mark2_background #cba6f7
+        mark3_foreground #1e1e2e
+        mark3_background #74c7ec
+
+        # The 16 terminal colors
+
+        # black
+        color0 #45475a
+        color8 #585b70
+
+        # red
+        color1 #f38ba8
+        color9 #f38ba8
+
+        # green
+        color2  #a6e3a1
+        color10 #a6e3a1
+
+        # yellow
+        color3  #f9e2af
+        color11 #f9e2af
+
+        # blue
+        color4  #89b4fa
+        color12 #89b4fa
+
+        # magenta
+        color5  #f5c2e7
+        color13 #f5c2e7
+
+        # cyan
+        color6  #94e2d5
+        color14 #94e2d5
+
+        # white
+        color7  #bac2de
+        color15 #a6adc8
+      '';
+    };
+    starship = {
+      enable = true;
+      settings.character = {
+        success_symbol = "[](fg:#1E1E2E bg:#5BCEFA)[](fg:#5BCEFA bg:#F5A9B8)[](fg:#F5A9B8 bg:#FFFFFF)[](fg:#FFFFFF bg:#F5A9B8)[](fg:#F5A9B8 bg:#5BCEFA)[](#5BCEFA)";
+        error_symbol = "[](fg:#1E1E2E bg:red)[](fg:red bg:red)[](red)";
+      };
+      enableTransience = true;
+    };
+
+    hyfetch = {
+      enable = true;
+      settings = {
+        preset = "transgender";
+        mode = "rgb";
+        light_dark = "dark";
+        lightness = 0.65;
+        color_align = {
+          mode = "horizontal";
+          # custom_colors = [];
+          # fore_back = null;
+        };
+        backend = "fastfetch";
+        # args = null;
+        # distro = null;
+        # pride_month_shown = [];
+        pride_month_disable = false;
+      };
+    };
+  };
+
+  home = {
+    packages = with pkgs; [
+      (writeShellScriptBin "wff" ''
+        if [ -z "$1" ]; then
+          echo "usage: wff host [firefox-args...]" >&2
+          exit 2
+        fi
+
+        host="$1"
+        shift
+
+        exec ${master.waypipe}/bin/waypipe --no-gpu --compress none ssh -o Compression=no "$host" \
+          env MOZ_ENABLE_WAYLAND=1 \
+              XDG_SESSION_TYPE=wayland \
+              MOZ_GTK_TITLEBAR_DECORATION=client \
+              GTK_THEME=Breeze \
+          firefox --new-instance "$@"
+      '')
+
+      (writeShellScriptBin "rebuild" ''
+        ${nh}/bin/nh os switch ~/nixos-config --ask &&
+        ${systemd}/bin/systemctl --user restart plasma-plasmashell.service
+      '')
+    ];
+
+    shellAliases = {
+      proxy = ''
+        export ALL_PROXY=socks5://127.0.0.1:2080;
+        export HTTP_PROXY=http://127.0.0.1:2080;
+        export HTTPS_PROXY=http://127.0.0.1:2080
+      '';
+
+      deproxy = ''
+        unset ALL_PROXY;
+        unset HTTP_PROXY;
+        unset HTTPS_PROXY
+      '';
     };
   };
 }

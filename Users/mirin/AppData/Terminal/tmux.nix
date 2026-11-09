@@ -1,4 +1,4 @@
-{...}: {
+{
   programs.tmux = {
     enable = true;
     package = null;
@@ -50,7 +50,7 @@
 
       bind-key -n MouseDown1StatusLeft new-window
       bind-key c new-window
-      bind-key r source-file ~/.tmux.conf \; display-message "tmux config reloaded"
+      bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "tmux config reloaded"
     '';
   };
 }

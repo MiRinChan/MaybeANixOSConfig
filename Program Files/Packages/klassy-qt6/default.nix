@@ -48,10 +48,10 @@ stdenv.mkDerivation rec {
     kdePackages.qtsvg
   ];
 
-  meta = with lib; {
+  meta = {
     description = "A highly customizable binary Window Decoration and Application Style plugin for recent versions of the KDE Plasma desktop";
     homepage = "https://github.com/paulmcauley/klassy";
-    license = with licenses; [
+    license = with lib.licenses; [
       gpl2Only
       gpl2Plus
       gpl3Only

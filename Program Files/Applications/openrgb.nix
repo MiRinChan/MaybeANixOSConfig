@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   # OpenRGB setup
   services.hardware.openrgb = {
     enable = true;
@@ -14,7 +10,6 @@
   # solaar setup
   programs.solaar = {
     enable = true;
-    package = pkgs.solaar;
     userService = {
       enable = true;
       window = "hide"; # Show the window on startup (show, *hide*, only [window only])

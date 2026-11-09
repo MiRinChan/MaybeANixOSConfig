@@ -24,56 +24,59 @@ in {
     };
   };
 
-  systemd.services.nh-clean = lib.mkIf config.programs.nh.clean.enable {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
-  systemd.services.nix-gc = lib.mkIf config.nix.gc.automatic {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
-  systemd.services.nix-optimise = lib.mkIf config.nix.optimise.automatic {
-    serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
-  };
+  systemd.services = {
+    nh-clean = lib.mkIf config.programs.nh.clean.enable {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
+    nix-gc = lib.mkIf config.nix.gc.automatic {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
+    nix-optimise = lib.mkIf config.nix.optimise.automatic {
+      serviceConfig.ExecCondition = maintenanceWithoutStoreVM;
+    };
 
-  # Supply the hard limit used by the VM's transient user service after login.
-  # Apply to the current manager with prlimit, without restarting the session.
-  systemd.services."user@1000" = {
-    overrideStrategy = "asDropin";
-    restartIfChanged = false;
-    stopIfChanged = false;
-    serviceConfig.LimitNOFILE = 2097152;
+    # Supply the hard limit used by the VM's transient user service after login.
+    # Apply to the current manager with prlimit, without restarting the session.
+    "user@1000" = {
+      overrideStrategy = "asDropin";
+      restartIfChanged = false;
+      stopIfChanged = false;
+      serviceConfig.LimitNOFILE = 2097152;
+    };
   };
-
   # Flatpak
-  services.flatpak.enable = true;
-  services.flatpak.remotes = [
-    {
-      name = "flathub-beta";
-      location = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
-    }
-    {
-      name = "flathub";
-      location = "https://dl.flathub.org/repo/";
-    }
-  ];
-  # services.flatpak.update.onActivation = true;
-  services.flatpak.overrides = {
-    global = {
-      # Force Wayland by default
-      Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+  services.flatpak = {
+    enable = true;
+    remotes = [
+      {
+        name = "flathub-beta";
+        location = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
+      }
+      {
+        name = "flathub";
+        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      }
+    ];
+    # services.flatpak.update.onActivation = true;
+    overrides = {
+      global = {
+        # Force Wayland by default
+        Context.sockets = ["wayland" "!x11" "!fallback-x11"];
 
-      Context.filesystems = [
-        "$HOME/.local/share/fonts:ro"
-        "$HOME/.icons:ro"
-        "/nix/store:ro"
-        "xdg-config/fontconfig:ro"
-      ];
+        Context.filesystems = [
+          "$HOME/.local/share/fonts:ro"
+          "$HOME/.icons:ro"
+          "/nix/store:ro"
+          "xdg-config/fontconfig:ro"
+        ];
 
-      Environment = {
-        # Fix un-themed cursor in some Wayland apps
-        XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+        Environment = {
+          # Fix un-themed cursor in some Wayland apps
+          XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
 
-        # Force correct theme for some GTK apps
-        GTK_THEME = "Adwaita:dark";
+          # Force correct theme for some GTK apps
+          GTK_THEME = "Adwaita:dark";
+        };
       };
     };
   };

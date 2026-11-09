@@ -36,10 +36,10 @@ stdenv.mkDerivation rec {
     "SIGNON_PLUGINS_DIR=${placeholder "out"}/lib/signon"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Signond OAuth 1.0/2.0 plugin";
     homepage = "https://gitlab.com/accounts-sso/signon-plugin-oauth2";
-    maintainers = with maintainers; [];
-    platforms = platforms.linux;
+    maintainers = [];
+    platforms = lib.platforms.linux;
   };
 }

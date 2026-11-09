@@ -3,7 +3,7 @@
   stdenvNoCC,
   unzip,
 }:
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenvNoCC.mkDerivation {
   pname = "openai-sans";
   version = "2025-01-24";
 
@@ -29,4 +29,4 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     license = lib.licenses.unfree;
     platforms = lib.platforms.all;
   };
-})
+}

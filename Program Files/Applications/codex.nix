@@ -1,5 +1,5 @@
-{pkgs, ...}: let
-  codexSystemConfig = (pkgs.formats.toml {}).generate "codex-system-config" {
+{pkgs, ...}: {
+  environment.etc."codex/config.toml".source = (pkgs.formats.toml {}).generate "codex-system-config" {
     # Keep only Nix store paths here. Personal Codex settings and
     # authentication are managed in the user's local configuration.
     mcp_servers.nixos = {
@@ -11,6 +11,4 @@
       enabled = true;
     };
   };
-in {
-  environment.etc."codex/config.toml".source = codexSystemConfig;
 }

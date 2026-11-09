@@ -78,9 +78,16 @@ in {
   };
   # Windows 11 Wi-Fi direct: mark the guest traffic so Throne leaves it alone,
   # and accept its Wi-Fi replies in the reverse-path filter.
-  networking.firewall.extraReversePathFilterRules = ''
-    iifname "wlp0s20f3" ct state established,related ct direction reply ct original ip saddr 192.168.123.0/24 accept
-  '';
+  networking.firewall = {
+    # Libvirt's iptables rules do not bypass the nftables input chain.
+    interfaces.virbr-win11 = {
+      allowedUDPPorts = [53 67];
+      allowedTCPPorts = [53];
+    };
+    extraReversePathFilterRules = ''
+      iifname "wlp0s20f3" ct state established,related ct direction reply ct original ip saddr 192.168.123.0/24 accept
+    '';
+  };
   networking.nftables.tables.win11_wifi_direct = {
     family = "inet";
     content = ''

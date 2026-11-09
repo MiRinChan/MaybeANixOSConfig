@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794151708,
-        "narHash": "sha256-ZndMgNN0ja0ZDKYBddCgHAzKLIf4xn22/2HO9blflNc=",
+        "lastModified": 1794225545,
+        "narHash": "sha256-Ouv1NKQ97YzTPKWGvj+QSQjll/VdT/l0pDiTiGgPAKk=",
         "owner": "cubk1",
         "repo": "b-launcher",
-        "rev": "eab38c8833b709b4ceb1c449b93b7fb1ded74dd5",
+        "rev": "f72e454d500bee28da03a2500e84069e20b1f6c6",
         "type": "github"
       },
       "original": {

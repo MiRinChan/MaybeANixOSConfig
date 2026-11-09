@@ -118,8 +118,4 @@ in {
     "win11/libvirglrenderer.so.1".source = "${win11Virgl}/lib/libvirglrenderer.so.1";
     "win11/libvirglrenderer-gtk.so.1".source = "${win11VirglGtk}/lib/libvirglrenderer.so.1";
   };
-  nix.settings = {
-    substituters = ["https://winapps.cachix.org/"];
-    trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];
-  };
 }

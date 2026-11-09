@@ -41,7 +41,7 @@
     username = "mirin";
     homeDirectory = "/home/mirin";
     sessionVariables = {
-      EDITOR = "code";
+      EDITOR = "code --wait";
       BROWSER = "firefox";
       TERMINAL = "kitty";
     };

@@ -26,7 +26,6 @@
   home.packages = with pkgs; [
     # 编程环境
     devbox
-    direnv
     conda
     (pkgs.writeShellScriptBin "conda" ''
       if [ "''${1-}" = "activate" ] || [ "''${1-}" = "deactivate" ]; then

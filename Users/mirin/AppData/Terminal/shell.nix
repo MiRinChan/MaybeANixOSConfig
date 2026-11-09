@@ -19,7 +19,6 @@
         ''}"
         fi
         echo "Hello."
-        eval "$(direnv hook zsh)"
         if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
           eval "$(ssh-agent -s)" >/dev/null 2>&1
         fi
@@ -33,7 +32,7 @@
       };
       oh-my-zsh = {
         enable = true;
-        plugins = ["git" "direnv"];
+        plugins = ["git"];
         theme = "";
       };
     };

@@ -25,6 +25,7 @@
         "https://cache.numtide.com"
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
+        "https://winapps.cachix.org"
         # "https://luogu-judge.cachix.org"
         # "https://niri.cachix.org"
         # "https://cache.garnix.io"
@@ -32,6 +33,7 @@
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+        "winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="
       ];
     };
 
@@ -39,6 +41,7 @@
     channel.enable = true;
 
     # Opinionated: make flake registry and nix path match flake inputs
+    nixPath = config.nix.settings.nix-path;
     registry = lib.mapAttrs (_: flake: {inherit flake;}) (lib.filterAttrs (_: lib.isType "flake") inputs);
 
     # Auto GC is managed by programs.nh in Program Files/Applications/system-tools.nix.

@@ -6,6 +6,12 @@
     # NetworkManager
     networkmanager.enable = true;
 
+    nftables = {
+      enable = true;
+      # Keep the tables that Docker, libvirt, Tailscale, and Throne add at runtime.
+      flushRuleset = false;
+    };
+
     firewall = {
       enable = true;
       checkReversePath = true;
@@ -13,13 +19,8 @@
       # is up, otherwise VM NAT traffic gets treated as untrusted bridge traffic.
       trustedInterfaces = ["virbr0"];
 
-      extraCommands = ''
-        iptables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN
-        ip6tables -t mangle -I nixos-fw-rpfilter 1 -i throne-tun -j RETURN
-      '';
-      extraStopCommands = ''
-        iptables -t mangle -D nixos-fw-rpfilter -i throne-tun -j RETURN 2>/dev/null || true
-        ip6tables -t mangle -D nixos-fw-rpfilter -i throne-tun -j RETURN 2>/dev/null || true
+      extraReversePathFilterRules = ''
+        iifname "throne-tun" accept
       '';
 
       # FTP/FTPS/SFTP 2121

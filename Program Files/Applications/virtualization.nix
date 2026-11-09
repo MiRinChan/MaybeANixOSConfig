@@ -28,30 +28,6 @@
       exec = "${virtManagerScaledCommand} --show-domain-console f43b44d6-6c21-4f3a-bb63-48da581b7994";
     };
   };
-  win11WifiBypass = pkgs.writeText "win11-wifi-direct.nft" ''
-    add table inet win11_wifi_direct
-    add chain inet win11_wifi_direct prerouting { type filter hook prerouting priority -151; policy accept; }
-    flush chain inet win11_wifi_direct prerouting
-    add rule inet win11_wifi_direct prerouting iifname "virbr-win11" ip saddr 192.168.123.11 counter meta mark set 0x2024 ct mark set 0x2024 comment "Windows 11 Wi-Fi direct"
-  '';
-  win11WifiHook = pkgs.writeShellScript "win11-wifi-network-hook" ''
-    set -eu
-    [ "''${1:-}" = win11-wifi ] || exit 0
-    iptables=${pkgs.iptables}/bin/iptables
-    nft=${pkgs.nftables}/bin/nft
-    rule=(-i wlp0s20f3 -m conntrack --ctstate ESTABLISHED,RELATED --ctdir REPLY --ctorigsrc 192.168.123.0/24 -j RETURN)
-    case "''${2:-}" in
-      started|reconnect|updated|port-created)
-        "$iptables" -w -t mangle -C nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null ||
-          "$iptables" -w -t mangle -I nixos-fw-rpfilter 1 "''${rule[@]}"
-        "$nft" -f ${win11WifiBypass}
-        ;;
-      stopped)
-        "$iptables" -w -t mangle -D nixos-fw-rpfilter "''${rule[@]}" 2>/dev/null || true
-        "$nft" delete table inet win11_wifi_direct 2>/dev/null || true
-        ;;
-    esac
-  '';
   # Keep the Windows 11 emulator and renderer behind generation-stable
   # /run/current-system paths. The libvirt XML no longer stores /nix/store
   # paths, so a rebuild or GC does not require redefining the domain.
@@ -69,7 +45,6 @@ in {
     # 用户需要加入 libvirtd 组才能免 sudo 管理虚拟机（见 Windows/System32/accounts.nix）。
     libvirtd = {
       enable = true;
-      hooks.network.win11-wifi = win11WifiHook;
       qemu = {
         package = pkgs.qemu_kvm;
         runAsRoot = true;
@@ -101,9 +76,19 @@ in {
       storageDriver = "btrfs";
     };
   };
-  networking.firewall = {
-    extraCommands = "${win11WifiHook} win11-wifi started begin";
-    extraStopCommands = "${win11WifiHook} win11-wifi stopped end";
+  # Windows 11 Wi-Fi direct: mark the guest traffic so Throne leaves it alone,
+  # and accept its Wi-Fi replies in the reverse-path filter.
+  networking.firewall.extraReversePathFilterRules = ''
+    iifname "wlp0s20f3" ct state established,related ct direction reply ct original ip saddr 192.168.123.0/24 accept
+  '';
+  networking.nftables.tables.win11_wifi_direct = {
+    family = "inet";
+    content = ''
+      chain prerouting {
+        type filter hook prerouting priority -151; policy accept;
+        iifname "virbr-win11" ip saddr 192.168.123.11 counter meta mark set 0x2024 ct mark set 0x2024 comment "Windows 11 Wi-Fi direct"
+      }
+    '';
   };
   programs.virt-manager.enable = true;
   # provide docker container

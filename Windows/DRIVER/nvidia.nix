@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   # Graphic card driver: NVIDIA
   # A copy from https://nixos.wiki/wiki/Nvidia
   hardware.nvidia = {
@@ -44,11 +39,13 @@
 
   # 睡眠不好用。
 
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-  systemd.sleep.settings.Sleep = {
-    AllowSuspend = "no";
-    AllowHybridSleep = "no";
-    AllowSuspendThenHibernate = "no";
+  systemd = {
+    targets.suspend.enable = false;
+    targets.hybrid-sleep.enable = false;
+    sleep.settings.Sleep = {
+      AllowSuspend = "no";
+      AllowHybridSleep = "no";
+      AllowSuspendThenHibernate = "no";
+    };
   };
 }

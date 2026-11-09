@@ -45,8 +45,10 @@ in {
     registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
 
     # Auto GC is managed by programs.nh in Program Files/Applications/system-tools.nix.
-    optimise.automatic = true;
-    optimise.dates = ["20:50"];
+    optimise = {
+      automatic = true;
+      dates = ["20:50"];
+    };
   };
 
   programs.ccache.enable = true;

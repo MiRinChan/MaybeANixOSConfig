@@ -17,7 +17,7 @@
   #nix store prefetch-file --json \
   # 'https://registry.npmjs.org/@openai/codex/-/codex-[version]-linux-x64.tgz'
 
-  launcher = name: directory: workspaceId: home:
+  launcher = name: workspaceId: home:
     pkgs.writeShellScriptBin name ''
       export HOME="${home}"
       export CODEX_HOME="${home}/.codex"
@@ -96,7 +96,7 @@ in {
   home.packages = [
     codexGuiSudo
     codexBin
-    (lib.hiPrio (launcher "codex" ".codex" "6e207cf8-4441-4749-a966-3178e8023767" "/home/mirin"))
+    (lib.hiPrio (launcher "codex" "6e207cf8-4441-4749-a966-3178e8023767" "/home/mirin"))
     configSync
     pkgs.mcp-nixos
     pkgs.mcp-server-git

@@ -4,18 +4,22 @@
     "fido2-device=auto"
   ];
 
-  security.pam.u2f = {
-    control = "sufficient";
-    settings = {
-      cue = true;
-      userpresence = 1;
-      pinverification = 0;
+  security.pam = {
+    u2f = {
+      control = "sufficient";
+      settings = {
+        cue = true;
+        userpresence = 1;
+        pinverification = 0;
+      };
+    };
+
+    services = {
+      kde.u2f.enable = true;
+      sudo.u2f.enable = true;
+      login.u2f.enable = true;
     };
   };
-
-  security.pam.services.kde.u2f.enable = true;
-  security.pam.services.sudo.u2f.enable = true;
-  security.pam.services.login.u2f.enable = true;
 
   environment.systemPackages = with pkgs; [
     libfido2

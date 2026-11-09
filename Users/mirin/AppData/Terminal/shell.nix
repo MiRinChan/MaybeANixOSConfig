@@ -138,7 +138,7 @@
       # background_opacity = "0.95";
       # background_blur = 20;
     };
-    extraConfig = with config.stylix.base16Scheme; ''
+    extraConfig = ''
 
       # The basic colors
       foreground              #cdd6f4

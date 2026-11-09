@@ -28,12 +28,12 @@
     kdePackages.kmousetool # Automatic mouse click helper
     kdePackages.kcharselect # Special character selector
     gparted # provide a gui for parted
-    pkgs.sbctl # For debugging and troubleshooting Secure Boot.
+    sbctl # For debugging and troubleshooting Secure Boot.
     libarchive # provide bsdcat bsdcpio bsdtar bsdunzip
     jq # provide a json proceessor
     qemu # qemu
-    (klassy-qt6.override {stdenv = pkgs.ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
-    pkgs.kde-rounded-corners # Rounded
+    (klassy-qt6.override {stdenv = ccacheStdenv;}) # KWin decoration/style plugin must be visible to the Plasma session.
+    kde-rounded-corners # Rounded
     ntfs3g # NTFS
     ffmpeg
     gphoto2

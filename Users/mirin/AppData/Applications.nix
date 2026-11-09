@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   dsh =
     pkgs.runCommand "dsh-${pkgs.llm-agents.dsh.version}" {
       inherit (pkgs.llm-agents.dsh) version meta;

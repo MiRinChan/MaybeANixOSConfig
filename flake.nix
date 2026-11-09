@@ -13,7 +13,7 @@
     # Also see the package channel overlays in Program Files/Overlays/default.nix.
     ### Nixpkgs ###
 
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
 
     flatpak.url = "github:gmodena/nix-flatpak?ref=v0.4.1";
 

@@ -1,10 +1,10 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
+  repoRoot,
   ...
 }: let
+  win11Virt = repoRoot + "/Program Files/Packages/win11-virt";
   virtManagerScaledCommand = "${pkgs.coreutils}/bin/env GDK_BACKEND=x11 GDK_SCALE=1 GDK_DPI_SCALE=1 ${pkgs.virt-manager}/bin/virt-manager --connect qemu:///system";
   virtManagerScaled = pkgs.makeDesktopItem {
     name = "virt-manager-scaled";
@@ -55,12 +55,12 @@
   # Keep the Windows 11 emulator and renderer behind generation-stable
   # /run/current-system paths. The libvirt XML no longer stores /nix/store
   # paths, so a rebuild or GC does not require redefining the domain.
-  win11Qemu = pkgs.callPackage ../Packages/win11-virt/qemu.nix {};
-  win11QemuPat = pkgs.callPackage ../Packages/win11-virt/qemu-pat.nix {
+  win11Qemu = pkgs.callPackage (win11Virt + "/qemu.nix") {};
+  win11QemuPat = pkgs.callPackage (win11Virt + "/qemu-pat.nix") {
     qemu = win11Qemu;
   };
-  win11Virgl = pkgs.callPackage ../Packages/win11-virt/virglrenderer.nix {};
-  win11VirglGtk = pkgs.callPackage ../Packages/win11-virt/virglrenderer-gtk.nix {
+  win11Virgl = pkgs.callPackage (win11Virt + "/virglrenderer.nix") {};
+  win11VirglGtk = pkgs.callPackage (win11Virt + "/virglrenderer-gtk.nix") {
     virglrenderer = win11Virgl;
   };
 in {
@@ -112,10 +112,12 @@ in {
     substituters = ["https://winapps.cachix.org/"];
     trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];
   };
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
+  virtualisation.docker = {
     enable = true;
-    setSocketVariable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+    storageDriver = "btrfs";
   };
-  virtualisation.docker.storageDriver = "btrfs";
 }

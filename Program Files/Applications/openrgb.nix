@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   # OpenRGB setup
   services.hardware.openrgb = {
     enable = true;

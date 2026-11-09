@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
-}: {
+{pkgs, ...}: {
   users.users = {
     mirin = {
       # 别忘了设密码

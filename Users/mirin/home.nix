@@ -26,9 +26,6 @@
           prev.kdePackages
           // {
             signon-plugin-oauth2 = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signon-plugin-oauth2") {};
-            signond = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signond") {
-              inherit (final.kdePackages) signon-plugin-oauth2;
-            };
             signon-ui = final.kdePackages.callPackage (repoRoot + "/Program Files/Packages/signon-ui") {};
           };
       })

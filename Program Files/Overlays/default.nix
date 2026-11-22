@@ -78,6 +78,17 @@
     });
 
     lager = inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.lager;
+
+    # nixos-unstable is still 2.4.1. 2.4.2's 10.12.6 GrandSlam identity is rejected with -22410.
+    iloader =
+      inputs.nixpkgs-master.legacyPackages.${prev.stdenv.hostPlatform.system}.iloader.overrideAttrs
+      (old: {
+        patches =
+          (old.patches or [])
+          ++ [
+            (repoRoot + "/Program Files/Packages/iloader-client-info.patch")
+          ];
+      });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

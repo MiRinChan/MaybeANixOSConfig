@@ -27,6 +27,7 @@ in {
     wantedBy = ["multi-user.target"];
     restartIfChanged = false;
     stopIfChanged = false;
+    unitConfig.X-StopOnReconfiguration = false;
 
     # VeraCrypt shells out to dmsetup/mount/fusermount/modprobe at runtime;
     # the default unit PATH only has coreutils/findutils/grep/sed/systemd.
@@ -45,6 +46,10 @@ in {
         "${pkgs.writeShellScript "veracrypt-hhd-mount" ''
           if ${pkgs.util-linux}/bin/mountpoint -q ${mountPoint}; then
             exit 0
+          fi
+          if ${pkgs.lvm2}/bin/dmsetup info veracrypt1 >/dev/null 2>&1; then
+            echo "VeraCrypt mapping veracrypt1 exists but ${mountPoint} is not mounted; refusing to replace the mapping." >&2
+            exit 1
           fi
           exec ${veracrypt} --text --non-interactive --mount --keyfiles=${keyfile} --password= ${device} ${mountPoint}
         ''}"

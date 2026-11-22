@@ -66,6 +66,7 @@
       '')
     pnpm
     llm-agents.opencode # AI coding agent for the terminal
+    llm-agents.fx # Tiny, open, embeddable, native coding agent
     texliveTeTeX
     sqlitebrowser
 

@@ -48,6 +48,7 @@
     papirus-icon-theme
     kdePackages.breeze-icons
     adwaita-icon-theme
+    # Patched 2.4.2. See the iloader overlay.
     iloader
     # 0.11.0 with FFmpeg 9 currently fails to compile against its changed Vulkan API.
     master.waypipe

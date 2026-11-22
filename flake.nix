@@ -35,6 +35,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # OpenAI's official Linux ChatGPT package, repackaged by the community
+    # codex-desktop-linux project. It keeps its own nixpkgs pin because its
+    # helper crates track a newer Rust toolchain than this flake's nixpkgs.
+    codex-desktop-linux = {
+      url = "github:ilysenko/codex-desktop-linux";
+    };
+
     mooling-nix-packages = {
       url = "github:Mooling0602/nix-packages";
       inputs.nixpkgs.follows = "nixpkgs";

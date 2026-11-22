@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -41,6 +42,20 @@
     exec /run/wrappers/bin/pkexec ${pkgs.bash}/bin/bash -lc "$run_script"
   '';
 in {
+  imports = [inputs.codex-desktop-linux.homeManagerModules.default];
+
+  programs.codexDesktopLinux = {
+    enable = true;
+    computerUseUi.enable = true;
+    remoteMobileControl.enable = true;
+    remoteControl.enable = true;
+    package = import ./codex-desktop.nix {
+      inherit lib;
+      inherit (config.programs.codexDesktopLinux) computerUseUi remoteMobileControl linuxFeatures;
+      upstream = inputs.codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.codex-desktop;
+    };
+  };
+
   home.activation.retireLegacyCodexAgent = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if ${pkgs.systemd}/bin/systemctl --user is-enabled --quiet codex-usage-agent.service; then
       run ${pkgs.systemd}/bin/systemctl --user disable --now codex-usage-agent.service
@@ -85,6 +100,5 @@ in {
     configSync
     pkgs.mcp-nixos
     pkgs.mcp-server-git
-    pkgs.llm-agents.chatgpt
   ];
 }

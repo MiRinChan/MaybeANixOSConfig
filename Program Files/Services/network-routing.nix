@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  repoRoot,
   ...
 }: let
   ntpWifiRoutes = pkgs.writeShellScript "ntp-wifi-routes" ''
@@ -76,6 +77,7 @@ in {
     # tunMode.setuid = true;
     # package = pkgs.stable.throne;
   };
+  environment.systemPackages = [pkgs.thronectl];
 
   services.tailscale = {
     enable = true;
@@ -87,11 +89,13 @@ in {
     trustedInterfaces = [config.services.tailscale.interfaceName];
     # Allow the Tailscale UDP port through the firewall
     allowedUDPPorts = [config.services.tailscale.port];
-    # Exit routing can send unmarked discovery replies through tailscale0.
-    # Keep strict reverse-path checks for other traffic.
+    # Exit routing can send unmarked discovery replies through tailscale0, and
+    # physical NIC replies for ThroneCore/NTP/Win11 arrive with mark 0 while
+    # table 52 routes public destinations to tailscale0.
     extraReversePathFilterRules = ''
       udp dport ${toString config.services.tailscale.port} accept
       iifname "wlp0s20f3" udp sport 123 ct state established,related ct direction reply accept
+      iifname { "wlp0s20f3", "eno1" } ct state established,related ct direction reply ct mark { 0x00002024, 0x00004000 } accept
     '';
   };
 
@@ -107,22 +111,39 @@ in {
     exit 0
   '';
 
-  # Tailscale traffic must bypass Throne/sing-box interception:
-  # - Mark 100.64.0.0/10 (incl. MagicDNS 100.100.100.100) and the tailnet ULA
-  #   fd7a:115c:a1e0::/48 with sing-box's own bypass mark 0x2024 before its
-  #   hooks (redirect/mark/queue) run, so Throne leaves them alone.
-  # - Bypass interception for tailscaled's marked UDP sockets. Restore its
-  #   routing mark after sing-box so exit-node transport uses the main table.
-  # - Bypass interception for traffic already routed to tailscale0, including
-  #   public destinations while an exit node is selected.
-  # - Pin the CGNAT range to tailscale0 as a fallback so a peer without a /32
-  #   in table 52 can never fall into Throne's catch-all table 2022.
+  # Coexistence of Throne TUN, Tailscale exit node, and VM exit-only isolation:
+  # - Leave Tailscale's table 52 rule (pref 5270) intact so unmarked `ip route get`
+  #   queries (used by coding-vm/audit-vm startup and runtime guards) continue to
+  #   observe tailscale0 when an exit node is active.
+  # - Mark normal host egress with 0x2023 after sing-tun's mangle+2 hooks and route
+  #   0x2023 through pref 5202/5204/5205 before table 52: DNS (dport 53) jumps
+  #   straight to table 2022 (5202->5205), connected non-DNS LAN subnets stay in
+  #   main (5204), and internet traffic enters Throne's table 2022 (5205) when
+  #   throne-tun is up or falls through to table 52/main when off.
+  # - Mark tailnet peers (100.64.0.0/10, fd7a:115c:a1e0::/48), tailscaled UDP
+  #   transport, inbound tailscale0 connections, and coding-vm/audit-vm cgroups
+  #   with sing-tun's bypass mark 0x2024 before sing-tun and output_to_tun run.
+  # - Enforce a cgroupv2 kill-switch so coding-vm and audit-vm can only leave via
+  #   lo (host SSH port-forward) or tailscale0, never throne-tun or physical NICs.
+  # NixOS checks nftables rules inside LKL (`lklWithFirewall`), whose kernel lacks
+  # `socket cgroupv2` support. Strip those lines in the sandbox check only; the
+  # live ruleset keeps them intact and is validated on the host kernel.
+  networking.nftables.preCheckRuleset = ''
+    sed -i '/socket cgroupv2 level 5 @vm_cgroups/d' ruleset.conf
+  '';
   networking.nftables.tables.ts-priority = {
     family = "inet";
     content = ''
+      set vm_cgroups {
+        type cgroupsv2
+      }
+      chain prerouting_pre {
+        type filter hook prerouting priority mangle - 2; policy accept;
+        iifname "${config.services.tailscale.interfaceName}" ct direction original counter ct mark set 0x00002024
+      }
       chain output_pre {
         type filter hook output priority mangle - 2; policy accept;
-        oifname "${config.services.tailscale.interfaceName}" counter meta mark set 0x00002024 ct mark set 0x00002024
+        socket cgroupv2 level 5 @vm_cgroups counter meta mark set 0x00002024 ct mark set 0x00002024
         meta skuid 0 meta mark & 0x00ff0000 == 0x00080000 udp sport ${toString config.services.tailscale.port} counter ct mark set 0x00002024
         meta nfproto ipv4 ip daddr 100.64.0.0/10 meta mark set 0x00002024 ct mark set 0x00002024
         meta nfproto ipv6 ip6 daddr fd7a:115c:a1e0::/48 meta mark set 0x00002024 ct mark set 0x00002024
@@ -131,7 +152,81 @@ in {
         type route hook output priority mangle + 3; policy accept;
         meta skuid 0 udp sport ${toString config.services.tailscale.port} ct mark 0x00002024 counter meta mark set 0x00080000
       }
+      chain output_to_tun {
+        type route hook output priority mangle + 4; policy accept;
+        oifname "lo" return
+        oifname "throne-tun" return
+        fib daddr type local return
+        meta mark 0x00002024 return
+        ct mark 0x00002024 return
+        meta mark 0x00002023 return
+        meta mark & 0x00ff0000 == 0x00080000 return
+        socket cgroupv2 level 5 @vm_cgroups return
+        meta nfproto ipv4 ip daddr { 127.0.0.0/8, 169.254.0.0/16, 224.0.0.0/4, 255.255.255.255/32 } return
+        meta nfproto ipv6 ip6 daddr { ::1/128, fe80::/10, ff00::/8 } return
+        counter meta mark set 0x00002023
+      }
+      chain prerouting_to_tun {
+        type filter hook prerouting priority mangle + 4; policy accept;
+        iifname != { "virbr0", "docker0" } return
+        fib daddr type local return
+        meta mark 0x00002024 return
+        ct mark 0x00002024 return
+        meta mark 0x00002023 return
+        meta nfproto ipv4 ip daddr { 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 224.0.0.0/4, 255.255.255.255/32 } return
+        meta nfproto ipv6 ip6 daddr { ::1/128, fd7a:115c:a1e0::/48, fe80::/10, ff00::/8 } return
+        counter meta mark set 0x00002023
+      }
+      chain vm_killswitch {
+        type filter hook output priority filter; policy accept;
+        socket cgroupv2 level 5 @vm_cgroups oifname != { "lo", "${config.services.tailscale.interfaceName}" } counter reject with icmpx admin-prohibited
+      }
+      chain postrouting_phys {
+        type filter hook postrouting priority mangle; policy accept;
+        oifname { "wlp0s20f3", "eno1" } ct direction original ct mark 0x00000000 counter ct mark set 0x00004000
+      }
     '';
+  };
+  systemd.services.throne-tailscale-rules = {
+    description = "Policy routing rules for Throne TUN and Tailscale coexistence";
+    after = ["network-pre.target"];
+    wantedBy = ["multi-user.target"];
+    path = [pkgs.iproute2];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      for family in -4 -6; do
+        while ip "$family" rule del pref 5202 2>/dev/null; do :; done
+        while ip "$family" rule del pref 5204 2>/dev/null; do :; done
+        while ip "$family" rule del pref 5205 2>/dev/null; do :; done
+        ip "$family" rule add pref 5202 fwmark 0x2023 dport 53 goto 5205
+        ip "$family" rule add pref 5204 fwmark 0x2023 lookup main suppress_prefixlength 0
+        ip "$family" rule add pref 5205 fwmark 0x2023 lookup 2022
+      done
+    '';
+    preStop = ''
+      for family in -4 -6; do
+        while ip "$family" rule del pref 5202 2>/dev/null; do :; done
+        while ip "$family" rule del pref 5204 2>/dev/null; do :; done
+        while ip "$family" rule del pref 5205 2>/dev/null; do :; done
+      done
+    '';
+  };
+  systemd.services.vm-cgroup-nft-sync = {
+    description = "Sync coding-vm and audit-vm cgroups into nftables ts-priority vm_cgroups set";
+    after = ["nftables.service"];
+    requires = ["nftables.service"];
+    partOf = ["nftables.service"];
+    wantedBy = ["multi-user.target"];
+    path = [pkgs.nftables];
+    serviceConfig = {
+      Type = "simple";
+      Restart = "always";
+      RestartSec = "1s";
+      ExecStart = "${pkgs.python3}/bin/python3 ${repoRoot + "/Program Files/Scripts/vm-cgroup-nft-sync.py"}";
+    };
   };
   systemd.services.tailscale-priority = {
     description = "Route Tailscale traffic directly, bypassing Throne TUN";

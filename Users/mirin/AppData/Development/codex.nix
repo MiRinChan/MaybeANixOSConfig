@@ -85,6 +85,6 @@ in {
     configSync
     pkgs.mcp-nixos
     pkgs.mcp-server-git
-    pkgs.chatgpt
+    pkgs.llm-agents.chatgpt
   ];
 }

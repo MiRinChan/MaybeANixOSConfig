@@ -65,7 +65,6 @@
           --replace-fail '${pkgs.llm-agents.dsh}/lib/' "$out/lib/"
       '')
     pnpm
-    llm-agents.opencode # AI coding agent for the terminal
     llm-agents.fx # Tiny, open, embeddable, native coding agent
     texliveTeTeX
     sqlitebrowser

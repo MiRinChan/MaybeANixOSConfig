@@ -23,7 +23,6 @@
     # entry. Without this, launches rewrite `codex://` and notification hints
     # to the absent upstream `chatgpt.desktop` entry.
     "desktop-identity"
-    "start-minimized-to-tray"
     "ui-tweaks"
     "community-features-in-gui-settings"
     "linux-performance-workarounds"

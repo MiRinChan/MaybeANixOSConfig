@@ -11,6 +11,7 @@
       "fx/closedai-claude-api-key" = {};
       "fx/closedai-grok-api-key" = {};
       "fx/closedai-chatgpt-api-key" = {};
+      "fx/deepseek-api-key" = {};
     };
   };
 
@@ -26,6 +27,9 @@
     fi
     if [[ -r "${config.sops.secrets."fx/closedai-chatgpt-api-key".path}" ]]; then
       export CLOSEDAI_CHATGPT_API_KEY="$(<"${config.sops.secrets."fx/closedai-chatgpt-api-key".path}")"
+    fi
+    if [[ -r "${config.sops.secrets."fx/deepseek-api-key".path}" ]]; then
+      export DEEPSEEK_API_KEY="$(<"${config.sops.secrets."fx/deepseek-api-key".path}")"
     fi
   '';
 }

@@ -6,6 +6,12 @@
     terminal = "tmux-256color";
     escapeTime = 0;
     extraConfig = ''
+      set -g set-titles on
+      set -g set-titles-string "✨#{?#{&&:#{pane_title},#{!=:#{pane_title},#{host}}},#{pane_title},#{pane_current_command}}"
+      set -g automatic-rename on
+      set -g automatic-rename-format "#{?#{&&:#{pane_title},#{!=:#{pane_title},#{host}}},#{pane_title},#{pane_current_command}}"
+      set -g allow-rename off
+
       set -g status on
       set -g status-position bottom
       set -g status-interval 5

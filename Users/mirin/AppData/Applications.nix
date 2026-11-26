@@ -67,6 +67,7 @@
       '')
     pnpm
     llm-agents.fx # Tiny, open, embeddable, native coding agent
+    llm-agents.antigravity-cli
     texliveTeTeX
     sqlitebrowser
 

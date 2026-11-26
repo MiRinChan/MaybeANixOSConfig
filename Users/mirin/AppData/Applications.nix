@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
     # GUI 生产力
+    llm-agents.antigravity-hub
     kdePackages.kcolorchooser # 颜色选择器
     furmark # 图形性能检测器
     d209.veracrypt # 磁盘加密

@@ -54,6 +54,10 @@
 
       set -g allow-passthrough on
 
+      # Refresh terminal identity when attaching from another Kitty window.
+      # Keep TERM managed by tmux so applications use tmux-256color.
+      set -ag update-environment " TERM_PROGRAM TERM_PROGRAM_VERSION KITTY_WINDOW_ID KITTY_LISTEN_ON KITTY_PID"
+
       bind-key -n MouseDown1StatusLeft new-window
       bind-key c new-window
       bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "tmux config reloaded"

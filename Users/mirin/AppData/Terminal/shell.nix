@@ -24,6 +24,7 @@
         fi
       '';
       shellAliases = {
+        icat = "${pkgs.kitty}/bin/kitten icat";
         XTERM = "export TERM=xterm";
       };
       history = {

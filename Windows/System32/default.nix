@@ -2,6 +2,7 @@
   imports = [
     ./configuration.nix
     ./boot.nix
+    ./memory.nix
     ./networking.nix
     ./nix.nix
     ./desktop.nix

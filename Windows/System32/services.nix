@@ -14,14 +14,17 @@
   '';
 in {
   # Bound the file indexer and its extractors without changing KDE settings.
-  systemd.user.services.kde-baloo = {
+  # Use a raw unit drop-in so NixOS's systemd.user.services builder does not
+  # override the graphical session PATH / LOCALE_ARCHIVE / TZDIR.
+  systemd.user.units."kde-baloo.service" = {
     overrideStrategy = "asDropin";
-    serviceConfig = {
-      MemoryHigh = "1G";
-      MemoryMax = "2G";
-      MemorySwapMax = "1G";
-      OOMScoreAdjust = 500;
-    };
+    text = ''
+      [Service]
+      MemoryHigh=1G
+      MemoryMax=2G
+      MemorySwapMax=1G
+      OOMScoreAdjust=500
+    '';
   };
 
   systemd.services = {
@@ -39,6 +42,7 @@ in {
     # Apply to the current manager with prlimit, without restarting the session.
     "user@1000" = {
       overrideStrategy = "asDropin";
+      enableDefaultPath = false;
       restartIfChanged = false;
       stopIfChanged = false;
       serviceConfig.LimitNOFILE = 2097152;

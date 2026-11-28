@@ -124,6 +124,49 @@ class VmCgroupNftSyncTests(unittest.TestCase):
             self.assertEqual(result, [f"{slice_rel}/audit-vm-qemu-2.service"])
             self.assertEqual(len(calls), 2)
 
+    def test_sync_targets_syncs_vm_and_throne_sets_independently(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            slice_rel = "user.slice/user-1000.slice/user@1000.service/app.slice"
+            slice_dir = Path(tmp) / slice_rel
+            slice_dir.mkdir(parents=True)
+            for name in [
+                "coding-vm-qemu-7.service",
+                "app-throne@e707adfa.service",
+                "app-throne-cli-1234.service",
+                "firefox.service",
+            ]:
+                (slice_dir / name).mkdir()
+
+            targets = [
+                ("vm_cgroups", re.compile(r"^(coding-vm|audit-vm)-qemu-.*\.service$")),
+                SYNC.parse_extra_set(
+                    r"throne_cgroups=^app-[Tt]hrone(@|-).*\.(service|scope)$"
+                ),
+            ]
+            with (
+                mock.patch.object(SYNC, "read_nft_set", return_value=[]),
+                mock.patch.object(
+                    subprocess,
+                    "run",
+                    return_value=subprocess.CompletedProcess([], 0, "", ""),
+                ) as run_mock,
+            ):
+                results = SYNC.sync_targets(
+                    tmp, slice_rel, targets, "nft", "inet", "ts-priority", force=True
+                )
+
+            self.assertEqual(
+                results,
+                {
+                    "vm_cgroups": [f"{slice_rel}/coding-vm-qemu-7.service"],
+                    "throne_cgroups": [
+                        f"{slice_rel}/app-throne-cli-1234.service",
+                        f"{slice_rel}/app-throne@e707adfa.service",
+                    ],
+                },
+            )
+            self.assertEqual(run_mock.call_count, 2)
+
 
 if __name__ == "__main__":
     unittest.main()

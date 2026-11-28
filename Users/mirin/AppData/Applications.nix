@@ -154,4 +154,21 @@
       show_source_text = true
     '';
   };
+
+  # Autostart Throne minimized in the Plasma tray without auto-enabling TUN/proxy.
+  # Lowercase `throne.desktop` generates `app-throne@autostart.service` under
+  # `app.slice`, matching both `@throne_cgroups` and `nohang` Tier 0 rules while
+  # avoiding collisions with Throne's own `Throne.desktop` toggle.
+  xdg.configFile."autostart/throne.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Version=1.5
+    Name=Throne
+    Comment=Qt based cross-platform GUI proxy configuration manager
+    Icon=Throne
+    Exec=/run/current-system/sw/bin/Throne -tray
+    Terminal=false
+    StartupNotify=false
+    Categories=Network;
+  '';
 }

@@ -167,6 +167,35 @@ def sync_once(cgroup_root, slice_rel, pattern, nft_bin, family, table, set_name,
     return []
 
 
+def parse_extra_set(spec):
+    if "=" not in spec:
+        raise argparse.ArgumentTypeError(
+            f"Expected SET_NAME=REGEX in --extra-set, got {spec!r}"
+        )
+    set_name, raw_pattern = spec.split("=", 1)
+    if not set_name or not raw_pattern:
+        raise argparse.ArgumentTypeError(
+            f"Expected non-empty SET_NAME=REGEX in --extra-set, got {spec!r}"
+        )
+    return set_name, re.compile(raw_pattern)
+
+
+def sync_targets(cgroup_root, slice_rel, targets, nft_bin, family, table, force=False):
+    results = {}
+    for set_name, pattern in targets:
+        results[set_name] = sync_once(
+            cgroup_root,
+            slice_rel,
+            pattern,
+            nft_bin,
+            family,
+            table,
+            set_name,
+            force=force,
+        )
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cgroup-root", default="/sys/fs/cgroup")
@@ -178,23 +207,30 @@ def main():
     parser.add_argument("--family", default="inet")
     parser.add_argument("--table", default="ts-priority")
     parser.add_argument("--set", dest="set_name", default="vm_cgroups")
+    parser.add_argument(
+        "--extra-set",
+        dest="extra_sets",
+        action="append",
+        default=[],
+        type=parse_extra_set,
+        help="Additional SET_NAME=REGEX target to sync within the same slice",
+    )
     parser.add_argument("--nft", default="nft")
     parser.add_argument("--interval", type=float, default=5.0)
     parser.add_argument("--once", action="store_true")
     args = parser.parse_args()
 
     slice_rel = args.slice_rel or default_slice_rel(args.user)
-    pattern = re.compile(args.pattern)
+    targets = [(args.set_name, re.compile(args.pattern)), *args.extra_sets]
 
     if args.once:
-        sync_once(
+        sync_targets(
             args.cgroup_root,
             slice_rel,
-            pattern,
+            targets,
             args.nft,
             args.family,
             args.table,
-            args.set_name,
             force=True,
         )
         return
@@ -215,14 +251,13 @@ def main():
     watched_is_slice = False
 
     try:
-        sync_once(
+        sync_targets(
             args.cgroup_root,
             slice_rel,
-            pattern,
+            targets,
             args.nft,
             args.family,
             args.table,
-            args.set_name,
             force=True,
         )
         while running:
@@ -250,14 +285,13 @@ def main():
                 if watched_path and not os.path.isdir(watched_path):
                     watched_path = None
             try:
-                sync_once(
+                sync_targets(
                     args.cgroup_root,
                     slice_rel,
-                    pattern,
+                    targets,
                     args.nft,
                     args.family,
                     args.table,
-                    args.set_name,
                     force=False,
                 )
             except subprocess.CalledProcessError as exc:

@@ -44,7 +44,9 @@
     zip
     unzip
     p7zip
-    unrar
+    # rar 自带 unrar，避免与独立 unrar 冲突
+    rar
+    par2cmdline
 
     # 工具
     fzf # fuzzy finder

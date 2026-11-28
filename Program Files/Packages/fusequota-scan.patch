@@ -1,0 +1,14 @@
+--- a/src/quota.cpp
++++ b/src/quota.cpp
+@@ -73,2 +73,5 @@
+-            if (fstatat(fd, entry->d_name, &file_stat, AT_SYMLINK_NOFOLLOW) != 0)
+-                continue;
++            if (fstatat(fd, entry->d_name, &file_stat, AT_SYMLINK_NOFOLLOW) != 0) {
++                if (errno == ENOENT)
++                    continue;
++                throw std::system_error(errno, std::generic_category(), entry->d_name);
++            }
+@@ -125,0 +129,3 @@
++        // The first scan must succeed before any write can be accepted.
++        if (!st.stop_possible())
++            throw;

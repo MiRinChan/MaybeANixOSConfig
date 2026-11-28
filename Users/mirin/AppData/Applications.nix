@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  imports = [./cloud-drives.nix];
+
   services.udiskie = {
     enable = true;
     settings = {
@@ -80,6 +82,7 @@
     ripgrep
 
     # 网路工具
+    rclone
     mtr # A network diagnostic tool
     iperf3
     dnsutils # `dig` + `nslookup`
